@@ -1,0 +1,25 @@
+ext{
+
+    android = [
+            compileSdkVersion       : 26,
+            buildToolsVersion       : "26.0.0",
+            applicationId           : "com.android.bsb",
+            minSdkVersion           : 15,
+            targetSdkVersion        : 26,
+            versionCode             : 10001,
+            versionName             : 'v1.00,01'
+
+
+    ]
+
+    dependVersion = [
+            supportLibaryVersion        :"26.1.0"
+    ]
+
+    dependencies = [
+            //android support
+            "support-v4"        : "com.android.support:support-v4:${dependVersion.supportLibaryVersion}",
+            "appcompat-v7"      : "com.android.support:appcompat-v7:${dependVersion.supportLibaryVersion}",
+            "support-design"    : "com.android.support:design:${dependVersion.supportLibaryVersion}"
+    ]
+}
