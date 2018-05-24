@@ -21,7 +21,7 @@ public class MainActivity extends BaseActivity<MainPersenter>
 
     @Override
     protected int attachLayoutRes() {
-        return 0;
+        return R.layout.activity_main;
     }
 
     @Override
