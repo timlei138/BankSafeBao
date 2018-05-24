@@ -13,13 +13,33 @@ ext{
     ]
 
     dependVersion = [
-            supportLibaryVersion        :"26.1.0"
+            supportLibaryVersion     : "26.1.0",
+            retrofitVersion          : "2.4.0",
+            daggerVersion            : "2.7"
     ]
 
     dependencies = [
             //android support
             "support-v4"        : "com.android.support:support-v4:${dependVersion.supportLibaryVersion}",
             "appcompat-v7"      : "com.android.support:appcompat-v7:${dependVersion.supportLibaryVersion}",
-            "support-design"    : "com.android.support:design:${dependVersion.supportLibaryVersion}"
+            "support-design"    : "com.android.support:design:${dependVersion.supportLibaryVersion}",
+            //dagger2
+            "dagger"            : "com.google.dagger:dagger:${dependVersion.daggerVersion}",
+            "dagger-compiler"   : "com.google.dagger:dagger-compiler:${dependVersion.daggerVersion}",
+            //rxjava
+            "rxjava"            : "io.reactivex.rxjava2:rxjava:2.1.14",
+            "rxandroid"         : "io.reactivex.rxjava2:rxandroid:2.0.2",
+            "rxbinding"         : "com.jakewharton.rxbinding2:rxbinding:2.1.1",
+            "rxlifecycle"       : "com.trello.rxlifecycle2:rxlifecycle:2.2.1",
+            "rxlifecomponents"  : "com.trello.rxlifecycle2:rxlifecycle-components:2.2.1",
+            //retrofit
+            "retrofit"          : "com.squareup.retrofit2:retrofit:${dependVersion.retrofitVersion}",
+            "retrofit-gson"     : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofitVersion}",
+            "retrofit-adapter"  : "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.retrofitVersion}",
+
+            //ui
+            "buttercompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",
+            "butterknife"       : "com.jakewharton:butterknife:8.8.1",
+
     ]
 }

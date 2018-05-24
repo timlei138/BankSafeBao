@@ -1,4 +1,4 @@
-package com.android.bsb.ui.activity;
+package com.android.bsb.ui.home;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,9 +13,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.bsb.R;
+import com.android.bsb.component.ApplicationComponent;
+import com.android.bsb.ui.base.BaseActivity;
 
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<MainPersenter>
+        implements NavigationView.OnNavigationItemSelectedListener,MainView {
+
+    @Override
+    protected int attachLayoutRes() {
+        return 0;
+    }
+
+    @Override
+    protected void initInjector(ApplicationComponent applicationComponent) {
+
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void updateView(boolean isRefresh) {
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
