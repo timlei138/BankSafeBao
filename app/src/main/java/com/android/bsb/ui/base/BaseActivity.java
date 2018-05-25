@@ -1,5 +1,7 @@
 package com.android.bsb.ui.base;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -12,6 +14,9 @@ import com.android.bsb.widget.EmptyLayout;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -19,6 +24,10 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatActivity implements IBaseView{
 
+
+    public static final int DIALOG_TYPE_ALERT = 100;
+    public static final int DIALOG_TYPE_ERROR = 101;
+    public static final int DIALOG_TYPE_MESSAGE = 102;
 
     @Nullable
     @BindView(R.id.empty_layout)
@@ -106,6 +115,27 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
 
     }
 
+
+    @Override
+    protected Dialog onCreateDialog(@DialogType int id) {
+
+        switch (id){
+            case DIALOG_TYPE_ALERT:
+                break;
+            case DIALOG_TYPE_ERROR:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.dialog_error_title);
+                builder.setMessage(R.string.dialog_error_message);
+                builder.setCancelable(false);
+                builder.create();
+                break;
+            case DIALOG_TYPE_MESSAGE:
+                break;
+        }
+
+        return super.onCreateDialog(id);
+    }
+
     @Override
     public void onRetry() {
         updateView(false);
@@ -115,4 +145,8 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
     public <T> LifecycleTransformer<T> bindToLife() {
         return this.<T>bindToLifecycle();
     }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({DIALOG_TYPE_ALERT,DIALOG_TYPE_ERROR,DIALOG_TYPE_MESSAGE})
+    public @interface DialogType{}
 }

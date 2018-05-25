@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">BankSafeBao</string>
+
+    <string name="navigation_drawer_open">打开侧边栏</string>
+    <string name="navigation_drawer_close">关闭侧边栏</string>
+    <string name="nav_header_title">姓名</string>
+    <string name="nav_header_subtitle">机构</string>
+    <string name="nav_header_desc">头像</string>
+
+    <string name="nav_menu_undone_title">未完成任务</string>
+    <string name="nav_menu_done_title">已完成任务</string>
+    <string name="nav_menu_error_title">异常任务</string>
+
+    <string name="nav_menu_category_manager_title">管理</string>
+    <string name="nav_menu_neworg_title">添加机构</string>
+    <string name="nav_menu_user_title">人员管理</string>
+    <string name="nav_menu_newtask_title">添加任务</string>
+    <string name="nav_menu_checktask_title">任务检查</string>
+
+    <string name="nav_menu_category_system_title">系统</string>
+    <string name="nav_menu_setting_title">设置</string>
+</resources>

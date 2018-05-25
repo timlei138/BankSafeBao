@@ -47,4 +47,12 @@ public class SharedProvider {
         mSharedPreferences.edit().putInt(key,value).apply();
     }
 
+    public String getStringValue(String key,String def){
+        return mSharedPreferences.getString(key,def);
+    }
+
+    public void setStringValue(String key,String value){
+        mSharedPreferences.edit().putString(key,value).apply();
+    }
+
 }

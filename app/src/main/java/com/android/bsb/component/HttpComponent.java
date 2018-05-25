@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import com.android.bsb.module.ApplicationModule;
+import com.android.bsb.ui.home.SplashActivity;
 import com.android.bsb.ui.login.LoginActivity;
 
 import dagger.Component;
@@ -12,6 +13,8 @@ import dagger.Component;
 public interface HttpComponent {
 
     void inject(LoginActivity activity);
+
+    void inject(SplashActivity activity);
 
     void inject(Fragment fragment);
 

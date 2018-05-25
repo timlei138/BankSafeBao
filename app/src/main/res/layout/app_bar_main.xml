@@ -20,6 +20,14 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
+
+    <FrameLayout
+        android:id="@+id/contentPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!--
     <include layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton
@@ -29,5 +37,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
-
+    -->
 </android.support.design.widget.CoordinatorLayout>
