@@ -42,7 +42,7 @@ public class EmptyLayout extends FrameLayout{
 
     private int emptyBackgroundColor;
 
-    private int mStatus = STATUS_LOADING;
+    private int mStatus = STATUS_HIDE;
 
 
     private onRetryListener mRetryListener;
@@ -56,6 +56,7 @@ public class EmptyLayout extends FrameLayout{
     public EmptyLayout(Context context, AttributeSet arrts){
         super(context,arrts);
         mContext = context;
+        init(arrts);
     }
 
     private void init(AttributeSet attrs){

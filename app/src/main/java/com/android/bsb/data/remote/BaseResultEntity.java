@@ -1,11 +1,14 @@
 package com.android.bsb.data.remote;
 
+import com.google.gson.annotations.SerializedName;
+
 public class BaseResultEntity<T> {
 
+    @SerializedName("code")
     private int code;
-
+    @SerializedName("msg")
     private String msg;
-
+    @SerializedName(value= "data",alternate = {"user","task"})
     private T data;
 
     public int getCode() {

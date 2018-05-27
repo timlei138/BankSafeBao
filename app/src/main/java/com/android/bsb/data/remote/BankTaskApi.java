@@ -4,6 +4,8 @@ package com.android.bsb.data.remote;
 import com.android.bsb.bean.User;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class BankTaskApi {
@@ -33,8 +35,29 @@ public class BankTaskApi {
      * @return 用户信息
      */
 
-    public Observable<BaseResultEntity<User>> userLogin(String name, String password){
-        return mService.userLogin(name,password);
+    public Observable<User> userLogin(String name, String password){
+        return mService.userLogin(name,password)
+                .map(new ServerResultFunc<User>())
+                .onErrorResumeNext(new HttpResultFunc<User>())
+                .subscribeOn(Schedulers.io());
+    }
+
+
+    private class ServerResultFunc<T> implements Function<BaseResultEntity<T>, T> {
+        @Override
+        public T apply(BaseResultEntity<T> httpResult) throws Exception {
+            if (httpResult.getCode() != 200) {
+                throw new ServerException(httpResult.getCode(),httpResult.getMsg());
+            }
+            return httpResult.getData();
+        }
+    }
+
+    private class HttpResultFunc<T> implements Function<Throwable, Observable<T>> {
+        @Override
+        public Observable<T> apply(Throwable throwable) throws Exception {
+            return Observable.error(ExceptionEngine.handleException(throwable));
+        }
     }
 
 }

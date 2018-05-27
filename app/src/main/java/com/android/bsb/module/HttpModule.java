@@ -7,12 +7,14 @@ import com.android.bsb.data.remote.NetComm;
 import com.android.bsb.data.remote.BankServer;
 import com.android.bsb.data.remote.BankTaskApi;
 import com.android.bsb.data.remote.RetrofitConfig;
+import com.android.bsb.util.AppLogger;
 
 import java.io.File;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

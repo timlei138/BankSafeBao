@@ -10,7 +10,8 @@ import retrofit2.http.POST;
 public interface BankServer {
 
 
-    @POST("api/login")
+    @POST("user/")
     @FormUrlEncoded
-    Observable<BaseResultEntity<User>> userLogin(@Field("username") String username, @Field("pwd")String pwd);
+    Observable<BaseResultEntity<User>> userLogin(@Field("loginname") String username,
+                                                 @Field("password")String pwd);
 }
