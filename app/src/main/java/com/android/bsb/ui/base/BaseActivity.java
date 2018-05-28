@@ -2,23 +2,24 @@ package com.android.bsb.ui.base;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import com.android.bsb.AppApplication;
 import com.android.bsb.R;
 import com.android.bsb.component.ApplicationComponent;
+import com.android.bsb.util.AppLogger;
 import com.android.bsb.widget.EmptyLayout;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -55,6 +56,10 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
 
 
     protected abstract void updateView(boolean isRefresh);
+
+    protected abstract void updateToolsBar(int title);
+
+    protected abstract void updateToolsBar(String title);
 
 
     protected ApplicationComponent getApplicationComponent(){
@@ -114,6 +119,37 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
     public void finishRefresh() {
 
     }
+
+
+    protected void addFragment(int containerViewId, Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(containerViewId,fragment);
+        fragmentTransaction.commit();
+    }
+
+    //add fragment
+    protected void addFragment(int containerViewId,Fragment fragment,String tag){
+        AppLogger.LOGD(null,"addFragment->"+fragment.toString());
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(containerViewId, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.commit();
+    }
+
+    //
+    protected void replaceFragment(int containerViewId,Fragment fragment,String tag){
+        AppLogger.LOGD(null,"replaceFragment->"+fragment.toString());
+        if(getSupportFragmentManager().findFragmentByTag(tag) == null){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(containerViewId,fragment,tag);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commit();
+        }else{
+            getSupportFragmentManager().popBackStack(tag,0);
+        }
+    }
+
 
 
     @Override

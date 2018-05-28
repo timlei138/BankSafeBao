@@ -60,6 +60,16 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
     }
 
     @Override
+    protected void updateToolsBar(int title) {
+
+    }
+
+    @Override
+    protected void updateToolsBar(String title) {
+
+    }
+
+    @Override
     public void loginSuccess(User info) {
 
     }

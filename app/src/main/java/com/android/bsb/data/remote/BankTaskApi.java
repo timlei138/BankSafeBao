@@ -47,7 +47,8 @@ public class BankTaskApi {
         @Override
         public T apply(BaseResultEntity<T> httpResult) throws Exception {
             if (httpResult.getCode() != 200) {
-                throw new ServerException(httpResult.getCode(),httpResult.getMsg());
+                //throw new ServerException(httpResult.getCode(),httpResult.getMsg());
+
             }
             return httpResult.getData();
         }
@@ -56,7 +57,8 @@ public class BankTaskApi {
     private class HttpResultFunc<T> implements Function<Throwable, Observable<T>> {
         @Override
         public Observable<T> apply(Throwable throwable) throws Exception {
-            return Observable.error(ExceptionEngine.handleException(throwable));
+            //return Observable.error(ExceptionEngine.handleException(throwable));
+            return null;
         }
     }
 

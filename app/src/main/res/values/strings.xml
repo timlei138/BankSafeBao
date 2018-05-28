@@ -7,15 +7,25 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="nav_menu_undone_title">UnDone Task</string>
-    <string name="nav_menu_done_title">Done Task</string>
-    <string name="nav_menu_error_title">Error</string>
+    <string name="nav_menu_tasklist">My Task</string>
+    <string name="tab_task_undone_title">UnDone Task</string>
+    <string name="tab_task_done_title">Done Task</string>
+    <string name="tab_task_error_title">Error</string>
 
-    <string name="nav_menu_category_manager_title">Manager</string>
-    <string name="nav_menu_neworg_title">Add Organization</string>
-    <string name="nav_menu_user_title">Manager User</string>
-    <string name="nav_menu_newtask_title">Add Task</string>
-    <string name="nav_menu_checktask_title">Check Task</string>
+    <string name="nav_menu_manageruser_title">Manager User</string>
+    <string name="menu_neworg_title">Add Organization</string>
+    <string name="menu_newuser_title">Add User</string>
+    <string name="menu_updateuser_title">Update User</string>
+    <string name="menu_deleteuser_title">Delete User</string>
+    <string name="menu_queryuser_title">Query User</string>
+
+
+    <string name="nav_menu_managertask_title">Manager Task</string>
+    <string name="menu_newtask_title">Add Task</string>
+    <string name="menu_pushtask_title">Publish User</string>
+    <string name="menu_updatetask_title">Update User</string>
+    <string name="menu_delettask_title">Delete User</string>
+    <string name="menu_querytask_title">Query User</string>
 
     <string name="nav_menu_category_system_title">System</string>
     <string name="nav_menu_setting_title">Setting</string>

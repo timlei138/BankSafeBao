@@ -5,40 +5,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_undone"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/nav_menu_undone_title" />
+            android:id="@+id/nav_tasklist"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/nav_menu_tasklist" />
         <item
-            android:id="@+id/nav_done"
+            android:id="@+id/nav_manageruser"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/nav_menu_done_title" />
+            android:title="@string/nav_menu_manageruser_title" />
         <item
-            android:id="@+id/nav_error"
+            android:id="@+id/nav_managertask"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/nav_menu_error_title" />
+            android:title="@string/nav_menu_managertask_title" />
+
     </group>
-
-    <item android:title="@string/nav_menu_category_manager_title">
-        <menu>
-            <item
-                android:id="@+id/nav_addorg"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/nav_menu_neworg_title" />
-            <item
-                android:id="@+id/nav_adduser"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/nav_menu_user_title" />
-            <item
-                android:id="@+id/nav_publish"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/nav_menu_newtask_title" />
-            <item
-                android:id="@+id/nav_check"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/nav_menu_checktask_title"/>
-        </menu>
-    </item>
-
     <item android:title="@string/nav_menu_category_system_title">
         <menu>
             <item
@@ -47,5 +26,4 @@
                 android:title="@string/nav_menu_setting_title" />
         </menu>
     </item>
-
 </menu>

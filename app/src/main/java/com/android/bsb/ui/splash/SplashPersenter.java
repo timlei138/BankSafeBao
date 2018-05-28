@@ -1,4 +1,4 @@
-package com.android.bsb.ui.home;
+package com.android.bsb.ui.splash;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.android.bsb.AppComm;
 import com.android.bsb.bean.User;
 import com.android.bsb.data.remote.BankTaskApi;
-import com.android.bsb.data.remote.ExceptionEngine;
 import com.android.bsb.ui.base.IBasePresent;
 import com.android.bsb.util.SharedProvider;
 
@@ -21,6 +20,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+
+//import com.android.bsb.data.remote.ExceptionEngine;
 
 public class SplashPersenter extends IBasePresent<SplashView> {
 
@@ -48,7 +49,7 @@ public class SplashPersenter extends IBasePresent<SplashView> {
                 String phone = mSharedProvider.getStringValue(AppComm.KEY_ACCOUNT,"");
                 String pwd = mSharedProvider.getStringValue(AppComm.KEY_PWD,"");
                 if(TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd)){
-                    emitter.onError(ExceptionEngine.handleException(new Throwable("encode error")));
+                    //emitter.onError(ExceptionEngine.handleException(new Throwable("encode error")));
                 }else{
                     emitter.onNext(new String[]{phone,pwd});
                     emitter.onComplete();

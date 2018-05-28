@@ -1,15 +1,17 @@
-package com.android.bsb.ui.home;
+package com.android.bsb.ui.splash;
 
 import android.content.Intent;
+
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerHttpComponent;
 import com.android.bsb.ui.base.BaseActivity;
+import com.android.bsb.ui.home.MainActivity;
 import com.android.bsb.ui.login.LoginActivity;
 import com.android.bsb.util.AppLogger;
 
-public class SplashActivity extends BaseActivity<SplashPersenter> implements SplashView{
+public class SplashActivity extends BaseActivity<SplashPersenter> implements SplashView {
 
     @Override
     protected int attachLayoutRes() {
@@ -42,6 +44,16 @@ public class SplashActivity extends BaseActivity<SplashPersenter> implements Spl
             mPresenter.autoLogin();
 
         }
+    }
+
+    @Override
+    protected void updateToolsBar(int title) {
+
+    }
+
+    @Override
+    protected void updateToolsBar(String title) {
+
     }
 
     @Override

@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import com.android.bsb.module.ApplicationModule;
-import com.android.bsb.ui.home.SplashActivity;
 import com.android.bsb.ui.login.LoginActivity;
+import com.android.bsb.ui.splash.SplashActivity;
 
 import dagger.Component;
 

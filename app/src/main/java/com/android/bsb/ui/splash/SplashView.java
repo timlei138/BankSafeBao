@@ -1,4 +1,4 @@
-package com.android.bsb.ui.home;
+package com.android.bsb.ui.splash;
 
 import com.android.bsb.bean.User;
 import com.android.bsb.ui.base.IBaseView;
