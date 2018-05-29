@@ -19,6 +19,7 @@
         app:tabMode="fixed"
         app:tabIndicatorHeight="0dp"
         app:tabBackground="?attr/colorPrimary"
+        app:tabGravity="fill"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
