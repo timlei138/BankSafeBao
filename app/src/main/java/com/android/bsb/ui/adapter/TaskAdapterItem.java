@@ -5,26 +5,25 @@ import com.android.bsb.bean.TaskInfo;
 
 public class TaskAdapterItem {
 
-    private int position;
+    private int groupId;
 
     private int viewType;
 
     private Object data;
 
 
-    public static TaskAdapterItem asGroup(int pos ,TaskGroupInfo groupInfo){
+    public static TaskAdapterItem asGroup(TaskGroupInfo groupInfo){
         TaskAdapterItem item = new TaskAdapterItem();
         item.viewType = TaskListAdapter.VIEW_TYPE_PARENT;
-        item.position = pos;
         item.data = groupInfo;
         return item;
     }
 
 
-    public static TaskAdapterItem asChild(int pos, TaskInfo info){
+    public static TaskAdapterItem asChild(TaskInfo info){
         TaskAdapterItem item = new TaskAdapterItem();
+        item.groupId = info.getTaskGroupId();
         item.viewType = TaskListAdapter.VIEW_TYPE_CHILD;
-        item.position = pos;
         item.data = info;
         return item;
     }
@@ -34,11 +33,31 @@ public class TaskAdapterItem {
         return viewType;
     }
 
+    @Override
+    public String toString() {
+        return "TaskAdapterItem{" +
+                "viewType=" + viewType +
+                ", data=" + data +
+                '}';
+    }
+
     public Object getData(){
         return data;
     }
 
-    public int getPosition(){
-        return position;
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setViewType(int viewType) {
+        this.viewType = viewType;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

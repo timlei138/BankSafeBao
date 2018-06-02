@@ -40,25 +40,34 @@ public class UnDoneTaskFragment extends BaseFragment<TaskListPresenter>{
 
         List<TaskAdapterItem> list = new ArrayList<>();
 
-        TaskGroupInfo info = new TaskGroupInfo();
-        List<TaskInfo> taskInfos = new ArrayList<>();
+        for (int i=0;i<5;i++){
+            TaskGroupInfo group = new TaskGroupInfo();
+            group.setGroupId(10*(i+1));
+            group.setGroupName("TaskGroup Id:"+i);
+            group.setGroupDesc("curr group task desc "+i);
+            ArrayList<TaskInfo> lists = new ArrayList<>();
+            for (int j=0;j<5;j++){
+                TaskInfo task = new TaskInfo();
+                task.setTaskGroupId(group.getGroupId());
+                task.setTaskId(100*(j+1));
+                task.setTaskName("detail task name i"+j);
+                lists.add(task);
+            }
+            group.setTaskList(lists);
+            list.add(TaskAdapterItem.asGroup(group));
+        }
 
-        TaskInfo task = new TaskInfo();
-        taskInfos.add(task);
-
-        info.setGroupId(100);
-        info.setGroupName("dddddd");
-        info.setGroupDegree(1);
-        info.setGroupDesc("dfsdafdsfasdfadfadfadsfadsf");
-
-        info.setTaskList(taskInfos);
-
-        list.add(TaskAdapterItem.asGroup(0,info));
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mAdapter.setItemList(list);
         mTaskList.setLayoutManager(manager);
         mTaskList.setAdapter(mAdapter);
+        mAdapter.setOnScrollListener(new TaskListAdapter.OnScrollListener() {
+            @Override
+            public void scrollTo(int pos) {
+                mTaskList.scrollToPosition(pos);
+            }
+        });
 
     }
 

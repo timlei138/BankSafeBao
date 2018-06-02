@@ -91,6 +91,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder{
 
     public static class ChildViewHolder extends BaseViewHolder{
 
+        @BindView(R.id.task_label)
+        TextView mTaskLabel;
         public ChildViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
