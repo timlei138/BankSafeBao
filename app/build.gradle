@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
@@ -37,6 +37,7 @@ dependencies {
     implementation rootProject.ext.dependencies["retrofit"]
     implementation rootProject.ext.dependencies["retrofit-gson"]
     implementation rootProject.ext.dependencies["retrofit-adapter"]
+    implementation rootProject.ext.dependencies["retrofit-logger"]
     implementation rootProject.ext.dependencies["butterknife"]
     annotationProcessor rootProject.ext.dependencies["buttercompiler"]
 }
