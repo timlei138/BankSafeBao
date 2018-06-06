@@ -1,5 +1,7 @@
 package com.android.bsb.ui.login;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -9,17 +11,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.bsb.AppComm;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerHttpComponent;
 import com.android.bsb.component.DaggerLocalDataComponent;
 import com.android.bsb.ui.base.BaseActivity;
+import com.android.bsb.ui.home.MainActivity;
 import com.android.bsb.util.AppLogger;
+import com.android.bsb.util.NetWorkUtils;
+import com.android.bsb.util.SharedProvider;
 import com.android.bsb.util.Utils;
-
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity<LoginPersenter> implements LoginView {
 
@@ -70,14 +81,27 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
     }
 
     @Override
-    public void loginSuccess(User info) {
+    public void loginSuccess(User info,boolean offline) {
+        if(info != null){
+            setLoginUser(info,offline);
+            Intent intent = new Intent();
+            intent.setClass(this, MainActivity.class);
+            startActivity(intent);
+            info.setLoginPwd(mPwdEditText.getText().toString());
+            saveLoginInfo(info);
+        }
+    }
+
+    @Override
+    public void loginFaild(Exception e) {
 
     }
 
     @Override
-    public void loginFaild() {
-
+    public Context getActivityContext() {
+        return this;
     }
+
 
 
     @OnClick({R.id.btn_login,R.id.tv_forget})
@@ -85,11 +109,13 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
         if(view.getId() == R.id.btn_login){
             String phone = mUserEditText.getText().toString();
             String pwd = mPwdEditText.getText().toString();
-            AppLogger.LOGD(null,"phone:"+phone+",pwd:"+pwd);
             if(!vaildPhone(phone) || !vaildPwd(pwd)){
                 return;
             }
-            AppLogger.LOGD(null,"phone:"+phone+",pwd:"+pwd);
+            if(!NetWorkUtils.isNetworkAvailable(this)){
+                showDialog(DIALOG_TYPE_NOT_NETWORK);
+                return;
+            }
             mPresenter.login(phone,pwd);
         }
     }
@@ -128,6 +154,55 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
             return true;
         }
     }
+
+
+    private void saveLoginInfo(final User info){
+        Observable observable  = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(Utils.encrypt(info.getUid()+"")+":");
+                buffer.append(Utils.encrypt(info.getLoginName())+":");
+                buffer.append(Utils.encrypt(info.getUname())+":");
+                buffer.append(Utils.encrypt(info.getRole()+"")+":");
+                buffer.append(Utils.encrypt(info.getRoleName())+":");
+                buffer.append(Utils.encrypt(info.getDeptName())+":");
+                buffer.append(Utils.encrypt(info.getLoginPwd())+":");
+                buffer.append(Utils.encrypt(info.getDeptCode()+""));
+                emitter.onNext(buffer.toString());
+                emitter.onComplete();
+            }
+        });
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String o) {
+                AppLogger.LOGD(null,"saveAccountInfo:"+o);
+                SharedProvider.getInstance(getApplicationContext())
+                        .setStringValue(AppComm.KEY_ACCOUNT,o);
+                SharedProvider.getInstance(getApplicationContext())
+                        .setBoolValue(AppComm.KEY_FIRST_USED,false);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                AppLogger.LOGE(null,"saveAccountInfo error");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
 
 
 }

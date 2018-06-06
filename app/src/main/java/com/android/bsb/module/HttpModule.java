@@ -30,9 +30,12 @@ public class HttpModule {
         return new OkHttpClient.Builder().cache(cache)
                 .retryOnConnectionFailure(true)
                 .addInterceptor(RetrofitConfig.sLoggerInterceptor)
+                .addInterceptor(RetrofitConfig.sHttpLoggerInterceptor)
                 .addInterceptor(RetrofitConfig.sRawWriteCacheControlInterceptor)
                 .addNetworkInterceptor(RetrofitConfig.sRawWriteCacheControlInterceptor)
-                .connectTimeout(10, TimeUnit.SECONDS);
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30,TimeUnit.SECONDS)
+                .readTimeout(30,TimeUnit.SECONDS);
     }
 
     @Provides

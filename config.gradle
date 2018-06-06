@@ -36,6 +36,7 @@ ext{
             "retrofit"          : "com.squareup.retrofit2:retrofit:${dependVersion.retrofitVersion}",
             "retrofit-gson"     : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofitVersion}",
             "retrofit-adapter"  : "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.retrofitVersion}",
+            "retrofit-logger"  : "com.squareup.okhttp3:logging-interceptor:3.10.0",
 
             //ui
             "buttercompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",

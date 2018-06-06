@@ -2,6 +2,7 @@ package com.android.bsb.ui.base;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import com.android.bsb.AppApplication;
 import com.android.bsb.R;
+import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.util.AppLogger;
 import com.android.bsb.widget.EmptyLayout;
@@ -26,9 +28,10 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatActivity implements IBaseView{
 
 
-    public static final int DIALOG_TYPE_ALERT = 100;
-    public static final int DIALOG_TYPE_ERROR = 101;
-    public static final int DIALOG_TYPE_MESSAGE = 102;
+    private String TAG = "BaseActivity";
+
+    public static final int DIALOG_TYPE_NOT_NETWORK = 101;
+    public static final int DIALOG_TYPE_NOT_PERMISSION = 102;
 
     @Nullable
     @BindView(R.id.empty_layout)
@@ -74,9 +77,18 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
         ButterKnife.bind(this);
         initInjector(AppApplication.getApplicationComponent());
         initView();
-        updateView(false);
         attachWindow();
+        updateView(false);
 
+
+    }
+
+    public void setLoginUser(User user,boolean online){
+        AppApplication.setLoginUser(user,online);
+    }
+
+    public User getLoginUser(){
+        return AppApplication.getLoginUser();
     }
 
     @Override
@@ -103,6 +115,7 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
 
     @Override
     public void showProgress() {
+        AppLogger.LOGD(TAG,"showProgress->"+mEmptyLayout);
         if(mEmptyLayout!=null){
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
         }
@@ -127,7 +140,7 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
         fragmentTransaction.commit();
     }
 
-    //add fragment
+    //ic_add fragment
     protected void addFragment(int containerViewId,Fragment fragment,String tag){
         AppLogger.LOGD(null,"addFragment->"+fragment.toString());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -156,16 +169,19 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
     protected Dialog onCreateDialog(@DialogType int id) {
 
         switch (id){
-            case DIALOG_TYPE_ALERT:
-                break;
-            case DIALOG_TYPE_ERROR:
+            case DIALOG_TYPE_NOT_NETWORK:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.dialog_error_title);
-                builder.setMessage(R.string.dialog_error_message);
-                builder.setCancelable(false);
-                builder.create();
-                break;
-            case DIALOG_TYPE_MESSAGE:
+                builder.setTitle(R.string.dialog_notnet_itle);
+                builder.setMessage(R.string.dialog_notNet_message);
+                builder.setCancelable(true);
+                builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                return builder.create();
+            case DIALOG_TYPE_NOT_PERMISSION:
                 break;
         }
 
@@ -183,6 +199,6 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({DIALOG_TYPE_ALERT,DIALOG_TYPE_ERROR,DIALOG_TYPE_MESSAGE})
+    @IntDef({DIALOG_TYPE_NOT_NETWORK,DIALOG_TYPE_NOT_PERMISSION})
     public @interface DialogType{}
 }

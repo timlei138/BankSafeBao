@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.bsb.R;
+import com.android.bsb.util.AppLogger;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -31,8 +32,6 @@ public class EmptyLayout extends FrameLayout{
 
     @BindView(R.id.tv_net_error)
     TextView mTvEmptyTextView;
-    @BindView(R.id.rl_empty_container)
-    View mEmptyContainerView;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
     @BindView(R.id.empty_layout)
@@ -61,7 +60,7 @@ public class EmptyLayout extends FrameLayout{
 
     private void init(AttributeSet attrs){
         TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.EmptyLayout);
-        emptyBackgroundColor = a.getColor(R.styleable.EmptyLayout_empty_background, Color.WHITE);
+        emptyBackgroundColor = a.getColor(R.styleable.EmptyLayout_empty_background, Color.TRANSPARENT);
         a.recycle();
 
         View.inflate(mContext,R.layout.layout_empty_loading,this);
@@ -85,20 +84,21 @@ public class EmptyLayout extends FrameLayout{
 
 
     private void switchEmptyView(){
+        AppLogger.LOGD("EmptyLayout","switchEmptyView:"+mStatus);
         switch (mStatus){
             case STATUS_HIDE:
                 setVisibility(GONE);
                 break;
             case STATUS_LOADING:
                 setVisibility(VISIBLE);
-                mEmptyContainerView.setVisibility(GONE);
+                mTvEmptyTextView.setVisibility(GONE);
                 mProgressBar.setVisibility(VISIBLE);
                 break;
             case STATUS_NO_DATA:
             case STATUS_NO_NET:
                 setVisibility(VISIBLE);
                 mProgressBar.setVisibility(GONE);
-                mEmptyContainerView.setVisibility(VISIBLE);
+                mTvEmptyTextView.setVisibility(VISIBLE);
                 break;
         }
     }

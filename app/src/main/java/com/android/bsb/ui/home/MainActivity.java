@@ -8,9 +8,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.bsb.R;
+import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.ui.task.TaskManagerFragment;
@@ -18,6 +22,7 @@ import com.android.bsb.ui.tasklist.TaskListFragment;
 import com.android.bsb.ui.user.UserManagerFragment;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity<MainPersenter>
         implements NavigationView.OnNavigationItemSelectedListener,MainView {
@@ -30,9 +35,12 @@ public class MainActivity extends BaseActivity<MainPersenter>
     Toolbar mToolbar;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    //header layout
+    ImageView mHeadIcon;
+    TextView mUserName;
+    TextView mDeptName;
 
     private SparseArray<String> mSparsesTags = new SparseArray<>();
-    //private int mItemId = -1;
 
     @Override
     protected int attachLayoutRes() {
@@ -51,12 +59,21 @@ public class MainActivity extends BaseActivity<MainPersenter>
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        LinearLayout headLayout = (LinearLayout) mNavigationView.getHeaderView(0);
+
+        mHeadIcon = headLayout.findViewById(R.id.head_icon);
+        mUserName = headLayout.findViewById(R.id.username);
+
+        mDeptName = headLayout.findViewById(R.id.dept_name);
+
         mNavigationView.setNavigationItemSelectedListener(this);
+
 
         mSparsesTags.put(R.id.nav_tasklist,"taskList");
         mSparsesTags.put(R.id.nav_manageruser,"userManager");
         mSparsesTags.put(R.id.nav_managertask,"taskManager");
         mSparsesTags.put(R.id.nav_setting,"setting");
+
 
     }
 
@@ -65,6 +82,21 @@ public class MainActivity extends BaseActivity<MainPersenter>
         mNavigationView.setCheckedItem(R.id.nav_tasklist);
         addFragment(R.id.contentPanel,new TaskListFragment(),"taskList");
         updateToolsBar(R.string.nav_menu_tasklist);
+        User user = getLoginUser();
+        if(user!=null){
+            mUserName.setText(user.getUname());
+            mDeptName.setText(user.getDeptName());
+        }
+        if(user.isAdmin()){
+            mNavigationView.getMenu().removeItem(R.id.nav_tasklist);
+        }else if(user.isManager()){
+            mNavigationView.getMenu().removeItem(R.id.nav_tasklist);
+        }else if(user.isPostManager()){
+
+        }else if(user.isSecurity()){
+
+        }
+
 
     }
 

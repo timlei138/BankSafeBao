@@ -19,50 +19,51 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Utils {
 
-    private static byte[] iv = {5,1,2,5,7,9,0};
+    private static final String CipherMode = "AES/CFB/NoPadding";//使用CFB加密，需要设置IV
 
+    private static final String key = "AESBankSafeMDKEY";
 
-
-    public static String encodeString(String args){
-        String str = "";
+    /**
+     * 对字符串加密
+     *
+     * @param key  密钥
+     * @param data 源字符串
+     * @return 加密后的字符串
+     */
+    public static String encrypt(String data) {
         try {
-            IvParameterSpec zeroIv = new IvParameterSpec(iv);
-            SecretKeySpec key = new SecretKeySpec(AppComm.DES_PWD.getBytes(),"DES");
-            Cipher cipher = Cipher.getInstance("DES/CBC/PKCSSPadding");
-            cipher.init(Cipher.ENCRYPT_MODE,key,zeroIv);
-            byte[] encryptedData = cipher.doFinal(args.getBytes());
-            return Base64.encodeToString(encryptedData,0);
-        }  catch (Exception e) {
+            Cipher cipher = Cipher.getInstance(CipherMode);
+            SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, keyspec, new IvParameterSpec(
+                    new byte[cipher.getBlockSize()]));
+            byte[] encrypted = cipher.doFinal(data.getBytes());
+            return Base64.encodeToString(encrypted, Base64.DEFAULT);
+        } catch (Exception e) {
             e.printStackTrace();
-            AppLogger.LOGE(null,"encodeString faild !");
+            return null;
         }
-        return str;
     }
 
-
-    public static String decode(String args){
-        byte[] bytes = Base64.decode(args,0);
-        IvParameterSpec zeroIv = new IvParameterSpec(iv);
-        SecretKeySpec key = new SecretKeySpec(AppComm.DES_PWD.getBytes(),"DES");
+    /**
+     * 对字符串解密
+     *
+     * @param key  密钥
+     * @param data 已被加密的字符串
+     * @return 解密得到的字符串
+     */
+    public static String decrypt(String data){
         try {
-            Cipher cipher = Cipher.getInstance("DES/CBC/PKCSSPadding");
-            cipher.init(Cipher.DECRYPT_MODE,key,zeroIv);
-            byte[] decrytedData = cipher.doFinal(bytes);
-            return new String(decrytedData);
-        } catch (NoSuchAlgorithmException e) {
+            byte[] encrypted1 = Base64.decode(data.getBytes(), Base64.DEFAULT);
+            Cipher cipher = Cipher.getInstance(CipherMode);
+            SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), "AES");
+            cipher.init(Cipher.DECRYPT_MODE, keyspec, new IvParameterSpec(
+                    new byte[cipher.getBlockSize()]));
+            byte[] original = cipher.doFinal(encrypted1);
+            return new String(original, "UTF-8");
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
+            return null;
         }
-        return args;
     }
 
 

@@ -23,4 +23,8 @@ public class AppError {
 
     public static final int DECODE_ERROR = 1004;
 
+
+
+    public static final int APP_ERROR_CODE = 201;
+
 }

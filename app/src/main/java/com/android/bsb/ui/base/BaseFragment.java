@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.android.bsb.AppApplication;
 import com.android.bsb.R;
+import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.widget.EmptyLayout;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -51,6 +52,7 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
             mRootView = inflater.inflate(attachLayoutRes(),null);
             ButterKnife.bind(this,mRootView);
             initInjector(AppApplication.getApplicationComponent());
+            attachWindow();
             initView();
         }
         ViewGroup parent = (ViewGroup) mRootView.getParent();
@@ -59,6 +61,12 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
         }
 
         return mRootView;
+    }
+
+    private void attachWindow(){
+        if(mPresenter!=null){
+            mPresenter.attachView(this);
+        }
     }
 
 
@@ -78,6 +86,10 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
             updateView(false);
         }else
             super.setUserVisibleHint(isVisibleToUser);
+    }
+
+    protected User getLoginUser(){
+        return AppApplication.getLoginUser();
     }
 
 

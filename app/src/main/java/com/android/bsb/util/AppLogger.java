@@ -6,7 +6,7 @@ public class AppLogger {
 
     private static final boolean DEBUG = true;
 
-    private static final String TAG  = "BankSafeBao";
+    private static final String TAG  = "BankSafeBao->";
 
     public static void LOGD(String tag,String msg){
         if (DEBUG)

@@ -30,8 +30,8 @@
     <string name="nav_menu_category_system_title">系统</string>
     <string name="nav_menu_setting_title">设置</string>
 
-    <string name="dialog_error_title">异常</string>
-    <string name="dialog_error_message">发生异常</string>
+    <string name="dialog_notnet_itle">网络异常</string>
+    <string name="dialog_notNet_message">当前没有网络连接，请检查网络。</string>
 
     <string name="account_title">账号</string>
     <string name="account_null_error">账号不能为空</string>
@@ -41,4 +41,6 @@
     <string name="password_length_max">密码长度最大为18位</string>
     <string name="login">登录</string>
     <string name="forgetpassword">忘记密码 ? </string>
+
+
 </resources>

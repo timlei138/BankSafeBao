@@ -13,6 +13,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okio.Buffer;
 
 public class RetrofitConfig {
@@ -61,13 +62,23 @@ public class RetrofitConfig {
             if(request.body()!=null){
                 request.body().writeTo(requestBuffer);
             }else{
-                AppLogger.LOGE(TAG,"request.body90 == null");
+                AppLogger.LOGE(TAG,"request.body == null");
             }
-            AppLogger.LOGD(TAG,"intercept:"+request.url()+(request.body() != null ? "?" + _parseParams(request.body(),requestBuffer) : ""));
+            AppLogger.LOGD(TAG,"intercept:"+request.url()+(request.body() != null ? "?" +
+                    _parseParams(request.body(),requestBuffer) : ""));
             final Response response = chain.proceed(request);
             return response;
         }
     };
+
+
+    public static final HttpLoggingInterceptor sHttpLoggerInterceptor = new HttpLoggingInterceptor(
+            new HttpLoggingInterceptor.Logger() {
+        @Override
+        public void log(String message) {
+            AppLogger.LOGD("RetrofitServer:",message);
+        }
+    }).setLevel(HttpLoggingInterceptor.Level.BODY);
 
     @NonNull
     private static String _parseParams(RequestBody body,Buffer requestBuffer) throws UnsupportedEncodingException {
