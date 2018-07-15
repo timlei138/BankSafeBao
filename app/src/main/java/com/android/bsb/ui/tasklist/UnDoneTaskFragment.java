@@ -43,14 +43,15 @@ public class UnDoneTaskFragment extends BaseFragment<TaskListPresenter>{
         for (int i=0;i<5;i++){
             TaskGroupInfo group = new TaskGroupInfo();
             group.setGroupId(10*(i+1));
-            group.setGroupName("TaskGroup Id:"+i);
-            group.setGroupDesc("curr group task desc "+i);
+            group.setGroupName("日程任务组:"+i);
+            group.setGroupDesc("阿娇考虑是否卡拉斯科水淀粉福建路上的风景拉萨的房间里的房间里水淀粉" +
+                    "的房间啊善良的风景拉萨地方登陆书法家三闾大夫"+i);
             ArrayList<TaskInfo> lists = new ArrayList<>();
             for (int j=0;j<5;j++){
                 TaskInfo task = new TaskInfo();
                 task.setTaskGroupId(group.getGroupId());
                 task.setTaskId(100*(j+1));
-                task.setTaskName("detail task name i"+j);
+                task.setTaskName("我的任务第一条是神恶魔但是房间啊善良大方"+j);
                 lists.add(task);
             }
             group.setTaskList(lists);
@@ -62,6 +63,7 @@ public class UnDoneTaskFragment extends BaseFragment<TaskListPresenter>{
         mAdapter.setItemList(list);
         mTaskList.setLayoutManager(manager);
         mTaskList.setAdapter(mAdapter);
+        mTaskList.addItemDecoration(new TaskListItemDecoration());
         mAdapter.setOnScrollListener(new TaskListAdapter.OnScrollListener() {
             @Override
             public void scrollTo(int pos) {

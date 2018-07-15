@@ -1,5 +1,6 @@
 package com.android.bsb.data.remote;
 
+import com.android.bsb.util.AppLogger;
 import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
@@ -22,6 +23,7 @@ public class ExceptionEngine {
     private static final int GATEWAY_TIMEOUT = 504;
 
     public static ApiException handleException(Throwable e){
+        AppLogger.LOGD(null,"handleException"+e);
         ApiException ex;
         if (e instanceof HttpException){             //HTTP错误
             HttpException httpException = (HttpException) e;

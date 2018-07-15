@@ -1,46 +1,4 @@
 <resources>
-    <string name="app_name">BankSafeBao</string>
-
-    <string name="navigation_drawer_open">打开侧边栏</string>
-    <string name="navigation_drawer_close">关闭侧边栏</string>
-    <string name="nav_header_title">姓名</string>
-    <string name="nav_header_subtitle">机构</string>
-    <string name="nav_header_desc">头像</string>
-
-    <string name="nav_menu_tasklist">任务列表</string>
-    <string name="tab_task_undone_title">未完成</string>
-    <string name="tab_task_done_title">已完成</string>
-    <string name="tab_task_error_title">异常</string>
-
-    <string name="nav_menu_manageruser_title">人员管理</string>
-    <string name="menu_neworg_title">添加机构</string>
-    <string name="menu_newuser_title">添加人员</string>
-    <string name="menu_updateuser_title">人员信息更新</string>
-    <string name="menu_deleteuser_title">删除人员</string>
-    <string name="menu_queryuser_title">人员查询</string>
-
-
-    <string name="nav_menu_managertask_title">任务管理</string>
-    <string name="menu_newtask_title">新建任务</string>
-    <string name="menu_pushtask_title">发布任务</string>
-    <string name="menu_updatetask_title">更新任务</string>
-    <string name="menu_delettask_title">删除任务</string>
-    <string name="menu_querytask_title">任务查询</string>
-
-    <string name="nav_menu_category_system_title">系统</string>
-    <string name="nav_menu_setting_title">设置</string>
-
-    <string name="dialog_notnet_itle">网络异常</string>
-    <string name="dialog_notNet_message">当前没有网络连接，请检查网络。</string>
-
-    <string name="account_title">账号</string>
-    <string name="account_null_error">账号不能为空</string>
-    <string name="account_not_phone">账号必须为手机号码!</string>
-    <string name="password_title">密码</string>
-    <string name="password_null_title">密码不能为空</string>
-    <string name="password_length_max">密码长度最大为18位</string>
-    <string name="login">登录</string>
-    <string name="forgetpassword">忘记密码 ? </string>
 
 
 </resources>

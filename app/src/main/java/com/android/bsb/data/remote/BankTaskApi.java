@@ -1,8 +1,14 @@
 package com.android.bsb.data.remote;
 
 
+import com.android.bsb.bean.TaskGroupInfo;
+import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
 import com.android.bsb.util.AppLogger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observer;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
@@ -45,14 +51,39 @@ public class BankTaskApi {
 
     public Observable<String> createDept(String deptname,String username,String phone,int parentcode,int userid){
         return mService.createDeptment(deptname,username,phone,parentcode,userid)
-                .map(new ServerResultFunc())
+                .map(new ServerResultFunc<String>())
                 .onErrorResumeNext(new HttpResultFunc<String>())
                 .subscribeOn(Schedulers.io());
     }
 
     public Observable<String> createUser(String name,String phone,int deptCode,String loginname,int role,int uid){
         return mService.createUser(name,phone,deptCode,loginname,role,uid)
-                .map(new ServerResultFunc())
+                .map(new ServerResultFunc<String>())
+                .onErrorResumeNext(new HttpResultFunc<String>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<List<User>> queryAllUser(int uid){
+        return mService.queryAllUser(uid)
+                .map(new ServerResultFunc<List<User>>())
+                .onErrorResumeNext(new HttpResultFunc<List<User>>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<List<TaskGroupInfo>> queryUserTaskGroup(int uid,int roleId){
+        return mService.queryUserTaskGroup(uid, roleId)
+                .map(new ServerResultFunc<List<TaskGroupInfo>>())
+                .onErrorResumeNext(new HttpResultFunc<List<TaskGroupInfo>>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<String> createTaskGroupAndTask(User user,TaskGroupInfo groupInfo){
+        List<String> tasks = new ArrayList<>();
+        for (TaskInfo info : groupInfo.getTaskList()){
+            tasks.add(info.getTaskName());
+        }
+        return mService.createTaskGroupAndTask(1,groupInfo.getGroupDesc(),groupInfo.getGroupName(),user.getUid(),tasks)
+                .map(new ServerResultFunc<String>())
                 .onErrorResumeNext(new HttpResultFunc<String>())
                 .subscribeOn(Schedulers.io());
     }

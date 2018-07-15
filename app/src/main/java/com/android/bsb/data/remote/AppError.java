@@ -2,7 +2,6 @@ package com.android.bsb.data.remote;
 
 public class AppError {
 
-
     /**
      * 未知错误
      */
@@ -24,7 +23,11 @@ public class AppError {
     public static final int DECODE_ERROR = 1004;
 
 
-
     public static final int APP_ERROR_CODE = 201;
+
+
+
+    public static final int NO_UUSER_CODE = 207;
+
 
 }

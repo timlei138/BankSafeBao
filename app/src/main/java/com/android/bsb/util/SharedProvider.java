@@ -55,4 +55,9 @@ public class SharedProvider {
         mSharedPreferences.edit().putString(key,value).apply();
     }
 
+    public void clearLoginInfo(){
+        mSharedPreferences.edit().remove(AppComm.KEY_FIRST_USED).apply();;
+        mSharedPreferences.edit().remove(AppComm.KEY_ACCOUNT).apply();
+    }
+
 }

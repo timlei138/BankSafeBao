@@ -1,7 +1,11 @@
 package com.android.bsb.util;
 
+import android.content.Context;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Patterns;
+import android.util.TypedValue;
+import android.view.WindowManager;
 
 import com.android.bsb.AppComm;
 import java.security.InvalidAlgorithmParameterException;
@@ -26,7 +30,6 @@ public class Utils {
     /**
      * 对字符串加密
      *
-     * @param key  密钥
      * @param data 源字符串
      * @return 加密后的字符串
      */
@@ -47,7 +50,6 @@ public class Utils {
     /**
      * 对字符串解密
      *
-     * @param key  密钥
      * @param data 已被加密的字符串
      * @return 解密得到的字符串
      */
@@ -72,6 +74,23 @@ public class Utils {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(cellphone);
         return m.find();
+    }
+
+    public static int dp2px(Context context, float dp) {
+        return (int ) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+    }
+
+    /**
+     * 获得屏幕宽度
+     *
+     * @param context
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.widthPixels;
     }
 
 }

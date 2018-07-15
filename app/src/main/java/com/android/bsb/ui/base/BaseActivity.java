@@ -1,6 +1,8 @@
 package com.android.bsb.ui.base;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -11,6 +13,11 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+
 import com.android.bsb.AppApplication;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
@@ -57,12 +64,11 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
      */
     protected abstract void initView();
 
+    protected abstract Activity addActivityStack();
+
 
     protected abstract void updateView(boolean isRefresh);
 
-    protected abstract void updateToolsBar(int title);
-
-    protected abstract void updateToolsBar(String title);
 
 
     protected ApplicationComponent getApplicationComponent(){
@@ -73,14 +79,14 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setSystemUI();
         setContentView(attachLayoutRes());
         ButterKnife.bind(this);
         initInjector(AppApplication.getApplicationComponent());
         initView();
         attachWindow();
         updateView(false);
-
-
+        AppApplication.getAppActivityManager().addActivity(addActivityStack());
     }
 
     public void setLoginUser(User user,boolean online){
@@ -97,6 +103,7 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
         if(mPresenter!=null){
             mPresenter.detachView();
         }
+        AppApplication.getAppActivityManager().finishActivity(addActivityStack());
     }
 
     private void attachWindow(){
@@ -131,6 +138,11 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
     @Override
     public void finishRefresh() {
 
+    }
+
+
+    public boolean isAdmin(){
+        return getLoginUser().isAdmin();
     }
 
 
@@ -186,6 +198,36 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
         }
 
         return super.onCreateDialog(id);
+    }
+
+
+    public void setSystemUI(){
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }else{
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

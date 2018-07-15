@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
 
-    @SerializedName("userid")
+    @SerializedName(value = "userid",alternate = {"id"})
     private int uid = 0;
     //phone code
     @SerializedName("loginname")
@@ -14,8 +14,8 @@ public class User {
 
     private String loginPwd;
 
-    @SerializedName("username")
-    private String uname;
+    @SerializedName(value = "username",alternate = {"name"})
+    private String  uname;
 
     @SerializedName("rolecode")
     private int role;
@@ -42,15 +42,6 @@ public class User {
 
     public User(){}
 
-    /**
-     * buffer.append(info.getUid()+":");
-     buffer.append(Utils.encodeString(info.getLoginName())+":");
-     buffer.append(Utils.encodeString(info.getUname())+":");
-     buffer.append(Utils.encodeString(info.getRole()+"")+":");
-     buffer.append(Utils.encodeString(info.getRoleName())+":");
-     buffer.append(Utils.encodeString(info.getDeptName()));
-     * @param accountStr
-     */
     public User(String accountStr){
         String[] args = accountStr.split(":");
         this.uid = Integer.parseInt(Utils.decrypt(args[0]));

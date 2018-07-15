@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.bsb.AppComm;
 import com.android.bsb.bean.User;
 import com.android.bsb.data.remote.ApiException;
 import com.android.bsb.data.remote.AppError;
 import com.android.bsb.data.remote.BankTaskApi;
+import com.android.bsb.data.remote.CommObserver;
 import com.android.bsb.ui.base.IBasePresent;
 import com.android.bsb.ui.base.IBaseView;
 import com.android.bsb.util.AppLogger;
@@ -98,7 +100,7 @@ public class LoginPersenter extends IBasePresent<LoginView>{
 
             @Override
             public void onError(Throwable e) {
-                mView.loginFaild((Exception) e);
+                mView.loginFaild(201,"用户名密码错误");
             }
 
             @Override
@@ -115,7 +117,8 @@ public class LoginPersenter extends IBasePresent<LoginView>{
      * @param pwd
      */
     public void login(String name,String pwd){
-        mApi.userLogin(name,pwd).compose(mView.<User>bindToLife())
+        mApi.userLogin(name,pwd)
+                .compose(mView.<User>bindToLife())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
@@ -123,32 +126,22 @@ public class LoginPersenter extends IBasePresent<LoginView>{
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<User>() {
+                .subscribe(new CommObserver<User>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
+                    public void onComplete() {
+                        AppLogger.LOGD(TAG,"onComplete");
                     }
 
                     @Override
-                    public void onNext(User user) {
-                        AppLogger.LOGD(TAG,"onNext"+user.toString());
+                    public void onRequestNext(User user) {
                         mView.hideProgress();
                         mView.loginSuccess(user,true);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        if(e instanceof ApiException){
-
-                        }
-                        mView.showNetError();
+                    public void onError(int code, String msg) {
                         mView.hideProgress();
-                        AppLogger.LOGD(TAG,"onError e"+e.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        AppLogger.LOGD(TAG,"onComplete");
+                        mView.loginFaild(code,msg);
                     }
                 });
     }

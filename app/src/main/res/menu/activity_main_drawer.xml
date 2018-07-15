@@ -13,9 +13,17 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/nav_menu_manageruser_title" />
         <item
+            android:id="@+id/nav_managerdept"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/nav_menu_managerdept_title" />
+        <item
             android:id="@+id/nav_managertask"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/nav_menu_managertask_title" />
+        <item
+            android:id="@+id/nav_taskcheck"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/nav_menu_taskcheck_title"/>
 
     </group>
     <item android:title="@string/nav_menu_category_system_title">

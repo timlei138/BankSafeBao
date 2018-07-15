@@ -2,25 +2,14 @@ package com.android.bsb.ui.user;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.bsb.AppComm;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
@@ -30,20 +19,19 @@ import com.android.bsb.ui.adapter.FunctionItem;
 import com.android.bsb.ui.base.BaseFragment;
 import com.android.bsb.util.AppLogger;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 
 public class UserManagerFragment extends BaseFragment<UserManagerPresenter> implements UserManagerView {
 
-    private final int ACTION_ADDDEPT = 1;
-    private final int ACTION_ADDUSER = 2;
-    private final int ACTION_LISTDEPT = 3;
-    private final int ACTION_LISTUSER = 4;
+    private final int ACTION_ADD_DEPT = 1;
+    private final int ACTION_ADD_USER = 2;
+    private final int ACTION_LIST_DEPT = 3;
+    private final int ACTION_LIST_USER = 4;
+
 
 
     @BindView(R.id.grid_view)
@@ -51,7 +39,7 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
 
     @Override
     protected int attachLayoutRes() {
-        return R.layout.layout_usermanager;
+        return R.layout.layout_gridmanager;
     }
 
     @Override
@@ -64,14 +52,12 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
         User user = getLoginUser();
         List<FunctionItem> list = new ArrayList<>();
         if(user.isAdmin()){
-            list.add(new FunctionItem(R.string.menu_neworg_title,R.drawable.ic_add,ACTION_ADDDEPT));
+            list.add(new FunctionItem(R.string.menu_neworg_title,R.drawable.ic_add,ACTION_ADD_DEPT));
+            list.add(new FunctionItem(R.string.menu_querydept_title,R.drawable.ic_add,ACTION_LIST_DEPT));
         }else if(user.isManager()){
-            list.add(new FunctionItem(R.string.menu_neworg_title,R.drawable.ic_add,ACTION_ADDDEPT));
-            list.add(new FunctionItem(R.string.menu_newuser_title,R.drawable.ic_add,ACTION_ADDUSER));
-        }else if(user.isPostManager()){
-
-        }else if(user.isSecurity()){
-
+            list.add(new FunctionItem(R.string.menu_neworg_title,R.drawable.ic_add,ACTION_ADD_DEPT));
+            list.add(new FunctionItem(R.string.menu_newuser_title,R.drawable.ic_add,ACTION_ADD_USER));
+            list.add(new FunctionItem(R.string.menu_queryuser_title,R.drawable.ic_add,ACTION_LIST_USER));
         }
         FunctinAdapter adapter = new FunctinAdapter(getContext(),list);
         mTableLaout.setAdapter(adapter);
@@ -86,11 +72,23 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
             int action = (int) view.getTag();
             AppLogger.LOGD(null,"action:"+action);
             switch (action){
-                case ACTION_ADDDEPT:
-                    createAddDialog(ACTION_ADDDEPT);
+                case ACTION_ADD_DEPT:
+                    createAddDialog(ACTION_ADD_DEPT);
                     break;
-                case ACTION_ADDUSER:
-                    createAddDialog(ACTION_ADDUSER);
+                case ACTION_ADD_USER:
+                    createAddDialog(ACTION_ADD_USER);
+                    break;
+                case ACTION_LIST_DEPT:
+                    Intent intentdept = new Intent();
+                    intentdept.setClass(getContext(),ManagerUserListActivity.class);
+                    intentdept.putExtra("show_user",false);
+                    startActivity(intentdept);
+                    break;
+                case ACTION_LIST_USER:
+                    Intent intentuser = new Intent();
+                    intentuser.setClass(getContext(),ManagerUserListActivity.class);
+                    intentuser.putExtra("show_user",true);
+                    startActivity(intentuser);
                     break;
             }
 
@@ -103,14 +101,30 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
     }
 
     @Override
+    public void addUserDeptSuccess(String reslult) {
+        Toast.makeText(getContext(),""+reslult,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void addUserDeptFaild(int code, String e) {
+        if(code == 203 || code == 204)
+            Toast.makeText(getContext(),""+e,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public User getUserInfo() {
         return getLoginUser();
+    }
+
+    @Override
+    public void showAllDeptInfo(List<User> list) {
+
     }
 
 
     private void createAddDialog(int action){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        final boolean addDept = action == ACTION_ADDDEPT;
+        final boolean addDept = action == ACTION_ADD_DEPT;
         String title = addDept ? "新增机构":"新增人员";
         builder.setTitle(title);
         View rootView = getLayoutInflater().inflate(R.layout.layout_addorg,null);
@@ -120,16 +134,13 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
         final EditText eduserName = rootView.findViewById(R.id.ed_user);
         final EditText edPhone = rootView.findViewById(R.id.ed_phone);
         final RadioGroup roleGroup = rootView.findViewById(R.id.role_group);
-        final RadioButton radioManager = rootView.findViewById(R.id.radio_manager);
-        final RadioButton radioSecurity = rootView.findViewById(R.id.radio_secuity);
-
         if(addDept){
             roleGroup.setVisibility(View.GONE);
         }else{
             edDept.setVisibility(View.GONE);
         }
 
-        builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String  dept = edDept.getText().toString();
@@ -145,9 +156,9 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
                     int id = roleGroup.getCheckedRadioButtonId();
                     int roleCode;
                     if(id == R.id.radio_manager){
-                        roleCode = AppComm.ROLE_TYPE_POSTMAN;
+                        roleCode = 12;
                     }else{
-                        roleCode = AppComm.ROLE_TYPE_SECURITY;
+                        roleCode = 13;
                     }
                     mPresenter.addUser(name,phone,roleCode);
                 }
@@ -156,7 +167,7 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
 
             }
         });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

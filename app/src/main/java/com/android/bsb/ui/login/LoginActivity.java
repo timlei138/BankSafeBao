@@ -1,30 +1,44 @@
 package com.android.bsb.ui.login;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.bsb.AppApplication;
 import com.android.bsb.AppComm;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerHttpComponent;
 import com.android.bsb.component.DaggerLocalDataComponent;
+import com.android.bsb.data.remote.NetComm;
+import com.android.bsb.data.remote.ServerException;
+import com.android.bsb.ui.AppActivityManager;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.ui.home.MainActivity;
 import com.android.bsb.util.AppLogger;
 import com.android.bsb.util.NetWorkUtils;
 import com.android.bsb.util.SharedProvider;
 import com.android.bsb.util.Utils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -45,6 +59,8 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
 
     @BindView(R.id.btn_login)
     Button btnLogin;
+    @BindView(R.id.tv_forget)
+    TextView mForgetBtn;
 
     @Override
     protected int attachLayoutRes() {
@@ -62,7 +78,12 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
 
     @Override
     protected void initView() {
+        AppApplication.getAppActivityManager().addActivity(this);
+    }
 
+    @Override
+    protected Activity addActivityStack() {
+        return this;
     }
 
     @Override
@@ -70,15 +91,6 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
         mPresenter.getData();
     }
 
-    @Override
-    protected void updateToolsBar(int title) {
-
-    }
-
-    @Override
-    protected void updateToolsBar(String title) {
-
-    }
 
     @Override
     public void loginSuccess(User info,boolean offline) {
@@ -89,12 +101,15 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
             startActivity(intent);
             info.setLoginPwd(mPwdEditText.getText().toString());
             saveLoginInfo(info);
+            finish();
         }
     }
 
     @Override
-    public void loginFaild(Exception e) {
-
+    public void loginFaild(int code,String e) {
+        if(code == 201){
+            Toast.makeText(this,e,Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -117,7 +132,53 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
                 return;
             }
             mPresenter.login(phone,pwd);
+        }else if(view.getId() == R.id.tv_forget){
+
         }
+
+
+    }
+
+
+    @OnLongClick(R.id.tv_forget)
+     boolean onforgetLongClick(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("网络配置");
+        View view = getLayoutInflater().inflate(R.layout.layout_net_config,null);
+        final EditText etIp = view.findViewById(R.id.et_ip);
+        final EditText etPort = view.findViewById(R.id.et_port);
+        builder.setView(view);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String ipAddress = etIp.getText().toString();
+                String port = etPort.getText().toString();
+                if(TextUtils.isEmpty(ipAddress)){
+                    Toast.makeText(getActivityContext(),"请填写IP地址",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!checkIpAddress(ipAddress)){
+                    Toast.makeText(getActivityContext(),"IP地址格式错误",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String ipConfig = ipAddress +":"+ (TextUtils.isEmpty(port)?"8080":port);
+                SharedProvider provider = SharedProvider.getInstance(getApplicationContext());
+                provider.setStringValue(NetComm.KEY_IP,ipConfig);
+                Toast.makeText(getActivityContext(),"配置完成",Toast.LENGTH_SHORT).show();
+                AppActivityManager.getInstance().exitAppAndRestart(getActivityContext());
+
+
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setCancelable(false).create().show();
+        return true;
     }
 
 
@@ -203,6 +264,12 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
         });
     }
 
+
+    private boolean checkIpAddress(String ip){
+        Pattern pattern = Pattern.compile("((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))");
+        Matcher matcher = pattern.matcher(ip);
+        return matcher.matches();
+    }
 
 
 }

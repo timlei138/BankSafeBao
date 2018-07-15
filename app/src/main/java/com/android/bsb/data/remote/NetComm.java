@@ -5,8 +5,23 @@ public class NetComm {
     //test
     //public static final String HOST_NAME = "http://mock-api.com/4jzArZgk.mock/";
 
-    public static final String HOST_NAME = "http://26097d23.all123.net:8888/sectem/";
-    //http://26097d23.all123.net:8888/zhcsBigScreen/bigscreen/bigScreenIndex.jsp
+    //public static final String HOST_NAME = "http://26097d23.all123.net:8888/sectem/";
+
+    public static final String KEY_IP = "IP_CONFIG";
+
+    private static  String IP = "192.168.0.110" ;
+
+    private static  String PORT = "8080";
+
+    public static void setIpConfig(String ipPort){
+        String[] ip = ipPort.split(":");
+        IP = ip[0];
+        PORT = ip[1];
+    }
+
+    public static String getHost(){
+        return "http://"+IP+":"+PORT+"/sectem/";
+    }
 
 
 }

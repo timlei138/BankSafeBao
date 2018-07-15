@@ -9,7 +9,7 @@ public interface LoginView extends IBaseView{
 
     void loginSuccess(User user,boolean offline);
 
-    void loginFaild(Exception e);
+    void loginFaild(int code,String msg);
 
     Context getActivityContext();
 }

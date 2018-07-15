@@ -1,6 +1,7 @@
 package com.android.bsb.ui.adapter;
 
 import android.animation.ValueAnimator;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -33,10 +34,10 @@ public class BaseViewHolder extends RecyclerView.ViewHolder{
     public static class ParentViewHolder extends BaseViewHolder{
 
         @BindView(R.id.group_container)
-        RelativeLayout mContainerLayout;
+        ConstraintLayout mContainerLayout;
         @BindView(R.id.group_label)
         TextView mGroupLabel;
-        @BindView(R.id.group_info)
+        @BindView(R.id.group_count)
         TextView mGroupInfo;
         @BindView(R.id.group_desc)
         TextView mGroupDesc;

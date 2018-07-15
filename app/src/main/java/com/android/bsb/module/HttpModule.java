@@ -1,20 +1,22 @@
 package com.android.bsb.module;
 
-import java.util.concurrent.TimeUnit;
+import android.text.TextUtils;
 
+import java.util.concurrent.TimeUnit;
 import com.android.bsb.AppApplication;
 import com.android.bsb.data.remote.NetComm;
 import com.android.bsb.data.remote.BankServer;
 import com.android.bsb.data.remote.BankTaskApi;
 import com.android.bsb.data.remote.RetrofitConfig;
+import com.android.bsb.ui.adapter.TaskListAdapter;
 import com.android.bsb.util.AppLogger;
+import com.android.bsb.util.SharedProvider;
 
 import java.io.File;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -40,13 +42,20 @@ public class HttpModule {
 
     @Provides
     BankTaskApi providerBankTaskApis(OkHttpClient.Builder builder){
-        //builder.addInterceptor(RetrofitConfig.)
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(builder.build());
+
+        SharedProvider provider = SharedProvider.getInstance(AppApplication.getContext());
+        String saveConfig = provider.getStringValue(NetComm.KEY_IP,"");
+        AppLogger.LOGD("demo","saveConfig:"+saveConfig);
+        if(!TextUtils.isEmpty(saveConfig)){
+            NetComm.setIpConfig(saveConfig);
+        }
+
         return BankTaskApi.getInstance(retrofitBuilder
-                .baseUrl(NetComm.HOST_NAME)
+                .baseUrl(NetComm.getHost())
                 .build().create(BankServer.class));
     }
 

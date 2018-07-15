@@ -1,8 +1,10 @@
 package com.android.bsb.ui.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.android.bsb.AppApplication;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
@@ -29,6 +31,11 @@ public class SplashActivity extends BaseActivity<LoginPersenter> implements Logi
     protected void initView() {
     }
 
+    @Override
+    protected Activity addActivityStack() {
+        return this;
+    }
+
 
     @Override
     protected void updateView(boolean isRefresh) {
@@ -47,16 +54,6 @@ public class SplashActivity extends BaseActivity<LoginPersenter> implements Logi
         }
     }
 
-    @Override
-    protected void updateToolsBar(int title) {
-
-    }
-
-    @Override
-    protected void updateToolsBar(String title) {
-
-    }
-
 
     @Override
     public void loginSuccess(User info,boolean online) {
@@ -70,7 +67,7 @@ public class SplashActivity extends BaseActivity<LoginPersenter> implements Logi
     }
 
     @Override
-    public void loginFaild(Exception e) {
+    public void loginFaild(int code ,String e) {
 
     }
 

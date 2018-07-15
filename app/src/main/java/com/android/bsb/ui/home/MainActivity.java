@@ -1,11 +1,15 @@
 package com.android.bsb.ui.home;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Intent;
 import android.util.SparseArray;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -13,16 +17,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.bsb.AppApplication;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.ui.base.BaseActivity;
+import com.android.bsb.ui.base.BaseFragment;
+import com.android.bsb.ui.setting.SettingsActivity;
 import com.android.bsb.ui.task.TaskManagerFragment;
 import com.android.bsb.ui.tasklist.TaskListFragment;
 import com.android.bsb.ui.user.UserManagerFragment;
+import com.android.bsb.util.AppLogger;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity<MainPersenter>
         implements NavigationView.OnNavigationItemSelectedListener,MainView {
@@ -40,6 +47,8 @@ public class MainActivity extends BaseActivity<MainPersenter>
     TextView mUserName;
     TextView mDeptName;
 
+    private String TAG = getClass().getSimpleName();
+
     private SparseArray<String> mSparsesTags = new SparseArray<>();
 
     @Override
@@ -54,64 +63,131 @@ public class MainActivity extends BaseActivity<MainPersenter>
 
     @Override
     protected void initView() {
+        AppApplication.getAppActivityManager().addActivity(this);
+        initMainView();
+        initFragment();
         setSupportActionBar(mToolbar);
+        mToolbar.setOnMenuItemClickListener(mToolsMenuItemClickListener);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        LinearLayout headLayout = (LinearLayout) mNavigationView.getHeaderView(0);
+    }
 
-        mHeadIcon = headLayout.findViewById(R.id.head_icon);
-        mUserName = headLayout.findViewById(R.id.username);
+    @Override
+    protected Activity addActivityStack() {
+        return this;
+    }
 
-        mDeptName = headLayout.findViewById(R.id.dept_name);
+    private Toolbar.OnMenuItemClickListener mToolsMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            return false;
+        }
+    };
 
-        mNavigationView.setNavigationItemSelectedListener(this);
-
-
-        mSparsesTags.put(R.id.nav_tasklist,"taskList");
-        mSparsesTags.put(R.id.nav_manageruser,"userManager");
-        mSparsesTags.put(R.id.nav_managertask,"taskManager");
-        mSparsesTags.put(R.id.nav_setting,"setting");
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolsbar,menu);
+        return true;
     }
 
     @Override
     protected void updateView(boolean isRefresh) {
-        mNavigationView.setCheckedItem(R.id.nav_tasklist);
-        addFragment(R.id.contentPanel,new TaskListFragment(),"taskList");
-        updateToolsBar(R.string.nav_menu_tasklist);
+
+    }
+
+    void initMainView(){
+        mSparsesTags.put(R.id.nav_tasklist,"taskList");
+        mSparsesTags.put(R.id.nav_manageruser,"userManager");
+        mSparsesTags.put(R.id.nav_managerdept,"deptManager");
+        mSparsesTags.put(R.id.nav_managertask,"taskManager");
+        mSparsesTags.put(R.id.nav_taskcheck,"taskCheck");
+        LinearLayout headLayout = (LinearLayout) mNavigationView.getHeaderView(0);
+        mHeadIcon = headLayout.findViewById(R.id.head_icon);
+        mUserName = headLayout.findViewById(R.id.username);
+        mDeptName = headLayout.findViewById(R.id.dept_name);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        for(int i=0 ; i < mSparsesTags.size();i++){
+            AppLogger.LOGD(null,"1----key:"+mSparsesTags.keyAt(i)+",value:"+mSparsesTags.valueAt(i));
+        }
         User user = getLoginUser();
+        if(user == null){
+            return;
+        }
+
         if(user!=null){
             mUserName.setText(user.getUname());
             mDeptName.setText(user.getDeptName());
         }
         if(user.isAdmin()){
             mNavigationView.getMenu().removeItem(R.id.nav_tasklist);
+            mNavigationView.getMenu().removeItem(R.id.nav_manageruser);
+            mNavigationView.getMenu().removeItem(R.id.nav_managertask);
+            mNavigationView.getMenu().removeItem(R.id.nav_taskcheck);
+            mSparsesTags.remove(R.id.nav_tasklist);
+            mSparsesTags.remove(R.id.nav_managertask);
+            mSparsesTags.remove(R.id.nav_manageruser);
+            mSparsesTags.remove(R.id.nav_taskcheck);
         }else if(user.isManager()){
             mNavigationView.getMenu().removeItem(R.id.nav_tasklist);
+            mNavigationView.getMenu().removeItem(R.id.nav_managerdept);
+            mNavigationView.getMenu().removeItem(R.id.nav_managertask);
+            mSparsesTags.remove(R.id.nav_tasklist);
+            mSparsesTags.remove(R.id.nav_managertask);
+            mSparsesTags.remove(R.id.nav_managerdept);
         }else if(user.isPostManager()){
-
+            mNavigationView.getMenu().removeItem(R.id.nav_tasklist);
+            mNavigationView.getMenu().removeItem(R.id.nav_manageruser);
+            mNavigationView.getMenu().removeItem(R.id.nav_managerdept);
+            mSparsesTags.remove(R.id.nav_tasklist);
+            mSparsesTags.remove(R.id.nav_manageruser);
+            mSparsesTags.remove(R.id.nav_managerdept);
         }else if(user.isSecurity()){
+            mNavigationView.getMenu().removeItem(R.id.nav_manageruser);
+            mNavigationView.getMenu().removeItem(R.id.nav_managerdept);
+            mNavigationView.getMenu().removeItem(R.id.nav_taskcheck);
+            mNavigationView.getMenu().removeItem(R.id.nav_managertask);
+            mSparsesTags.remove(R.id.nav_managerdept);
+            mSparsesTags.remove(R.id.nav_manageruser);
+            mSparsesTags.remove(R.id.nav_taskcheck);
+            mSparsesTags.remove(R.id.nav_managertask);
+        }
+    }
+
+    void initFragment(){
+        int firstFragmentKey = mSparsesTags.keyAt(0);
+        int titleRes = R.string.app_name;
+        BaseFragment fragment = null;
+        AppLogger.LOGD(TAG,"first key:"+firstFragmentKey+"value:"+mSparsesTags.valueAt(0));
+        switch (firstFragmentKey){
+            case R.id.nav_tasklist:
+                fragment = new TaskListFragment();
+                titleRes = R.string.nav_menu_tasklist;
+                break;
+            case R.id.nav_manageruser:
+            case R.id.nav_managerdept:
+                fragment = new UserManagerFragment();
+                titleRes = isAdmin() ? R.string.nav_menu_managerdept_title
+                        :R.string.nav_menu_manageruser_title;
+                break;
+            case R.id.nav_managertask:
+                fragment = new TaskManagerFragment();
+                titleRes = R.string.nav_menu_managertask_title;
+                break;
 
         }
-
+        mNavigationView.setCheckedItem(mSparsesTags.keyAt(0));
+        addFragment(R.id.contentPanel,fragment,mSparsesTags.valueAt(0));
+        updateToolsBar(titleRes);
 
     }
 
-    @Override
     protected void updateToolsBar(int res) {
         String title = getString(res);
         mToolbar.setTitle(title);
     }
-
-    @Override
-    protected void updateToolsBar(String title) {
-        mToolbar.setTitle(title);
-    }
-
-
 
     @Override
     public void onBackPressed() {
@@ -151,13 +227,16 @@ public class MainActivity extends BaseActivity<MainPersenter>
                 updateToolsBar(R.string.nav_menu_managertask_title);
                 replaceFragment(R.id.contentPanel,new TaskManagerFragment(),mSparsesTags.get(R.id.nav_managertask));
                 break;
+            case R.id.nav_managerdept:
             case R.id.nav_manageruser:
-                updateToolsBar(R.string.nav_menu_manageruser_title);
+                updateToolsBar(isAdmin() ? R.string.nav_menu_managerdept_title : R.string.nav_menu_manageruser_title);
                 replaceFragment(R.id.contentPanel,new UserManagerFragment(),mSparsesTags.get(R.id.nav_manageruser));
                 break;
             case R.id.nav_setting:
                 updateToolsBar(R.string.nav_menu_setting_title);
-                //replaceFragment(R.id.contentPanel,new S(),mSparsesTags.get(R.id.nav_manageruser));
+                Intent intent = new Intent();
+                intent.setClass(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
     }

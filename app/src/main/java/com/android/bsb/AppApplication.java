@@ -9,6 +9,7 @@ import com.android.bsb.component.DaggerApplicationComponent;
 import com.android.bsb.module.ApplicationModule;
 import com.android.bsb.module.HttpModule;
 import com.android.bsb.module.LocalDataModule;
+import com.android.bsb.ui.AppActivityManager;
 
 public class AppApplication extends Application {
 
@@ -20,6 +21,8 @@ public class AppApplication extends Application {
 
     private static ApplicationComponent mApplicationComponent;
 
+    private static AppActivityManager mActivityManager;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -29,7 +32,13 @@ public class AppApplication extends Application {
                 .httpModule(new HttpModule())
                 .localDataModule(new LocalDataModule())
                 .build();
+        mActivityManager = AppActivityManager.getInstance();
 
+    }
+
+
+    public static AppActivityManager getAppActivityManager(){
+        return mActivityManager;
     }
 
 
@@ -50,6 +59,12 @@ public class AppApplication extends Application {
     public static void setLoginUser(User user,boolean online){
         mLoginUser = user;
         isOnline = online;
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mActivityManager.finishAllActivity();
     }
 
     public static User getLoginUser(){

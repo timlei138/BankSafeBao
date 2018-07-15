@@ -69,6 +69,10 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
         }
     }
 
+    public boolean isAdmin(){
+        return getLoginUser().isAdmin();
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -92,11 +96,6 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
         return AppApplication.getLoginUser();
     }
 
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    protected void updateToolsBar(String title){
-        ((BaseActivity)getActivity()).updateToolsBar(title);
-    }
 
     @Override
     public void showNetError() {
