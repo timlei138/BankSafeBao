@@ -1,5 +1,6 @@
 package com.android.bsb.ui.task;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.bsb.bean.TaskGroupInfo;
@@ -8,6 +9,8 @@ import com.android.bsb.data.remote.BankTaskApi;
 import com.android.bsb.data.remote.CommObserver;
 import com.android.bsb.ui.base.IBasePresent;
 import com.android.bsb.util.AppLogger;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,13 +32,30 @@ public class TaskManagerPresenter extends IBasePresent<TaskManagerView>{
     }
 
     public void getGroupListInfo(){
-        //mApis.queryUserTaskGroup()
+        User loginUser = mView.getLoginUser();
+        if(loginUser != null){
+            mApis.queryUserTaskGroup(loginUser.getUid())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new CommObserver<List<TaskGroupInfo>>() {
+                        @Override
+                        public void onRequestNext(List<TaskGroupInfo> groupInfos) {
+                            mView.showGroupListInfo(groupInfos);
+                        }
+
+                        @Override
+                        public void onError(int code, String msg) {
+                            AppLogger.LOGD(null,"code:"+code+",msg:"+msg);
+                        }
+                    });
+        }else{
+
+        }
+
     }
 
 
 
     public void addTaskGroupOrTask(TaskGroupInfo info){
-        AppLogger.LOGD(null,info.toString());
         User user = mView.getLoginUser();
         mApis.createTaskGroupAndTask(user,info)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -51,5 +71,40 @@ public class TaskManagerPresenter extends IBasePresent<TaskManagerView>{
             }
         });
 
+    }
+
+    public void updateOrDelTaskGroup(int groupId,int type,List<Integer> delIds,List<String> addTasks){
+        User loginUser = mView.getLoginUser();
+        mApis.updateOrDelTaskGroup(groupId,type,loginUser.getUid(),delIds,addTasks)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CommObserver() {
+                    @Override
+                    public void onRequestNext(Object o) {
+                        AppLogger.LOGD("demo",""+o);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        AppLogger.LOGD("demo","code:"+code+",msg:"+msg);
+                    }
+                });
+    }
+
+
+    public void publishTask(List<Integer> securityIds,List<String> taskIds){
+        User user = mView.getLoginUser();
+        mApis.publishTask(securityIds,taskIds,user.getUid())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CommObserver() {
+                    @Override
+                    public void onRequestNext(Object o) {
+                        Log.d("demo","");
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        Log.d("demo","code:"+code+",msg:"+msg);
+                    }
+                });
     }
 }

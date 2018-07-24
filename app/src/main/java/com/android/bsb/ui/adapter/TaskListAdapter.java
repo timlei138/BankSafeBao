@@ -1,9 +1,11 @@
 package com.android.bsb.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,14 +34,16 @@ public class TaskListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private OnScrollListener mOnScrollListener;
 
+    private boolean isMultSelected;
+
 
     public TaskListAdapter(Context context){
         mContext = context;
-        AppLogger.LOGD(null,"child:"+VIEW_TYPE_CHILD+",pa"+VIEW_TYPE_PARENT);
     }
 
     public void setItemList(List<TaskAdapterItem> itemList){
         mItemList = itemList;
+        notifyDataSetChanged();
     }
 
     public void addItem(int position,int groudId,TaskAdapterItem item){
@@ -105,7 +109,17 @@ public class TaskListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             BaseViewHolder.ChildViewHolder childViewHolder = (BaseViewHolder.ChildViewHolder) holder;
             TaskInfo data = (TaskInfo) item.getData();
             childViewHolder.mTaskLabel.setText(data.getTaskName());
-
+            if(data.isInitTask()){
+                childViewHolder.mOptions.setVisibility(View.VISIBLE);
+                childViewHolder.mOptions.setTag(data);
+                childViewHolder.mOptions.setOnClickListener(mOptionsClickListener);
+            }else if(data.isDoneTask()){
+                childViewHolder.mErrorLayout.setVisibility(View.GONE);
+                childViewHolder.mOptions.setVisibility(View.GONE);
+            }else if(data.isFailTask()){
+                childViewHolder.mErrorLayout.setVisibility(View.VISIBLE);
+                childViewHolder.mOptions.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -153,6 +167,58 @@ public class TaskListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return -1;
     }
 
+
+    private View.OnClickListener mOptionsClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showOptionsWindow(v);
+        }
+    };
+
+
+    private void showOptionsWindow(View v){
+        PopupMenu menu = new PopupMenu(mContext,v);
+        menu.getMenuInflater().inflate(R.menu.menu_task_options,menu.getMenu());
+        menu.setOnMenuItemClickListener(onMenuItemClickListener);
+        for (int i=0;i<menu.getMenu().size();i++){
+            menu.getMenu().getItem(i).setActionView(v);
+        }
+        menu.show();
+    }
+
+
+    private PopupMenu.OnMenuItemClickListener onMenuItemClickListener = new PopupMenu.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            TaskInfo info = (TaskInfo) item.getActionView().getTag();
+            if(item.getItemId() == R.id.menu_ok){
+                if(mOptionsListener != null){
+                    mOptionsListener.onOptionsNormal(info);
+                }
+            }else if(item.getItemId() == R.id.menu_error){
+                if(mOptionsListener != null){
+                    mOptionsListener.onOptionsError(info);
+                }
+            }
+            return false;
+        }
+    };
+
+
+
+
+    private OptionSelectListener mOptionsListener;
+
+    public void setOnOptionsSelectListener(OptionSelectListener listener){
+        mOptionsListener = listener;
+    }
+
+    public interface OptionSelectListener{
+        void onOptionsNormal(TaskInfo info);
+        void onOptionsError(TaskInfo info);
+    }
+
+
     /**
      * 滚动监听接口
      */
@@ -163,4 +229,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public void setOnScrollListener(OnScrollListener onScrollListener){
         this.mOnScrollListener = onScrollListener;
     }
+
+
+
+
+
 }

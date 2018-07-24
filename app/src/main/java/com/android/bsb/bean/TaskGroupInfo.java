@@ -1,5 +1,7 @@
 package com.android.bsb.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +10,21 @@ public class TaskGroupInfo {
     public static final int TYPE_NONE= - 1;
     public static final int TYPE_CREATE = -2;
 
+    @SerializedName("id")
     private int groupId;
 
+    @SerializedName("title")
     private String groupName;
 
+    @SerializedName("summary")
     private String groupDesc;
 
     private int groupDegree = 0;
 
     private boolean isExpand;
+
+    @SerializedName("taskList")
+    private List<TaskInfo> taskList = new ArrayList<>();
 
     public TaskGroupInfo(){
 
@@ -27,7 +35,7 @@ public class TaskGroupInfo {
         groupName = content;
     }
 
-    private List<TaskInfo> taskList = new ArrayList<>();
+
 
     public int getGroupId() {
         return groupId;

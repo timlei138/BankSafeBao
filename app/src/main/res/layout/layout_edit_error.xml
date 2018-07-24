@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:titleTextColor="#ffffff" />
+
+
+    <EditText
+        android:id="@+id/error_desc"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:layout_height="240dp"
+        android:gravity="left|top"
+        android:hint="请添加异常说明..."/>
+
+    <RadioGroup
+        android:id="@+id/error_rank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toBottomOf="@id/error_desc"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/radio_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:focusedByDefault="true"
+            android:checked="true"
+            android:text="一般"/>
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/radio_serverity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="严重"/>
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/radio_urgent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="紧急"/>
+
+    </RadioGroup>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/label"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/error_rank"
+        android:text="照片（最多支持三张）"/>
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/error_img1"
+        android:layout_width="@dimen/error_image_height"
+        android:layout_height="@dimen/error_image_height"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/error_img2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/error_img2"
+        android:layout_marginTop="5dp"
+        android:layout_width="@dimen/error_image_height"
+        android:layout_height="@dimen/error_image_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/error_img3"
+        android:layout_width="@dimen/error_image_height"
+        android:layout_height="@dimen/error_image_height"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/error_img2"
+        app:layout_constraintTop_toBottomOf="@id/label" />
+
+
+</android.support.constraint.ConstraintLayout>

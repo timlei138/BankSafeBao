@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="pref_clear"
+        android:title="清除缓存"
+        android:summary="清除应用缓存"/>
+
+    <Preference
+        android:key="pref_loginout"
+        android:title="退出"
+        android:summary="退出当前登陆帐号"/>
+
+
+</PreferenceScreen>

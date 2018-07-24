@@ -74,6 +74,8 @@ public class TaskManagerFragment extends BaseFragment<TaskManagerPresenter> {
                     startActivity(intent);
                     break;
                 case PUBLISH_TASK_FLAG:
+                    intent.setClass(getContext(),PublishTaskActivity.class);
+                    startActivity(intent);
                     break;
             }
         }

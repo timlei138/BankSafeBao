@@ -145,6 +145,10 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
         return getLoginUser().isAdmin();
     }
 
+    public boolean isSecurity(){
+        return getLoginUser().isSecurity();
+    }
+
 
     protected void addFragment(int containerViewId, Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

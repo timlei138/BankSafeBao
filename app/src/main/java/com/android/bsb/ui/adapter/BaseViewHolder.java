@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -94,6 +95,10 @@ public class BaseViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.task_label)
         TextView mTaskLabel;
+        @BindView(R.id.options)
+        ImageView mOptions;
+        @BindView(R.id.error_body)
+        LinearLayout mErrorLayout;
         public ChildViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

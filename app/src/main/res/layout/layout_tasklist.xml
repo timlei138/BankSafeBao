@@ -7,6 +7,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+
+        <include layout="@layout/layout_common_empty"/>
+    </FrameLayout>
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         app:tabMode="fixed"

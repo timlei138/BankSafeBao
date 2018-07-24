@@ -113,5 +113,33 @@ public class UserManagerPresenter extends IBasePresent<UserManagerView>{
     }
 
 
+    public void querySecurityList(){
+        User user = mView.getUserInfo();
+        mApis.querySecuityList(user.getDeptCode())
+                .compose(mView.<List<User>>bindToLife())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        mView.showProgress();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CommObserver<List<User>>() {
+                    @Override
+                    public void onRequestNext(List<User> list) {
+                        mView.hideProgress();
+                        AppLogger.LOGD("demo","list.size()"+list.size());
+                        mView.showAllDeptInfo(list);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        mView.hideProgress();
+                        AppLogger.LOGD("demo","code:"+code+",msg:"+msg);
+                    }
+                });
+    }
+
+
 
 }

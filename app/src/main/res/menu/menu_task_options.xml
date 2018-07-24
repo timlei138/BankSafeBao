@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="任务确定"
+        android:id="@+id/menu_ok"/>
+    <item
+        android:id="@+id/menu_error"
+        android:title="任务异常"/>
+
+</menu>

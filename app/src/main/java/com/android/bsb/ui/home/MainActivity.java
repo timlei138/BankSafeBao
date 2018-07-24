@@ -1,8 +1,9 @@
 package com.android.bsb.ui.home;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,9 +26,12 @@ import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.ui.base.BaseFragment;
 import com.android.bsb.ui.setting.SettingsActivity;
 import com.android.bsb.ui.task.TaskManagerFragment;
+import com.android.bsb.ui.tasklist.TaskFragment;
 import com.android.bsb.ui.tasklist.TaskListFragment;
 import com.android.bsb.ui.user.UserManagerFragment;
 import com.android.bsb.util.AppLogger;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -82,9 +86,25 @@ public class MainActivity extends BaseActivity<MainPersenter>
     private Toolbar.OnMenuItemClickListener mToolsMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
+
+            List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
+            AppLogger.LOGD("demo","fragmentSize:"+fragments.size());
+
+            for (Fragment fragment : fragments){
+                AppLogger.LOGD("demo","fragment:"+fragment);
+                if(fragment instanceof BaseFragment){
+
+                    ((BaseFragment) fragment).syncData();
+                }
+
+            }
+
             return false;
         }
     };
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -163,7 +183,7 @@ public class MainActivity extends BaseActivity<MainPersenter>
         AppLogger.LOGD(TAG,"first key:"+firstFragmentKey+"value:"+mSparsesTags.valueAt(0));
         switch (firstFragmentKey){
             case R.id.nav_tasklist:
-                fragment = new TaskListFragment();
+                fragment = isSecurity() ? new TaskFragment() : new TaskListFragment();
                 titleRes = R.string.nav_menu_tasklist;
                 break;
             case R.id.nav_manageruser:
@@ -221,7 +241,7 @@ public class MainActivity extends BaseActivity<MainPersenter>
         switch (itemId){
             case R.id.nav_tasklist:
                 updateToolsBar(R.string.nav_menu_tasklist);
-                replaceFragment(R.id.contentPanel,new TaskListFragment(),mSparsesTags.get(R.id.nav_tasklist));
+                replaceFragment(R.id.contentPanel,isSecurity() ? new TaskFragment() :  new TaskListFragment(),mSparsesTags.get(R.id.nav_tasklist));
                 break;
             case R.id.nav_managertask:
                 updateToolsBar(R.string.nav_menu_managertask_title);

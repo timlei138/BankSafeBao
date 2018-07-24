@@ -102,6 +102,10 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
 
     }
 
+    public void syncData(){
+
+    };
+
     @Override
     public void showProgress() {
 

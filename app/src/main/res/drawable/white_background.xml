@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--selector 颜色选择器-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- state_pressed="true/false"点击。true 表示点击状态下使用，false表示非点击状态下使用。-->
+    <item android:state_pressed="true">
+        <layer-list >
+            <item >
+                <shape >
+                    <solid android:color="@android:color/white"/>
+                </shape>
+            </item>
+            <item >
+                <shape >
+
+                    <!--solid 实心，即填充-->
+                    <solid android:color="#22000000"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+
+    <item >
+        <shape >
+            <solid android:color="@android:color/white"/>
+        </shape>
+    </item>
+
+</selector>
