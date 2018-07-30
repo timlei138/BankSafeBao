@@ -4,7 +4,7 @@ ext{
             compileSdkVersion       : 27,
             buildToolsVersion       : "27.0.3",
             applicationId           : "com.android.bsb",
-            minSdkVersion           : 15,
+            minSdkVersion           : 19,
             targetSdkVersion        : 26,
             versionCode             : 10001,
             versionName             : 'v1.00,01'
@@ -13,7 +13,7 @@ ext{
     ]
 
     dependVersion = [
-            supportLibaryVersion     : "26.1.0",
+            supportLibaryVersion     : "27.1.0",
             retrofitVersion          : "2.4.0",
             daggerVersion            : "2.7"
     ]
@@ -41,6 +41,8 @@ ext{
             //ui
             "buttercompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",
             "butterknife"       : "com.jakewharton:butterknife:8.8.1",
+
+
 
     ]
 }
