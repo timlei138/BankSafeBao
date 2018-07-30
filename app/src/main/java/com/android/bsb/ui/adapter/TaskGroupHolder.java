@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,9 +18,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BaseViewHolder extends RecyclerView.ViewHolder{
+public class TaskGroupHolder extends RecyclerView.ViewHolder{
 
-    public BaseViewHolder(View itemView) {
+    public TaskGroupHolder(View itemView) {
         super(itemView);
     }
 
@@ -32,8 +33,22 @@ public class BaseViewHolder extends RecyclerView.ViewHolder{
     }
 
 
-    public static class ParentViewHolder extends BaseViewHolder{
+    public static class AddViewHolder extends TaskGroupHolder{
 
+        @BindView(R.id.task_add)
+        TextView mAddTask;
+
+        public AddViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+    }
+
+
+    public static class ParentViewHolder extends TaskGroupHolder{
+
+        @BindView(R.id.group_check)
+        CheckBox mCheckBox;
         @BindView(R.id.group_container)
         ConstraintLayout mContainerLayout;
         @BindView(R.id.group_label)
@@ -91,14 +106,20 @@ public class BaseViewHolder extends RecyclerView.ViewHolder{
 
     }
 
-    public static class ChildViewHolder extends BaseViewHolder{
+    public static class ChildViewHolder extends TaskGroupHolder{
 
+        @BindView(R.id.task_check)
+        CheckBox mCheckBox;
+        @BindView(R.id.task_status)
+        TextView mTaskStatus;
         @BindView(R.id.task_label)
         TextView mTaskLabel;
         @BindView(R.id.options)
         ImageView mOptions;
-        @BindView(R.id.error_body)
-        LinearLayout mErrorLayout;
+        @BindView(R.id.error_desc)
+        TextView mErrorDesc;
+        @BindView(R.id.error_imagelayout)
+        LinearLayout mErrorImageLayout;
         public ChildViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

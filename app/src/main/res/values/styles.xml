@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/ColorBackgroundDark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,13 +18,18 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="LoginHintTextAppearance" parent="@android:style/TextAppearance">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@android:color/holo_blue_dark</item>
         <item name="android:textSize">18sp</item>
     </style>
 
     <style name="LoginErrorTextAppearance" parent="@android:style/TextAppearance">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@android:color/holo_red_light</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="EditTextStyle">　
+        <item name="android:layout_height">wrap_content</item>
+        <item name="colorAccent">@color/ColorBackgroundDark</item>
     </style>
 
 </resources>

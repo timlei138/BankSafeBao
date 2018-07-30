@@ -34,7 +34,7 @@ public class DeptUserListAdapter extends RecyclerView.Adapter<DeptUserListAdapte
 
     private boolean mShowCheckBox = false;
 
-    private List<Integer> mSelectedList = new ArrayList<>();
+    private List<User> mSelectedList = new ArrayList<>();
 
     public DeptUserListAdapter(Context context){
         mContext = context;
@@ -56,8 +56,12 @@ public class DeptUserListAdapter extends RecyclerView.Adapter<DeptUserListAdapte
         notifyItemChanged(position);
     }
 
-    public List<Integer> getSelectedList(){
+    public List<User> getSelectedList(){
         return mSelectedList;
+    }
+
+    public void setSelectedList(List list){
+        mSelectedList = list;
     }
 
     public void setListener(IonSlidingViewClickListener listener){
@@ -235,7 +239,7 @@ public class DeptUserListAdapter extends RecyclerView.Adapter<DeptUserListAdapte
                         if(mSelectedList.contains(uid)){
                             mSelectedList.remove(uid);
                         }else{
-                            mSelectedList.add(uid);
+                            mSelectedList.add(user);
                         }
                     }
                 });

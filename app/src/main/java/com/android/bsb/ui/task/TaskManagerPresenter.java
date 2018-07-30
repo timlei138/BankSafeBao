@@ -4,17 +4,20 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.bsb.bean.TaskGroupInfo;
+import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
 import com.android.bsb.data.remote.BankTaskApi;
 import com.android.bsb.data.remote.CommObserver;
 import com.android.bsb.ui.base.IBasePresent;
 import com.android.bsb.util.AppLogger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 
 public class TaskManagerPresenter extends IBasePresent<TaskManagerView>{
 
@@ -91,9 +94,32 @@ public class TaskManagerPresenter extends IBasePresent<TaskManagerView>{
     }
 
 
-    public void publishTask(List<Integer> securityIds,List<String> taskIds){
+    // groupId:taskId,taskId
+
+    public void publishTask(List<User> securityIds,List<TaskGroupInfo> tasks){
         User user = mView.getLoginUser();
-        mApis.publishTask(securityIds,taskIds,user.getUid())
+        List<Integer> ids = new ArrayList<>(securityIds.size());
+        for (User execUser : securityIds){
+            if(execUser.getUid() != -1){
+                ids.add(execUser.getUid());
+            }
+        }
+        List<String> taskIds = new ArrayList<>();
+        for (TaskGroupInfo info : tasks){
+            StringBuffer buffer = new StringBuffer();
+            int i = 0;
+            for (TaskInfo task : info.getTaskList()){
+                if(i == 0){
+                    buffer.append(""+info.getGroupId()+":"+task.getTaskId());
+                }else{
+                    buffer.append("-"+task.getTaskId());
+                }
+                i++;
+            }
+            taskIds.add(buffer.toString());
+        }
+
+        mApis.publishTask(ids,taskIds,user.getUid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommObserver() {
                     @Override

@@ -11,7 +11,6 @@ import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.ui.adapter.FunctinAdapter;
 import com.android.bsb.ui.adapter.FunctionItem;
 import com.android.bsb.ui.base.BaseFragment;
-import com.android.bsb.ui.tasklist.TaskManagerListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +63,7 @@ public class TaskManagerFragment extends BaseFragment<TaskManagerPresenter> {
             Intent intent = new Intent();
             switch (action){
                 case MANAGER_TAKSGROUP_FLAG:
-                    intent.setClass(getContext(), TaskManagerListActivity.class);
+                    intent.setClass(getContext(), TaskGroupListActivity.class);
                     intent.putExtra("title",getString(R.string.menu_managertaskgroup_title));
                     startActivity(intent);
                     break;

@@ -3,7 +3,7 @@ package com.android.bsb.ui.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.android.bsb.ui.tasklist.TaskFragment;
+import com.android.bsb.ui.task.TaskFragment;
 
 import java.util.ArrayList;
 import java.util.List;

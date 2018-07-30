@@ -69,9 +69,11 @@
 
             <Button
                 android:id="@+id/submitBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@drawable/rectbackground"
+                android:textColor="#FFFFFF"
                 android:text="提交" />
 
         </FrameLayout>
@@ -85,6 +87,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_constraintBottom_toTopOf="@+id/submitArea"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </FrameLayout>

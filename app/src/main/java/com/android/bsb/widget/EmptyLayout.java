@@ -95,9 +95,15 @@ public class EmptyLayout extends FrameLayout{
                 mProgressBar.setVisibility(VISIBLE);
                 break;
             case STATUS_NO_DATA:
+                setVisibility(VISIBLE);
+                mProgressBar.setVisibility(GONE);
+                mTvEmptyTextView.setText(R.string.empty_no_data);
+                mTvEmptyTextView.setVisibility(VISIBLE);
+                break;
             case STATUS_NO_NET:
                 setVisibility(VISIBLE);
                 mProgressBar.setVisibility(GONE);
+                mTvEmptyTextView.setText(R.string.empty_no_net);
                 mTvEmptyTextView.setVisibility(VISIBLE);
                 break;
         }

@@ -76,6 +76,7 @@
         android:layout_width="@dimen/error_image_height"
         android:layout_height="@dimen/error_image_height"
         android:layout_marginTop="5dp"
+        android:background="@drawable/ic_add_64"
         app:layout_constraintEnd_toStartOf="@+id/error_img2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/label" />

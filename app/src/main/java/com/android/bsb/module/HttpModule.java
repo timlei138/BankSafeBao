@@ -8,7 +8,6 @@ import com.android.bsb.data.remote.NetComm;
 import com.android.bsb.data.remote.BankServer;
 import com.android.bsb.data.remote.BankTaskApi;
 import com.android.bsb.data.remote.RetrofitConfig;
-import com.android.bsb.ui.adapter.TaskListAdapter;
 import com.android.bsb.util.AppLogger;
 import com.android.bsb.util.SharedProvider;
 

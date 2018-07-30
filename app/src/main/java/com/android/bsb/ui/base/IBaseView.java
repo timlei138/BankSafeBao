@@ -1,5 +1,6 @@
 package com.android.bsb.ui.base;
 
+import com.android.bsb.bean.User;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
 public interface IBaseView {
@@ -9,6 +10,11 @@ public interface IBaseView {
      */
 
     void showNetError();
+
+    /*
+       无数据
+     */
+    void showEmptyData();
 
     /**
      * 显示进度条
@@ -37,4 +43,6 @@ public interface IBaseView {
      * @return
      */
     <T>LifecycleTransformer<T> bindToLife();
+
+    User getLoginUser();
 }

@@ -9,7 +9,7 @@ public class NetComm {
 
     public static final String KEY_IP = "IP_CONFIG";
 
-    private static  String IP = "192.168.0.110" ;
+    private static  String IP = "47.104.77.108" ;
 
     private static  String PORT = "8080";
 
@@ -21,6 +21,10 @@ public class NetComm {
 
     public static String getHost(){
         return "http://"+IP+":"+PORT+"/sectem/";
+    }
+
+    public static String getImageHost(){
+        return "http://"+IP+":"+PORT+"/images/";
     }
 
 

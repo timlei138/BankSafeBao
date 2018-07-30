@@ -45,4 +45,7 @@
     <string name="password_length_max">密码长度最大为18位</string>
     <string name="login">登录</string>
     <string name="forgetpassword">忘记密码 ? </string>
+
+    <string name="empty_no_data">没有查询到数据！</string>
+    <string name="empty_no_net">当前网络异常，请点击重试！</string>
 </resources>

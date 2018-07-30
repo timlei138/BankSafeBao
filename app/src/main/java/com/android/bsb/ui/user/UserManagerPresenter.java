@@ -98,16 +98,11 @@ public class UserManagerPresenter extends IBasePresent<UserManagerView>{
                     public void onError(int code, String msg) {
                         AppLogger.LOGD(null,"onError");
                         mView.hideProgress();
-                        List<User> userList = new ArrayList<>();
-
-                        for (int i =0;i<10;i++){
-                            User user = new User();
-                            user.setRole(AppComm.ROLE_TYPE_POSTMAN);
-                            user.setUname("Tom"+i);
-                            user.setDeptName("d大家都反对");
-                            userList.add(user);
+                        if(code == 207){
+                            mView.showEmptyData();
+                        }else{
+                            mView.showNetError();
                         }
-                        mView.showAllDeptInfo(userList);
                     }
                 });
     }

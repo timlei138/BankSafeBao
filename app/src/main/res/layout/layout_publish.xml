@@ -1,36 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/peopleselect_btn"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="选择人员"/>
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:titleTextColor="#ffffff" />
+
 
     <TextView
-        android:id="@+id/peopleselect_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/taskselect_btn"
+        android:id="@+id/tv_select_people"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="选择任务"/>
+        android:drawableLeft="@drawable/ic_person_add"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:text="添加执行人员"/>
+
+
+    <GridView
+        android:id="@+id/people_select_list"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:numColumns="4"
+        android:horizontalSpacing="1dp"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:listSelector="@null"
+        android:layout_marginTop="8dp"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_select_people" />
 
     <TextView
-        android:id="@+id/taskselect_tv"
+        android:id="@+id/tv_select_task"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="添加要发布的任务及任务组"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/people_select_list"
+        android:drawableStart="@drawable/ic_library_add_black_24dp"/>
 
-    <Button
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/task_group_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_select_task" />
+
+
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/publish_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rectbackground"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:text="确认发布"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

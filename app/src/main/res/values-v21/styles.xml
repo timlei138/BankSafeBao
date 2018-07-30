@@ -6,5 +6,24 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
+
+
+
+    <style name="LoginHintTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="LoginErrorTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/holo_red_light</item>
+        <item name="colorControlNormal">@android:color/holo_red_light</item>
+        <item name="colorControlActivated">@android:color/holo_red_light</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
 </resources>

@@ -1,11 +1,14 @@
 package com.android.bsb.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskGroupInfo {
+public class TaskGroupInfo implements Parcelable {
 
     public static final int TYPE_NONE= - 1;
     public static final int TYPE_CREATE = -2;
@@ -21,9 +24,20 @@ public class TaskGroupInfo {
 
     private int groupDegree = 0;
 
+    public String getGroupCreator() {
+        return groupCreator;
+    }
+
+    public void setGroupCreator(String groupCreator) {
+        this.groupCreator = groupCreator;
+    }
+
+    @SerializedName("name")
+    private String groupCreator;
+
     private boolean isExpand;
 
-    @SerializedName("taskList")
+    @SerializedName("tasklist")
     private List<TaskInfo> taskList = new ArrayList<>();
 
     public TaskGroupInfo(){
@@ -94,4 +108,43 @@ public class TaskGroupInfo {
     public String toString() {
         return groupName;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.groupId);
+        dest.writeString(this.groupName);
+        dest.writeString(this.groupDesc);
+        dest.writeInt(this.groupDegree);
+        dest.writeString(this.groupCreator);
+        dest.writeByte(this.isExpand ? (byte) 1 : (byte) 0);
+        dest.writeList(this.taskList);
+    }
+
+    protected TaskGroupInfo(Parcel in) {
+        this.groupId = in.readInt();
+        this.groupName = in.readString();
+        this.groupDesc = in.readString();
+        this.groupDegree = in.readInt();
+        this.groupCreator = in.readString();
+        this.isExpand = in.readByte() != 0;
+        this.taskList = new ArrayList<TaskInfo>();
+        in.readList(this.taskList, TaskInfo.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<TaskGroupInfo> CREATOR = new Parcelable.Creator<TaskGroupInfo>() {
+        @Override
+        public TaskGroupInfo createFromParcel(Parcel source) {
+            return new TaskGroupInfo(source);
+        }
+
+        @Override
+        public TaskGroupInfo[] newArray(int size) {
+            return new TaskGroupInfo[size];
+        }
+    };
 }

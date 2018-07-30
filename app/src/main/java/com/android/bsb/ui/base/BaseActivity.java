@@ -93,6 +93,7 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
         AppApplication.setLoginUser(user,online);
     }
 
+    @Override
     public User getLoginUser(){
         return AppApplication.getLoginUser();
     }
@@ -121,12 +122,21 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
     }
 
     @Override
+    public void showEmptyData() {
+        if(mEmptyLayout != null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_DATA);
+        }
+    }
+
+    @Override
     public void showProgress() {
         AppLogger.LOGD(TAG,"showProgress->"+mEmptyLayout);
         if(mEmptyLayout!=null){
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
         }
     }
+
+
 
     @Override
     public void hideProgress() {
@@ -147,6 +157,14 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
 
     public boolean isSecurity(){
         return getLoginUser().isSecurity();
+    }
+
+    public boolean isPushlish(){
+        return getLoginUser().isPostManager();
+    }
+
+    public boolean isManager(){
+        return getLoginUser().isManager();
     }
 
 

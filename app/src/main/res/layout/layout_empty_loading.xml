@@ -14,9 +14,10 @@
         android:drawablePadding="10dp"
         android:drawableTop="@drawable/ic_not_network"
         android:gravity="center"
-        android:text="网络异常，点击重试"
+        android:text="@string/empty_no_net"
         android:textColor="@color/colorAccent"
         android:textSize="16sp" />
+
 
     <ProgressBar
         android:id="@+id/progressBar"

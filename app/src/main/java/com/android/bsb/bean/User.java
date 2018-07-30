@@ -1,10 +1,13 @@
 package com.android.bsb.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.android.bsb.AppComm;
 import com.android.bsb.util.Utils;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User implements Parcelable {
 
     @SerializedName(value = "userid",alternate = {"id"})
     private int uid = 0;
@@ -27,6 +30,9 @@ public class User {
     private String deptName;
     @SerializedName("deptcode")
     private int deptCode;
+
+    @SerializedName("cellphone")
+    private String cellpahone;
 
     public int getUid() {
         return uid;
@@ -134,4 +140,45 @@ public class User {
                 ", deptCode=" + deptCode +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.uid);
+        dest.writeString(this.loginName);
+        dest.writeString(this.loginPwd);
+        dest.writeString(this.uname);
+        dest.writeInt(this.role);
+        dest.writeString(this.roleName);
+        dest.writeString(this.deptName);
+        dest.writeInt(this.deptCode);
+    }
+
+    protected User(Parcel in) {
+        this.uid = in.readInt();
+        this.loginName = in.readString();
+        this.loginPwd = in.readString();
+        this.uname = in.readString();
+        this.role = in.readInt();
+        this.roleName = in.readString();
+        this.deptName = in.readString();
+        this.deptCode = in.readInt();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

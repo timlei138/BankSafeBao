@@ -92,13 +92,19 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
             super.setUserVisibleHint(isVisibleToUser);
     }
 
-    protected User getLoginUser(){
+    @Override
+    public User getLoginUser(){
         return AppApplication.getLoginUser();
     }
 
 
     @Override
     public void showNetError() {
+
+    }
+
+    @Override
+    public void showEmptyData() {
 
     }
 

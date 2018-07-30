@@ -14,7 +14,7 @@ public class TaskAdapterItem {
 
     public static TaskAdapterItem asGroup(TaskGroupInfo groupInfo){
         TaskAdapterItem item = new TaskAdapterItem();
-        item.viewType = TaskListAdapter.VIEW_TYPE_PARENT;
+        item.viewType = TaskGroupAdapter.VIEW_TYPE_PARENT;
         item.data = groupInfo;
         return item;
     }
@@ -23,8 +23,15 @@ public class TaskAdapterItem {
     public static TaskAdapterItem asChild(TaskInfo info){
         TaskAdapterItem item = new TaskAdapterItem();
         item.groupId = info.getTaskGroupId();
-        item.viewType = TaskListAdapter.VIEW_TYPE_CHILD;
+        item.viewType = TaskGroupAdapter.VIEW_TYPE_CHILD;
         item.data = info;
+        return item;
+    }
+
+    public static TaskAdapterItem asAddItem(){
+        TaskAdapterItem item = new TaskAdapterItem();
+        item.groupId = -1;
+        item.viewType = TaskGroupAdapter.VIEW_TYPE_ADD;
         return item;
     }
 

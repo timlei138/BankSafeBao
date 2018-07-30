@@ -25,6 +25,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:layout_marginBottom="2dp">
 
             <EditText
@@ -71,7 +73,8 @@
             android:id="@+id/select_done"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_background"
+            android:textColor="#ffffff"
+            android:background="@drawable/shape_background"
             android:text="确定"/>
 
     </LinearLayout>

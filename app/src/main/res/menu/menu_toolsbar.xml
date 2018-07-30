@@ -9,4 +9,11 @@
         android:visible="true"
         android:checkable="true"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_edit"
+        android:title="批量上报"
+        android:visible="true"
+        android:checked="true"
+        app:showAsAction="ifRoom"/>
 </menu>

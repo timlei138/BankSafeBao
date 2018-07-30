@@ -5,9 +5,8 @@ import com.android.bsb.ui.login.SplashActivity;
 import com.android.bsb.ui.task.AddTaskGroupOrTaskActivity;
 import com.android.bsb.ui.task.ErrorTaskEditorActivity;
 import com.android.bsb.ui.task.PublishTaskActivity;
-import com.android.bsb.ui.tasklist.TaskFragment;
-import com.android.bsb.ui.tasklist.TaskListFragment;
-import com.android.bsb.ui.tasklist.TaskManagerListActivity;
+import com.android.bsb.ui.task.TaskFragment;
+import com.android.bsb.ui.task.TaskGroupListActivity;
 import com.android.bsb.ui.user.ManagerUserListActivity;
 import com.android.bsb.ui.user.UserManagerFragment;
 
@@ -28,7 +27,7 @@ public interface HttpComponent {
 
     void inject(ManagerUserListActivity activity);
 
-    void inject(TaskManagerListActivity activity);
+    void inject(TaskGroupListActivity activity);
 
     void inject(PublishTaskActivity activity);
 

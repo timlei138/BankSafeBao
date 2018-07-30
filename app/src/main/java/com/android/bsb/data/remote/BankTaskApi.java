@@ -115,7 +115,7 @@ public class BankTaskApi {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<List<TaskGroupInfo>> querySecurityTaskGroup(int uid,int roleId){
+    public Observable<List<TaskGroupInfo>> querySecurityTaskGroup(int uid){
         return mService.querySecurityTaskList(uid)
                 .map(new ServerResultFunc<List<TaskGroupInfo>>())
                 .onErrorResumeNext(new HttpResultFunc<List<TaskGroupInfo>>())
@@ -123,14 +123,14 @@ public class BankTaskApi {
     }
 
 
-    public Observable taskErrorPrcessResult(int uid, int processId, List<File> files,int errorRank,String errorMsg,String geo){
+    public Observable<String> taskErrorPrcessResult(int uid, int processId, List<File> files,int errorRank,String errorMsg,String geo){
         return mService.taskErrorResult(uid,processId,errorMsg,errorRank,geo,filesToMultipartBodyParts(files))
                 .map(new ServerResultFunc())
                 .onErrorResumeNext(new HttpResultFunc())
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable taskProcessResult(int uid,List<Integer> processIds,List<String> geos){
+    public Observable<String> taskProcessResult(int uid,List<Integer> processIds,List<String> geos){
         return mService.taskProcessResult(uid,processIds,geos).map(new ServerResultFunc())
                 .onErrorResumeNext(new HttpResultFunc())
                 .subscribeOn(Schedulers.io());
@@ -156,10 +156,13 @@ public class BankTaskApi {
     private class ServerResultFunc<T> implements Function<BaseResultEntity<T>, T> {
         @Override
         public T apply(BaseResultEntity<T> httpResult) throws Exception {
-            AppLogger.LOGD(null,"httpResult:"+httpResult.toString());
+            AppLogger.LOGD("BankTaskApi","httpResult:"+httpResult.toString());
             if (httpResult.getCode() != 200) {
                 throw new ServerException(httpResult.getCode(),httpResult.getMsg());
 
+            }
+            if(httpResult.getCode() == 200 && httpResult.getData() == null){
+                return (T)httpResult.getMsg();
             }
             return httpResult.getData();
         }

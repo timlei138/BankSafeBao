@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/ColorBackground">
+    android:background="@drawable/shape_gradient">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,11 +13,14 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_gravity="center"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/EditTextStyle"
             app:errorTextAppearance="@style/LoginErrorTextAppearance"
             app:hintTextAppearance="@style/LoginHintTextAppearance"
             android:id="@+id/til_username">
@@ -27,8 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/account_title"
-                android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:inputType="phone"/>
         </android.support.design.widget.TextInputLayout>
@@ -47,9 +50,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/password_title"
-                android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:maxLength="20"
+                android:textColor="@android:color/white"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 

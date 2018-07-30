@@ -2,7 +2,6 @@ package com.android.bsb.ui.home;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 import android.support.design.widget.NavigationView;
@@ -26,8 +25,8 @@ import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.ui.base.BaseFragment;
 import com.android.bsb.ui.setting.SettingsActivity;
 import com.android.bsb.ui.task.TaskManagerFragment;
-import com.android.bsb.ui.tasklist.TaskFragment;
-import com.android.bsb.ui.tasklist.TaskListFragment;
+import com.android.bsb.ui.task.TaskFragment;
+import com.android.bsb.ui.task.TaskListFragment;
 import com.android.bsb.ui.user.UserManagerFragment;
 import com.android.bsb.util.AppLogger;
 
@@ -109,6 +108,11 @@ public class MainActivity extends BaseActivity<MainPersenter>
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolsbar,menu);
+        if(isAdmin() || isManager() || isPushlish()){
+            menu.removeItem(R.id.action_sync);
+        }else if(isSecurity()){
+
+        }
         return true;
     }
 

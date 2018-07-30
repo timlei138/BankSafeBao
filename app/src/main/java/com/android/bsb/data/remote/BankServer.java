@@ -108,7 +108,7 @@ public interface BankServer {
      */
     @POST("taskErrorResult")
     @Multipart
-    Observable<BaseResultEntity> taskErrorResult(@Part("loginId") int loginId, @Part("processId")int processId,
+    Observable<BaseResultEntity<String>> taskErrorResult(@Part("loginId") int loginId, @Part("processId")int processId,
                                                  @Part("errormsg")String errormsg, @Part("errorrank") int errorRank,
                                                  @Part("geographic")String geographic,@Part() List<MultipartBody.Part> parts);
 
@@ -121,7 +121,7 @@ public interface BankServer {
      */
     @POST("taskProcessResult")
     @FormUrlEncoded
-    Observable<BaseResultEntity> taskProcessResult(@Field("loginId")int loginId,@Field("processIds")List<Integer> proess,
+    Observable<BaseResultEntity<String>> taskProcessResult(@Field("loginId")int loginId,@Field("processIds")List<Integer> proess,
                                                    @Field("geographics" )List<String> geos);
 
 
