@@ -54,11 +54,13 @@ public class TaskListPresenter extends IBasePresent<TaskListView> {
                     @Override
                     public void onRequestNext(Object o) {
                         AppLogger.LOGD("","");
+                        mView.submitErrorInfoSuccess();
                     }
 
                     @Override
                     public void onError(int code, String msg) {
                         AppLogger.LOGD("demo","code:"+code+",msg:"+msg);
+                        mView.submitErrorInfoFail();
                     }
                 });
 

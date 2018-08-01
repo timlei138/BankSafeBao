@@ -11,4 +11,9 @@ public interface TaskListView extends IBaseView{
     User getLoginUser();
 
     void showTaskGroupList(List<TaskGroupInfo> list);
+
+    void submitErrorInfoSuccess();
+
+    void submitErrorInfoFail();
+
 }

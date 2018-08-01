@@ -1,10 +1,12 @@
 package com.android.bsb.ui.login;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PermissionInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -24,6 +26,7 @@ import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerHttpComponent;
 import com.android.bsb.component.DaggerLocalDataComponent;
+import com.android.bsb.data.remote.CommObserver;
 import com.android.bsb.data.remote.NetComm;
 import com.android.bsb.data.remote.ServerException;
 import com.android.bsb.ui.AppActivityManager;
@@ -33,6 +36,9 @@ import com.android.bsb.util.AppLogger;
 import com.android.bsb.util.NetWorkUtils;
 import com.android.bsb.util.SharedProvider;
 import com.android.bsb.util.Utils;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +50,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity<LoginPersenter> implements LoginView {
@@ -79,6 +86,23 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
     @Override
     protected void initView() {
         AppApplication.getAppActivityManager().addActivity(this);
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                .subscribe(new Consumer<Boolean>() {
+
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+
+                        if(aBoolean){
+                            AppLogger.LOGD(null,"aboolean");
+                        }
+
+                    }
+                });
     }
 
     @Override
@@ -109,6 +133,8 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
     public void loginFaild(int code,String e) {
         if(code == 201){
             Toast.makeText(this,e,Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this,"网络异常，请稍后再试～",Toast.LENGTH_LONG).show();
         }
     }
 

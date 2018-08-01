@@ -21,6 +21,8 @@ public abstract class CommObserver<T> implements Observer<T> {
         AppLogger.LOGD(null,"onError->"+e.toString());
         if(e instanceof ApiException){
             onError(((ApiException) e).getCode(),((ApiException) e).getDisplayMessage());
+        }else{
+
         }
 
     }
