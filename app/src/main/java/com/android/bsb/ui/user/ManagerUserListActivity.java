@@ -27,8 +27,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter> implements UserManagerView {
-
+public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter>
+        implements UserManagerView {
 
     @BindView(R.id.toolbar)
     Toolbar mToolsBar;
