@@ -7,7 +7,14 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Arrays;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+
+@Entity
 public class TaskInfo implements Parcelable {
+
+    @Id
+    private long _id;
 
     @SerializedName("id")
     private int taskId;
@@ -160,5 +167,13 @@ public class TaskInfo implements Parcelable {
                 ", errImages=" + errImages +
                 ", errorRank=" + errorRank +
                 '}';
+    }
+
+    public long get_id() {
+        return _id;
+    }
+
+    public void set_id(long _id) {
+        this._id = _id;
     }
 }

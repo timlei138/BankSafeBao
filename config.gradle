@@ -15,7 +15,8 @@ ext{
     dependVersion = [
             supportLibaryVersion     : "27.1.0",
             retrofitVersion          : "2.4.0",
-            daggerVersion            : "2.7"
+            daggerVersion            : "2.7",
+            objectboxVersion         : '2.0.0'
     ]
 
     dependencies = [
@@ -42,7 +43,9 @@ ext{
             "buttercompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",
             "butterknife"       : "com.jakewharton:butterknife:8.8.1",
 
-
+            //objectobx
+            "objectbox"         : "io.objectbox:objectbox-android:${dependVersion.objectboxVersion}",
+            "objectboxdebug"    : "io.objectbox:objectbox-android-objectbrowser:${dependVersion.objectboxVersion}"
 
     ]
 }

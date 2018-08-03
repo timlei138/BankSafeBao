@@ -24,4 +24,8 @@ public interface ApplicationComponent {
     //provider LocalDataManager
 
     LocalDataManager getLocalDataManager();
+
+
+
+
 }

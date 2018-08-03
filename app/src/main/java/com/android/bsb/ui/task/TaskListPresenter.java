@@ -1,7 +1,9 @@
 package com.android.bsb.ui.task;
 
 import com.android.bsb.bean.TaskGroupInfo;
+import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
+import com.android.bsb.data.local.LocalDataManager;
 import com.android.bsb.data.remote.BankTaskApi;
 import com.android.bsb.data.remote.CommObserver;
 import com.android.bsb.ui.base.IBasePresent;
@@ -18,9 +20,12 @@ public class TaskListPresenter extends IBasePresent<TaskListView> {
 
     private BankTaskApi mApis;
 
+    private LocalDataManager mDbManager;
+
     @Inject
-    public TaskListPresenter(BankTaskApi apis){
+    public TaskListPresenter(BankTaskApi apis, LocalDataManager db){
         mApis = apis;
+        mDbManager = db;
     }
 
     @Override

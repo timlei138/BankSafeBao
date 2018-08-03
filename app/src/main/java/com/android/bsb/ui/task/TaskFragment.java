@@ -79,6 +79,16 @@ public class TaskFragment extends BaseFragment<TaskListPresenter> implements Tas
         mAdapter.setItemList(items);
     }
 
+    @Override
+    public void submitErrorInfoSuccess() {
+
+    }
+
+    @Override
+    public void submitErrorInfoFail() {
+
+    }
+
 
     private TaskGroupAdapter.OptionSelectListener mOptionSelectListener = new TaskGroupAdapter.OptionSelectListener() {
         @Override

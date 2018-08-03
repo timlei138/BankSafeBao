@@ -18,6 +18,7 @@ buildscript {
         // in the individual module build.gradle files
 
         classpath 'com.novoda:bintray-release:0.8.0'
+        classpath 'io.objectbox:objectbox-gradle-plugin:2.0.0'
     }
 }
 
