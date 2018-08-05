@@ -40,6 +40,16 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
     public static final int DIALOG_TYPE_NOT_NETWORK = 101;
     public static final int DIALOG_TYPE_NOT_PERMISSION = 102;
 
+    public static final String EXTRA_TITLE = "title";
+
+    public static final String EXTRA_PICK_USER = "pickUser";
+
+    public static final String EXTRA_PICK_TASK = "pickTask";
+
+    public static final String EXTRA_DATALIST = "dataList";
+
+    public static final String EXTRA_DATA = "data";
+
     @Nullable
     @BindView(R.id.empty_layout)
     protected EmptyLayout mEmptyLayout;

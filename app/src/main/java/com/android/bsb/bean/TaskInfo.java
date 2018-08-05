@@ -95,6 +95,11 @@ public class TaskInfo implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return this.getTaskId() == ((TaskInfo) obj).getTaskId();
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

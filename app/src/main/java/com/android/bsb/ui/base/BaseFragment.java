@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,6 +15,7 @@ import com.android.bsb.AppApplication;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
+import com.android.bsb.util.AppLogger;
 import com.android.bsb.widget.EmptyLayout;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.components.support.RxFragment;
@@ -38,6 +40,8 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
     private Context mContext;
 
     private boolean isMulti;
+
+    private String TAG = "BaseFragment";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,8 +112,8 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
 
     }
 
-    public void syncData(){
-
+    public void actionBarItemClick(MenuItem item){
+        AppLogger.LOGD(TAG,"actionBarItemClick item->"+item.getTitle()+",id:"+item.getItemId());
     };
 
     @Override

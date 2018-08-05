@@ -119,7 +119,12 @@ public class TaskManagerPresenter extends IBasePresent<TaskManagerView>{
             taskIds.add(buffer.toString());
         }
 
-        mApis.publishTask(ids,taskIds,user.getUid())
+        long start = mView.getStartDate();
+        long end = mView.getEndDate();
+
+        List weeks = mView.getWeeks();
+
+        mApis.publishTask(ids,taskIds,user.getUid(),start,end,weeks)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommObserver() {
                     @Override

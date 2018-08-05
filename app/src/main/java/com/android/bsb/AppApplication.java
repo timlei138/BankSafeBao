@@ -10,6 +10,8 @@ import com.android.bsb.module.ApplicationModule;
 import com.android.bsb.module.HttpModule;
 import com.android.bsb.module.LocalDataModule;
 import com.android.bsb.ui.AppActivityManager;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.crashreport.CrashReport;
 
 public class AppApplication extends Application {
 
@@ -33,6 +35,11 @@ public class AppApplication extends Application {
                 .localDataModule(new LocalDataModule())
                 .build();
         mActivityManager = AppActivityManager.getInstance();
+
+        //CrashReport.initCrashReport(getApplicationContext(), "395ffc6ed3", true);
+
+        Bugly.init(getApplicationContext(), "395ffc6ed3", true);
+
 
     }
 

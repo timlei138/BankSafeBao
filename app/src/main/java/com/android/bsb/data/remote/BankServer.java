@@ -1,5 +1,6 @@
 package com.android.bsb.data.remote;
 
+import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.User;
 
@@ -42,7 +43,7 @@ public interface BankServer {
 
     @POST("queryUser/")
     @FormUrlEncoded
-    Observable<BaseResultEntity<List<User>>> queryAllUser(@Field("userid")int uid);
+    Observable<BaseResultEntity<List<User>>> queryAllUser(@Field("userid")int uid,@Field("rolecode") int roldId);
 
     @POST("queryTaskGroupList")
     @FormUrlEncoded
@@ -75,7 +76,7 @@ public interface BankServer {
     @POST("publishTask")
     @FormUrlEncoded
     Observable<BaseResultEntity> publishTask(@Field("executeuserid") List<Integer> processIds,@Field("tasks") List<String> taskIds,
-                                             @Field("postuserid") int uid);
+                                             @Field("postuserid") int uid,@Field("startDate") long start,@Field("endDate") long end,@Field("weekday") List<Integer> weeks);
 
     /**
      * 查询安保人员列表
@@ -123,6 +124,17 @@ public interface BankServer {
     @FormUrlEncoded
     Observable<BaseResultEntity<String>> taskProcessResult(@Field("loginId")int loginId,@Field("processIds")List<Integer> proess,
                                                    @Field("geographics" )List<String> geos);
+
+    /**
+     * 获取到当前部门到安保人员所有执行的任务
+     * @param start
+     * @param end
+     * @param deptId
+     * @return
+     */
+    @POST("queryProcessResult")
+    @FormUrlEncoded
+    Observable<BaseResultEntity<List<CheckTaskInfo>>> queryTaskProcessResult(@Field("startTime") long start, @Field("endTime") long end , @Field("deptId") int deptId);
 
 
 }

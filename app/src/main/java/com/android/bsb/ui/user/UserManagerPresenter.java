@@ -78,7 +78,7 @@ public class UserManagerPresenter extends IBasePresent<UserManagerView>{
     }
 
     public void queryAllDept(){
-        mApis.queryAllUser(mView.getUserInfo().getUid())
+        mApis.queryAllUser(mView.getUserInfo().getUid(),mView.getUserInfo().getRole())
                 .compose(mView.<List<User>>bindToLife())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override

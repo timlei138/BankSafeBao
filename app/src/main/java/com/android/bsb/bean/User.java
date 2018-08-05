@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.android.bsb.AppComm;
+import com.android.bsb.util.AppLogger;
 import com.android.bsb.util.Utils;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,7 +12,7 @@ public class User implements Parcelable {
 
     @SerializedName(value = "userid",alternate = {"id"})
     private int uid = 0;
-    //phone code
+
     @SerializedName("loginname")
     private String loginName;
 
@@ -28,6 +29,7 @@ public class User implements Parcelable {
 
     @SerializedName("deptname")
     private String deptName;
+
     @SerializedName("deptcode")
     private int deptCode;
 
@@ -50,6 +52,11 @@ public class User implements Parcelable {
 
     public User(String accountStr){
         String[] args = accountStr.split(":");
+
+        for (int i = 0;i < args.length ;i++){
+            AppLogger.LOGD("demo","args:"+args[i]);
+        }
+
         this.uid = Integer.parseInt(Utils.decrypt(args[0]));
         this.loginName =Utils.decrypt(args[1]);
         this.uname = Utils.decrypt(args[2]);
@@ -82,6 +89,15 @@ public class User implements Parcelable {
 
     public int getRole() {
         return role;
+    }
+
+
+    public String getCellpahone() {
+        return cellpahone;
+    }
+
+    public void setCellpahone(String cellpahone) {
+        this.cellpahone = cellpahone;
     }
 
     public void setRole(int role) {
@@ -138,9 +154,9 @@ public class User implements Parcelable {
                 ", roleName='" + roleName + '\'' +
                 ", deptName='" + deptName + '\'' +
                 ", deptCode=" + deptCode +
+                ", cellpahone='" + cellpahone + '\'' +
                 '}';
     }
-
 
     @Override
     public int describeContents() {
@@ -157,6 +173,7 @@ public class User implements Parcelable {
         dest.writeString(this.roleName);
         dest.writeString(this.deptName);
         dest.writeInt(this.deptCode);
+        dest.writeString(this.cellpahone);
     }
 
     protected User(Parcel in) {
@@ -168,6 +185,12 @@ public class User implements Parcelable {
         this.roleName = in.readString();
         this.deptName = in.readString();
         this.deptCode = in.readInt();
+        this.cellpahone = in.readString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.getUid() == ((User) obj).getUid();
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

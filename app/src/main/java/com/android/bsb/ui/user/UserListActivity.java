@@ -10,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter>
+public class UserListActivity extends BaseActivity<UserManagerPresenter>
         implements UserManagerView {
 
     @BindView(R.id.toolbar)
@@ -37,13 +38,15 @@ public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter>
     @BindView(R.id.select_done)
     Button mSelectDoneBtn;
 
-    private String TAG = "ManagerUserListActivity";
+    private String TAG = "UserListActivity";
 
     private DeptUserListAdapter mAdapter;
 
-    private boolean isShowUser;
-    private boolean isSelectSecurity = false;
+    private boolean isPickSecurity = false;
+
     private List<User> mSelectedList;
+
+
 
     @Override
     protected int attachLayoutRes() {
@@ -58,12 +61,12 @@ public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter>
 
     @Override
     protected void initView() {
-        isShowUser = getIntent().getBooleanExtra("show_user",true);
-        isSelectSecurity = getIntent().getBooleanExtra("publish",false);
-        mToolsBar.setTitle(isShowUser ? "人员列表" : "机构列表");
-        if(isSelectSecurity){
-            mToolsBar.setTitle("请选择执行人员");
-            mSelectedList = getIntent().getParcelableArrayListExtra("select");
+        String title  = getIntent().getStringExtra(BaseActivity.EXTRA_TITLE);
+        isPickSecurity = getIntent().getBooleanExtra(BaseActivity.EXTRA_PICK_USER,false);
+        mToolsBar.setTitle(TextUtils.isEmpty(title) ? "人员列表" : title);
+        if(isPickSecurity){
+            mSelectedList = getIntent().getParcelableArrayListExtra(BaseActivity.EXTRA_DATALIST);
+            AppLogger.LOGD(TAG,"mSelectList:"+mSelectedList.size());
         }
         setSupportActionBar(mToolsBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -71,7 +74,7 @@ public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter>
         mUserListRecycler.setAdapter(mAdapter);
         mUserListRecycler.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mUserListRecycler.setLayoutManager(new LinearLayoutManager(this));
-        if(isSelectSecurity){
+        if(isPickSecurity){
             mSelectDoneBtn.setVisibility(View.VISIBLE);
         }else{
             mSelectDoneBtn.setVisibility(View.GONE);
@@ -88,15 +91,14 @@ public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter>
 
     @Override
     protected void updateView(boolean isRefresh) {
-        mAdapter.setShowCheckBox(isSelectSecurity);
-        if(isSelectSecurity){
+        mAdapter.setShowCheckBox(isPickSecurity);
+        if(mSelectedList != null && mSelectedList.size() > 0){
+            mAdapter.setSelectedList(mSelectedList);
+        }
+        if(isPickSecurity){
             mPresenter.querySecurityList();
         }else{
             mPresenter.queryAllDept();
-        }
-
-        if(mSelectedList!=null){
-            mAdapter.setSelectedList(mSelectedList);
         }
 
     }
@@ -152,13 +154,13 @@ public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter>
         String[] labels = new String[3];
         labels[0] = "姓名："+user.getUname();
         labels[1] = "单位："+user.getDeptName()+"("+user.getRoleName()+")";
-        labels[2] = "电话："+user.getLoginName();
+        labels[2] = "电话："+(TextUtils.isEmpty(user.getLoginName()) ? user.getCellpahone() : user.getLoginName());
         builder.setItems(labels, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(which == 2){
                     Intent intent = new Intent(Intent.ACTION_DIAL);
-                    Uri data = Uri.parse("tel:" + user.getLoginName());
+                    Uri data = Uri.parse("tel:" + (TextUtils.isEmpty(user.getLoginName()) ? user.getCellpahone() : user.getLoginName()));
                     intent.setData(data);
                     startActivity(intent);
                 }
@@ -172,7 +174,7 @@ public class ManagerUserListActivity extends BaseActivity<UserManagerPresenter>
         mAdapter.getSelectedList();
         Intent intent = new Intent();
         ArrayList<User> list = (ArrayList<User>) mAdapter.getSelectedList();
-        intent.putParcelableArrayListExtra("security",list);
+        intent.putParcelableArrayListExtra(BaseActivity.EXTRA_DATALIST,list);
         setResult(Activity.RESULT_OK,intent);
         finish();
     }

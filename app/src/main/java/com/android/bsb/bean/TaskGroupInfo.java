@@ -3,6 +3,7 @@ package com.android.bsb.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.android.bsb.util.AppLogger;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

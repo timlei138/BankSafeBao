@@ -1,9 +1,7 @@
 package com.android.bsb.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.hardware.display.DisplayManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
-import com.android.bsb.ui.user.ManagerUserListActivity;
 
 import java.util.ArrayList;
 import java.util.List;

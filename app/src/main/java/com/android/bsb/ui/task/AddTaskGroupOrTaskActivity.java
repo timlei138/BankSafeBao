@@ -220,4 +220,19 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskManagerPresente
     public Context getContext() {
         return this;
     }
+
+    @Override
+    public long getStartDate() {
+        return 0;
+    }
+
+    @Override
+    public long getEndDate() {
+        return 0;
+    }
+
+    @Override
+    public List<Integer> getWeeks() {
+        return null;
+    }
 }

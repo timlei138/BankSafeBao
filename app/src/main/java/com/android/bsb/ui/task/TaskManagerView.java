@@ -16,4 +16,10 @@ public interface TaskManagerView extends IBaseView{
     User getLoginUser();
 
     Context getContext();
+
+    long getStartDate();
+
+    long getEndDate();
+
+    List<Integer> getWeeks();
 }

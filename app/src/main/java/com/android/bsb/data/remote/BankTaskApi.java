@@ -1,6 +1,7 @@
 package com.android.bsb.data.remote;
 
 
+import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
@@ -69,8 +70,8 @@ public class BankTaskApi {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<List<User>> queryAllUser(int uid){
-        return mService.queryAllUser(uid)
+    public Observable<List<User>> queryAllUser(int uid,int roleId){
+        return mService.queryAllUser(uid,roleId)
                 .map(new ServerResultFunc<List<User>>())
                 .onErrorResumeNext(new HttpResultFunc<List<User>>())
                 .subscribeOn(Schedulers.io());
@@ -109,8 +110,8 @@ public class BankTaskApi {
     }
 
 
-    public Observable publishTask(List<Integer> processIds,List<String> taskIds,int uid){
-        return mService.publishTask(processIds,taskIds,uid).map(new ServerResultFunc())
+    public Observable publishTask(List<Integer> processIds,List<String> taskIds,int uid,long start,long end,List<Integer> weeks){
+        return mService.publishTask(processIds,taskIds,uid,start,end,weeks).map(new ServerResultFunc())
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }
@@ -133,6 +134,14 @@ public class BankTaskApi {
     public Observable<String> taskProcessResult(int uid,List<Integer> processIds,List<String> geos){
         return mService.taskProcessResult(uid,processIds,geos).map(new ServerResultFunc())
                 .onErrorResumeNext(new HttpResultFunc())
+                .subscribeOn(Schedulers.io());
+    }
+
+
+    public Observable<List<CheckTaskInfo>> queryProcessResult(long start, long end, int deptId){
+        return mService.queryTaskProcessResult(start,end,deptId)
+                .map(new ServerResultFunc<List<CheckTaskInfo>>())
+                .onErrorResumeNext(new HttpResultFunc<List<CheckTaskInfo>>())
                 .subscribeOn(Schedulers.io());
     }
 

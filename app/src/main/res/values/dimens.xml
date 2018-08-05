@@ -13,4 +13,6 @@
 
     <dimen name="image_padding">8dp</dimen>
 
+    <dimen name="week_background_size">35dp</dimen>
+
 </resources>

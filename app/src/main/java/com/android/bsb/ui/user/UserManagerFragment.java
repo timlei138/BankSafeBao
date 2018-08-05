@@ -80,13 +80,13 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
                     break;
                 case ACTION_LIST_DEPT:
                     Intent intentdept = new Intent();
-                    intentdept.setClass(getContext(),ManagerUserListActivity.class);
+                    intentdept.setClass(getContext(),UserListActivity.class);
                     intentdept.putExtra("show_user",false);
                     startActivity(intentdept);
                     break;
                 case ACTION_LIST_USER:
                     Intent intentuser = new Intent();
-                    intentuser.setClass(getContext(),ManagerUserListActivity.class);
+                    intentuser.setClass(getContext(),UserListActivity.class);
                     intentuser.putExtra("show_user",true);
                     startActivity(intentuser);
                     break;

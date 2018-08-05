@@ -61,6 +61,7 @@ public class DeptUserListAdapter extends RecyclerView.Adapter<DeptUserListAdapte
     }
 
     public void setSelectedList(List list){
+        mSelectedList.clear();
         mSelectedList = list;
     }
 
@@ -85,7 +86,8 @@ public class DeptUserListAdapter extends RecyclerView.Adapter<DeptUserListAdapte
         holder.mUpdateBtn.getLayoutParams().width = screenwidth / 5;
         holder.mDetailBtn.getLayoutParams().width = screenwidth / 5;
         final User user = mUserList.get(position);
-        holder.initLayout(user,mShowCheckBox,mSelectedList.contains(user.getUid()));
+        AppLogger.LOGD("demo","size:"+mSelectedList.size()+",contains:"+mSelectedList.contains(user));
+        holder.initLayout(user,mShowCheckBox,mSelectedList.contains(user));
         holder.mContentLaoyut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,13 +233,13 @@ public class DeptUserListAdapter extends RecyclerView.Adapter<DeptUserListAdapte
             mDeptInfo.setText(user.getDeptName());
             mCheckBox.setVisibility(showSelect ? View.VISIBLE : View.GONE);
             if(showSelect){
-                mCheckBox.setSelected(ischecked);
+                mCheckBox.setChecked(ischecked);
                 mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Integer uid = Integer.valueOf(user.getUid());
-                        if(mSelectedList.contains(uid)){
-                            mSelectedList.remove(uid);
+                        //Integer uid = Integer.valueOf(user.getUid());
+                        if(mSelectedList.contains(user)){
+                            mSelectedList.remove(user);
                         }else{
                             mSelectedList.add(user);
                         }

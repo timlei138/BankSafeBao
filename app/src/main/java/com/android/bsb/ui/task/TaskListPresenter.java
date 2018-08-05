@@ -1,5 +1,8 @@
 package com.android.bsb.ui.task;
 
+import android.util.Log;
+
+import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
@@ -9,6 +12,7 @@ import com.android.bsb.data.remote.CommObserver;
 import com.android.bsb.ui.base.IBasePresent;
 import com.android.bsb.util.AppLogger;
 
+import java.security.acl.AclNotFoundException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -52,7 +56,6 @@ public class TaskListPresenter extends IBasePresent<TaskListView> {
 
     public void submitErrorTask(int processId,List file,int errorRank,String errorMsg,String geo){
         User user = mView.getLoginUser();
-        AppLogger.LOGD("demo","fileSize:"+file.size());
         mApis.taskErrorPrcessResult(user.getUid(),processId,file,errorRank,errorMsg,geo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommObserver() {
@@ -74,11 +77,33 @@ public class TaskListPresenter extends IBasePresent<TaskListView> {
 
     public void submitNormalTask(List<Integer> ids,List<String> geos){
         User user = mView.getLoginUser();
-        mApis.taskProcessResult(user.getUid(),ids,geos).observeOn(AndroidSchedulers.mainThread())
+        mApis.taskProcessResult(user.getUid(),ids,geos)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommObserver() {
                     @Override
                     public void onRequestNext(Object o) {
 
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        AppLogger.LOGD("demo","code:"+code+",msg:"+msg);
+                    }
+                });
+    }
+
+
+    public void getProcessResultForDept(){
+        User user = mView.getLoginUser();
+        long start = System.currentTimeMillis();
+        long end = System.currentTimeMillis();
+        mApis.queryProcessResult(start,end,user.getDeptCode())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CommObserver<List<CheckTaskInfo>>() {
+                    @Override
+                    public void onRequestNext(List<CheckTaskInfo> checkTaskInfos) {
+                        AppLogger.LOGD("demo",""+checkTaskInfos.size());
+                        mView.showAllProcessResult(checkTaskInfos);
                     }
 
                     @Override

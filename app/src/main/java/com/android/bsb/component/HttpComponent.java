@@ -3,11 +3,12 @@ package com.android.bsb.component;
 import com.android.bsb.ui.login.LoginActivity;
 import com.android.bsb.ui.login.SplashActivity;
 import com.android.bsb.ui.task.AddTaskGroupOrTaskActivity;
+import com.android.bsb.ui.task.CheckUsersFragment;
 import com.android.bsb.ui.task.ErrorTaskEditorActivity;
 import com.android.bsb.ui.task.PublishTaskActivity;
 import com.android.bsb.ui.task.TaskFragment;
 import com.android.bsb.ui.task.TaskGroupListActivity;
-import com.android.bsb.ui.user.ManagerUserListActivity;
+import com.android.bsb.ui.user.UserListActivity;
 import com.android.bsb.ui.user.UserManagerFragment;
 
 import dagger.Component;
@@ -25,12 +26,14 @@ public interface HttpComponent {
 
     void inject(TaskFragment fragment);
 
-    void inject(ManagerUserListActivity activity);
+    void inject(UserListActivity activity);
 
     void inject(TaskGroupListActivity activity);
 
     void inject(PublishTaskActivity activity);
 
     void inject(ErrorTaskEditorActivity activity);
+
+    void inject(CheckUsersFragment fragment);
 
 }

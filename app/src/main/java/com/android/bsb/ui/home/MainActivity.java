@@ -24,6 +24,7 @@ import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.ui.base.BaseFragment;
 import com.android.bsb.ui.setting.SettingsActivity;
+import com.android.bsb.ui.task.CheckUsersFragment;
 import com.android.bsb.ui.task.TaskManagerFragment;
 import com.android.bsb.ui.task.TaskFragment;
 import com.android.bsb.ui.task.TaskListFragment;
@@ -85,20 +86,14 @@ public class MainActivity extends BaseActivity<MainPersenter>
     private Toolbar.OnMenuItemClickListener mToolsMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
-
             List<Fragment> fragments = getSupportFragmentManager().getFragments();
-
             AppLogger.LOGD("demo","fragmentSize:"+fragments.size());
-
             for (Fragment fragment : fragments){
                 AppLogger.LOGD("demo","fragment:"+fragment);
                 if(fragment instanceof BaseFragment){
-
-                    ((BaseFragment) fragment).syncData();
+                    ((BaseFragment) fragment).actionBarItemClick(item);
                 }
-
             }
-
             return false;
         }
     };
@@ -110,6 +105,7 @@ public class MainActivity extends BaseActivity<MainPersenter>
         getMenuInflater().inflate(R.menu.menu_toolsbar,menu);
         if(isAdmin() || isManager() || isPushlish()){
             menu.removeItem(R.id.action_sync);
+            menu.removeItem(R.id.action_edit);
         }else if(isSecurity()){
 
         }
@@ -261,6 +257,10 @@ public class MainActivity extends BaseActivity<MainPersenter>
                 Intent intent = new Intent();
                 intent.setClass(this, SettingsActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.nav_taskcheck:
+                updateToolsBar(R.string.nav_menu_taskcheck_title);
+                replaceFragment(R.id.contentPanel,new CheckUsersFragment(),mSparsesTags.get(R.id.nav_taskcheck));
                 break;
         }
     }

@@ -79,8 +79,8 @@ public class TaskPresenter extends IBasePresent<TaskView>{
     }
 
 
-    public void publishTaskToSecurity(List<Integer> securityIds,List<String> taskIds){
-        mApis.publishTask(securityIds,taskIds,mLoginUser.getUid())
+    public void publishTaskToSecurity(List<Integer> securityIds,List<String> taskIds,long start,long end,List weeks){
+        mApis.publishTask(securityIds,taskIds,mLoginUser.getUid(),start,end,weeks)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommObserver() {
                     @Override

@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.android.bsb.GlideApp;
 import com.android.bsb.R;
+import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerHttpComponent;
@@ -189,6 +190,11 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskListPresenter> imp
 
     @Override
     public void submitErrorInfoFail() {
+
+    }
+
+    @Override
+    public void showAllProcessResult(List<CheckTaskInfo> list) {
 
     }
 
