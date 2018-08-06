@@ -91,7 +91,7 @@ public class TaskGroupListActivity extends BaseActivity<TaskManagerPresenter> im
         mDataList.setAdapter(mAdapter);
         mDataList.setLayoutManager(new LinearLayoutManager(this));
         mDataList.addItemDecoration(new TaskListItemDecoration(this));
-        mPresenter.getGroupListInfo();
+        //mPresenter.getGroupListInfo();
         if(mSelectedList !=null && mSelectedList.size() > 0){
             mAdapter.setSelectList(mSelectedList);
         }

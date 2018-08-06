@@ -1,6 +1,7 @@
 package com.android.bsb.ui.task;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
@@ -50,6 +51,9 @@ public class TaskListPresenter extends IBasePresent<TaskListView> {
             @Override
             public void onError(int code, String msg) {
                 AppLogger.LOGD("demo","code:"+code+",msg:"+msg);
+                if(code == 217){
+                    mView.showEmptyData();
+                }
             }
         });
     }
@@ -109,6 +113,7 @@ public class TaskListPresenter extends IBasePresent<TaskListView> {
                     @Override
                     public void onError(int code, String msg) {
                         AppLogger.LOGD("demo","code:"+code+",msg:"+msg);
+                        mView.showNetError();
                     }
                 });
     }

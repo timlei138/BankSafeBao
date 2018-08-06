@@ -104,12 +104,16 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
 
     @Override
     public void showNetError() {
-
+        if(mEmptyLayout!=null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
+        }
     }
 
     @Override
     public void showEmptyData() {
-
+        if(mEmptyLayout!=null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_DATA);
+        }
     }
 
     public void actionBarItemClick(MenuItem item){
@@ -118,12 +122,16 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
 
     @Override
     public void showProgress() {
-
+        if(mEmptyLayout!=null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
+        }
     }
 
     @Override
     public void hideProgress() {
-
+        if(mEmptyLayout!=null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_HIDE);
+        }
     }
 
     @Override

@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.bsb.R;
+import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
@@ -34,7 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskManagerPresenter> implements TaskManagerView{
+public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskPresenter> implements TaskView{
 
     @BindView(R.id.toolbar)
     Toolbar mToolsBar;
@@ -55,7 +56,7 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskManagerPresente
     @BindView(R.id.taskListRecycler)
     RecyclerView mPeddingRecycler;
 
-    private ArrayAdapter<TaskGroupInfo> mTaskGroupAdapter;
+    private ArrayAdapter<TaskGroupInfo> mTaskGroupSpinnerAdapter;
 
     private List<TaskGroupInfo> mTaskGroupList;
 
@@ -84,12 +85,12 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskManagerPresente
         setSupportActionBar(mToolsBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTaskGroupList = new ArrayList<>();
-        mTaskGroupAdapter = new ArrayAdapter<TaskGroupInfo>(this,android.R.layout.simple_spinner_dropdown_item);
+        mTaskGroupSpinnerAdapter = new ArrayAdapter<TaskGroupInfo>(this,android.R.layout.simple_spinner_dropdown_item);
         mTaskGroupList.add(new TaskGroupInfo(TaskGroupInfo.TYPE_NONE,"请选择任务组"));
         mTaskGroupList.add(new TaskGroupInfo(TaskGroupInfo.TYPE_CREATE,"新建任务组"));
-        mTaskGroupAdapter.addAll(mTaskGroupList);
-        mTaskGroupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mGroupSpinner.setAdapter(mTaskGroupAdapter);
+        mTaskGroupSpinnerAdapter.addAll(mTaskGroupList);
+        mTaskGroupSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mGroupSpinner.setAdapter(mTaskGroupSpinnerAdapter);
         mGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -133,7 +134,7 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskManagerPresente
 
     @Override
     protected void updateView(boolean isRefresh) {
-        mPresenter.getGroupListInfo();
+        mPresenter.getTaskGroupList();
     }
 
 
@@ -193,28 +194,14 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskManagerPresente
             for (TaskInfo info : mPeddingTaskList){
                 peddingString.add(info.getTaskName());
             }
-            mPresenter.updateOrDelTaskGroup(mSelectedTaskGroupInfo.getGroupId(),3,
+            mPresenter.addNewTaskToGroup(mSelectedTaskGroupInfo.getGroupId(),TaskCommon.ACTION_ADD_TASK_TO_EXISTSGROUP,
                     new ArrayList<Integer>(),peddingString);
         }else{
-            mPresenter.addTaskGroupOrTask(mSelectedTaskGroupInfo);
+            mPresenter.createNewTaskGroup(mSelectedTaskGroupInfo);
         }
 
     }
 
-    @Override
-    public void showGroupListInfo(List<TaskGroupInfo> groupInfos) {
-        //AppLogger.LOGD("demo",""+groupInfos.size()+",o:"+groupInfos.get(0).toString());
-        mTaskGroupList.addAll(groupInfos);
-        mTaskGroupAdapter.addAll(groupInfos);
-        mTaskGroupAdapter.notifyDataSetChanged();
-
-    }
-
-    @Override
-    public User getLoginUser() {
-        AppLogger.LOGD("demo",""+super.getLoginUser());
-        return super.getLoginUser();
-    }
 
     @Override
     public Context getContext() {
@@ -222,13 +209,35 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskManagerPresente
     }
 
     @Override
-    public long getStartDate() {
-        return 0;
+    public void showTaskGroupList(List<TaskGroupInfo> groups) {
+        mTaskGroupList.addAll(groups);
+        mTaskGroupSpinnerAdapter.addAll(groups);
+        mTaskGroupSpinnerAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public long getEndDate() {
-        return 0;
+    public void submitTaskResult(boolean success) {
+        if(success){
+            Toast.makeText(getContext(),"添加任务成功",Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            Toast.makeText(getContext(),"添加任务失败",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showAllProcessTaskResult(List<CheckTaskInfo> recents) {
+
+    }
+
+    @Override
+    public void onFaildCodeMsg(int code, String msg) {
+
+    }
+
+    @Override
+    public long[] getTaskExecuteDate() {
+        return new long[0];
     }
 
     @Override

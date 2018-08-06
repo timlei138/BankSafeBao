@@ -48,7 +48,6 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
 
     public static final String EXTRA_DATALIST = "dataList";
 
-    public static final String EXTRA_DATA = "data";
 
     @Nullable
     @BindView(R.id.empty_layout)
@@ -162,7 +161,7 @@ public abstract class BaseActivity<T1 extends IBasePresent> extends RxAppCompatA
 
 
     public boolean isAdmin(){
-        return getLoginUser().isAdmin();
+        return getLoginUser() != null ? getLoginUser().isAdmin() : false;
     }
 
     public boolean isSecurity(){

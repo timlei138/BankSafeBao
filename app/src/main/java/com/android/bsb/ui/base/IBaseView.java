@@ -44,5 +44,9 @@ public interface IBaseView {
      */
     <T>LifecycleTransformer<T> bindToLife();
 
+    /**
+     * 获取当前登录的用户
+     * @return
+     */
     User getLoginUser();
 }

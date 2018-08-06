@@ -3,6 +3,7 @@ package com.android.bsb.ui.task;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -37,6 +38,7 @@ import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.service.LocationService;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.util.AppLogger;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -61,7 +63,7 @@ import io.reactivex.functions.Consumer;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_IF_ROOM;
 
-public class ErrorTaskEditorActivity extends BaseActivity<TaskListPresenter> implements TaskListView {
+public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> implements TaskView {
 
 
     @BindView(R.id.toolbar)
@@ -136,19 +138,20 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskListPresenter> imp
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("提交");
-        menu.getItem(0).setShowAsAction(SHOW_AS_ACTION_IF_ROOM);
+        getMenuInflater().inflate(R.menu.menu_submit,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+        }
         String errStr = mEditText.getText().toString();
         if(TextUtils.isEmpty(errStr)){
             Toast.makeText(getBaseContext(),"请填写异常说明！",Toast.LENGTH_SHORT).show();
             return false;
         }
-
         int rankId = mRankGroup.getCheckedRadioButtonId();
         int errorRank = 0;
         if(rankId == R.id.radio_serverity){
@@ -156,26 +159,16 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskListPresenter> imp
         }else if(rankId == R.id.radio_urgent){
             errorRank = 2;
         }
-        for (int i = 0;i<imageList.size();i++){
-            AppLogger.LOGD("demo","file:"+imageList.get(i));
-        }
 
-        List<File> upload = new ArrayList<>();
-
-        for (String path : imageList){
-            File file = new File(path);
-            if(file.exists() && file.isFile()){
-                upload.add(file);
-            }
-        }
-
-        mPresenter.submitErrorTask(mProcessId,(upload.size()>0 ? upload:null),errorRank,errStr,"122838:288338");
-
-
+        mPresenter.feedbackErrorTaskResult(mProcessId,imageList,errorRank,errStr,"122838:288338");
         return super.onOptionsItemSelected(item);
     }
 
 
+    @Override
+    public Context getContext() {
+        return this;
+    }
 
     @Override
     public void showTaskGroupList(List<TaskGroupInfo> list) {
@@ -183,19 +176,28 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskListPresenter> imp
     }
 
     @Override
-    public void submitErrorInfoSuccess() {
-        Toast.makeText(this,"异常上报成功",Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    @Override
-    public void submitErrorInfoFail() {
+    public void submitTaskResult(boolean success) {
 
     }
 
     @Override
-    public void showAllProcessResult(List<CheckTaskInfo> list) {
+    public void showAllProcessTaskResult(List<CheckTaskInfo> recents) {
 
+    }
+
+    @Override
+    public void onFaildCodeMsg(int code, String msg) {
+
+    }
+
+    @Override
+    public long[] getTaskExecuteDate() {
+        return new long[0];
+    }
+
+    @Override
+    public List<Integer> getWeeks() {
+        return null;
     }
 
 

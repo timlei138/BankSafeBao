@@ -1,5 +1,7 @@
 package com.android.bsb.ui.task;
 
+import android.content.Context;
+
 import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.User;
@@ -18,5 +20,7 @@ public interface TaskListView extends IBaseView{
     void submitErrorInfoFail();
 
     void showAllProcessResult(List<CheckTaskInfo> list);
+
+    Context getContext();
 
 }

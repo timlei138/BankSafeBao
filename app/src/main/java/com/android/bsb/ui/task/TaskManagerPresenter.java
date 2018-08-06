@@ -34,27 +34,7 @@ public class TaskManagerPresenter extends IBasePresent<TaskManagerView>{
 
     }
 
-    public void getGroupListInfo(){
-        User loginUser = mView.getLoginUser();
-        if(loginUser != null){
-            mApis.queryUserTaskGroup(loginUser.getUid())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CommObserver<List<TaskGroupInfo>>() {
-                        @Override
-                        public void onRequestNext(List<TaskGroupInfo> groupInfos) {
-                            mView.showGroupListInfo(groupInfos);
-                        }
 
-                        @Override
-                        public void onError(int code, String msg) {
-                            AppLogger.LOGD(null,"code:"+code+",msg:"+msg);
-                        }
-                    });
-        }else{
-
-        }
-
-    }
 
 
 
