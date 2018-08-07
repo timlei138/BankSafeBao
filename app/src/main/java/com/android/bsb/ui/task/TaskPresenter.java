@@ -2,6 +2,7 @@ package com.android.bsb.ui.task;
 
 import android.util.Log;
 
+import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.ErrorTaskResult;
 import com.android.bsb.bean.ErrorTaskResult_;
 import com.android.bsb.bean.TaskGroupInfo;
@@ -39,9 +40,7 @@ public class TaskPresenter extends IBasePresent<TaskView> {
 
 
     public void getTaskGroupList() {
-
         User login = mView.getLoginUser();
-
         mApis.queryUserTaskGroup(login.getUid())
                 .compose(mView.<List<TaskGroupInfo>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -75,7 +74,6 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                         AppLogger.LOGD("demo", "code:" + code + ",msg:" + msg);
                     }
                 });
-
     }
 
 
@@ -131,12 +129,15 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                 .subscribe(new CommObserver<List<TaskGroupInfo>>() {
                     @Override
                     public void onRequestNext(List<TaskGroupInfo> list) {
-
+                        mView.showTaskGroupList(list);
                     }
 
                     @Override
                     public void onError(int code, String msg) {
-
+                        AppLogger.LOGD("demo","code:"+code+",msg:"+msg);
+                        if(code == 217){
+                            mView.showEmptyData();
+                        }
                     }
                 });
 
@@ -197,12 +198,15 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                             result.setFlag(true);
                             box.put(result);
                         }
+                        mView.hideProgress();
+                        mView.submitTaskResult(true);
 
                     }
 
                     @Override
                     public void onError(int code, String msg) {
                         mView.hideProgress();
+                        mView.onFaildCodeMsg(code,msg);
                     }
                 });
     }
@@ -216,7 +220,7 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                 .subscribe(new CommObserver<String>() {
                     @Override
                     public void onRequestNext(String s) {
-
+                        mView.submitTaskResult(true);
                     }
 
                     @Override
@@ -225,6 +229,27 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                     }
                 });
 
+    }
+
+    public void getProcessResultForDept(){
+        User user = mView.getLoginUser();
+        long start = System.currentTimeMillis();
+        long end = System.currentTimeMillis();
+        mApis.queryProcessResult(start,end,user.getDeptCode())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CommObserver<List<CheckTaskInfo>>() {
+                    @Override
+                    public void onRequestNext(List<CheckTaskInfo> checkTaskInfos) {
+                        AppLogger.LOGD("demo",""+checkTaskInfos.size());
+                        mView.showAllProcessTaskResult(checkTaskInfos);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        AppLogger.LOGD("demo","code:"+code+",msg:"+msg);
+                        mView.showNetError();
+                    }
+                });
     }
 
 

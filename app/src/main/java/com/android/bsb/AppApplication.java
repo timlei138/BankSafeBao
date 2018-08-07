@@ -36,9 +36,7 @@ public class AppApplication extends Application {
                 .build();
         mActivityManager = AppActivityManager.getInstance();
 
-        //CrashReport.initCrashReport(getApplicationContext(), "395ffc6ed3", true);
-
-        Bugly.init(getApplicationContext(), "395ffc6ed3", true);
+        Bugly.init(getApplicationContext(), "48eac4f88c", false);
 
 
     }

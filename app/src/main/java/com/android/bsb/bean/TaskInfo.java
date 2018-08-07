@@ -121,6 +121,7 @@ public class TaskInfo implements Parcelable {
         dest.writeInt(this.taskGroupId);
         dest.writeString(this.result);
         dest.writeLong(this.beginDate);
+        dest.writeString(this.errImages);
     }
 
     public TaskInfo() {
@@ -133,6 +134,7 @@ public class TaskInfo implements Parcelable {
         this.taskGroupId = in.readInt();
         this.result = in.readString();
         this.beginDate = in.readLong();
+        this.errImages = in.readString();
     }
 
     public static final Parcelable.Creator<TaskInfo> CREATOR = new Parcelable.Creator<TaskInfo>() {

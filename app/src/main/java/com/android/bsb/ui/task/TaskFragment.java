@@ -39,7 +39,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
-public class TaskFragment extends BaseFragment<TaskListPresenter> implements TaskListView{
+public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskView{
 
 
     @BindView(R.id.tasklist_recycle)
@@ -130,14 +130,13 @@ public class TaskFragment extends BaseFragment<TaskListPresenter> implements Tas
     public void onDestroy() {
         super.onDestroy();
         if(mServiceConnect != null){
-            //mLocationService.unbindService(mServiceConnect);
             getContext().unbindService(mServiceConnect);
         }
     }
 
     @Override
     protected void updateView(boolean isRefresh) {
-        mPresenter.getSecurityTaskList();
+        mPresenter.getSecurityProcessList();
     }
 
     @Override
@@ -189,8 +188,7 @@ public class TaskFragment extends BaseFragment<TaskListPresenter> implements Tas
         for (int i =0;i<pendingList.size();i++){
             geos.add(geo);
         }
-        mPresenter.submitNormalTask(pendingList,geos);
-
+        mPresenter.feedbackNormalTaskList(pendingList,geos);
     }
 
 
@@ -206,20 +204,22 @@ public class TaskFragment extends BaseFragment<TaskListPresenter> implements Tas
     }
 
     @Override
-    public void submitErrorInfoSuccess() {
-        isMutiSelect = false;
-        updateView(false);
+    public void submitTaskResult(boolean success) {
+        if(success){
+            //Toast.makeText(getContext(),"")
+        }
     }
 
     @Override
-    public void submitErrorInfoFail() {
-        Toast.makeText(getContext(),"任务上传失败,请稍后再试！",Toast.LENGTH_SHORT).show();
+    public void showAllProcessTaskResult(List<CheckTaskInfo> recents) {
+
     }
 
     @Override
-    public void showAllProcessResult(List<CheckTaskInfo> list) {
+    public void onFaildCodeMsg(int code, String msg) {
 
     }
+
 
 
     private TaskGroupAdapter.OptionSelectListener mOptionSelectListener = new TaskGroupAdapter.OptionSelectListener() {
@@ -234,7 +234,7 @@ public class TaskFragment extends BaseFragment<TaskListPresenter> implements Tas
             }else{
                 geos.add("unknown");
             }
-            mPresenter.submitNormalTask(ids,geos);
+            mPresenter.feedbackNormalTaskList(ids,geos);
         }
 
         @Override

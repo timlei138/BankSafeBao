@@ -146,7 +146,7 @@ public abstract class BaseFragment<T1 extends IBasePresent> extends RxFragment i
 
     @Override
     public <T> LifecycleTransformer<T> bindToLife() {
-        return null;
+        return this.<T>bindToLifecycle();
     }
 
     /**

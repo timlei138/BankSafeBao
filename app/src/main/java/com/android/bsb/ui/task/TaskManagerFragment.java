@@ -17,7 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class TaskManagerFragment extends BaseFragment<TaskManagerPresenter> {
+public class TaskManagerFragment extends BaseFragment {
 
     private final int MANAGER_TAKSGROUP_FLAG = 10;
     private final int ADD_TASK_FLAG = 11;

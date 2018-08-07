@@ -7,9 +7,12 @@
         android:summary="清除应用缓存"/>
 
     <Preference
+        android:key="pref_about"
+        android:title="关于本软件"/>
+
+    <Preference
         android:key="pref_loginout"
         android:title="退出"
         android:summary="退出当前登陆帐号"/>
-
 
 </PreferenceScreen>

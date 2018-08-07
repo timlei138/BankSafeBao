@@ -10,7 +10,7 @@ import com.android.bsb.ui.base.BaseFragment;
 
 import butterknife.BindView;
 
-public class TaskListFragment extends BaseFragment<TaskListPresenter>{
+public class TaskListFragment extends BaseFragment{
 
 
     @BindView(R.id.tab_layout)

@@ -180,7 +180,12 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
 
     @Override
     public void submitTaskResult(boolean success) {
-
+        if(success){
+            Toast.makeText(getBaseContext(),"任务提交成功",Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            Toast.makeText(getBaseContext(),"任务提交失败，请稍后再试！",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -190,7 +195,7 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
 
     @Override
     public void onFaildCodeMsg(int code, String msg) {
-
+        Toast.makeText(getBaseContext(),"code:"+code+"msg:"+msg,Toast.LENGTH_SHORT).show();
     }
 
     private void startPicturePicker(){

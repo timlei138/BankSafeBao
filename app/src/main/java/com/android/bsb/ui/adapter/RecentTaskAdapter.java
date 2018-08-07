@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,13 +62,13 @@ public class RecentTaskAdapter extends RecyclerView.Adapter<RecentTaskAdapter.Re
         RecentHolder holder;
         AppLogger.LOGD(TAG,"viewType:"+viewType);
         if(viewType == RecentItem.TYPE_STAMP){
-            View timeStamp = inflater.inflate(R.layout.layout_timestap,parent,false);
+            View timeStamp = inflater.inflate(R.layout.layout_timestamp,parent,false);
             holder = new TimeStampHolder(timeStamp);
         }else if(viewType == RecentItem.TYPE_TASK){
             View taskView = inflater.inflate(R.layout.layout_taskitem,parent,false);
             holder = new TaskItemHolder(taskView);
         }else{
-            View timeStamp = inflater.inflate(R.layout.layout_timestap,parent,false);
+            View timeStamp = inflater.inflate(R.layout.layout_timestamp,parent,false);
             holder = new TimeStampHolder(timeStamp);
         }
         return holder;
@@ -111,7 +110,9 @@ public class RecentTaskAdapter extends RecyclerView.Adapter<RecentTaskAdapter.Re
                 taskHolder.mTaskStatus.setText("已完成（异常任务）");
                 taskHolder.mOptions.setVisibility(View.GONE);
                 taskHolder.mErrorImageLayout.setVisibility(View.VISIBLE);
+                taskHolder.mErrorDesc.setVisibility(View.VISIBLE);
                 taskHolder.mErrorDesc.setText(task.getErrMsg());
+
                 if (TextUtils.isEmpty(task.getErrImages())) {
                     taskHolder.mErrorImageLayout.setVisibility(View.GONE);
                 } else {
@@ -125,6 +126,7 @@ public class RecentTaskAdapter extends RecyclerView.Adapter<RecentTaskAdapter.Re
 
     private void updateErrorImages(LinearLayout group, String errimgs) {
         group.setVisibility(View.VISIBLE);
+        AppLogger.LOGD(TAG,"errimags:"+errimgs);
         int indexspile = errimgs.indexOf(",");
         List<String> images = new ArrayList<>();
         if (indexspile == -1) {

@@ -2,16 +2,25 @@ package com.android.bsb.ui.setting;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.bsb.AppApplication;
 import com.android.bsb.R;
@@ -19,6 +28,7 @@ import com.android.bsb.ui.home.MainActivity;
 import com.android.bsb.ui.login.LoginActivity;
 import com.android.bsb.ui.login.SplashActivity;
 import com.android.bsb.util.SharedProvider;
+import com.tencent.bugly.beta.Beta;
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
@@ -31,11 +41,9 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         addPreferencesFromResource(R.xml.settings);
 
-        mClearDataPref = findPreference("pref_clear");
-        mLoginOutPref = findPreference("pref_loginout");
-
-        mClearDataPref.setOnPreferenceClickListener(this);
-        mLoginOutPref.setOnPreferenceClickListener(this);
+        findPreference("pref_clear").setOnPreferenceClickListener(this);
+        findPreference("pref_loginout").setOnPreferenceClickListener(this);
+        findPreference("pref_about").setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -45,6 +53,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         }else if(preference.getKey().equals("pref_loginout")){
             showExitUserDialog();
+        }else if(preference.getKey().equals("pref_about")){
+            showAbout();
         }
         return false;
     }
@@ -69,6 +79,43 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             }
         });
         builder.setCancelable(false).create().show();
+    }
+
+
+    private void showAbout(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("关于");
+        LayoutInflater inflater = (LayoutInflater) getActivity().getBaseContext()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.layout_about,null);
+        TextView tvVersion = view.findViewById(R.id.version);
+        tvVersion.setText(getVersion());
+        View upgrade = view.findViewById(R.id.checkUpgrade);
+        upgrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Beta.checkUpgrade(true,false);
+            }
+        });
+        builder.setView(view);
+        builder.setNeutralButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    private String getVersion(){
+        Context context =getActivity().getBaseContext();
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 

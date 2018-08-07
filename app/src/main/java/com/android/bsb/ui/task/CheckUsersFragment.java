@@ -23,7 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class CheckUsersFragment extends BaseFragment<TaskListPresenter> implements TaskListView {
+public class CheckUsersFragment extends BaseFragment<TaskPresenter> implements TaskView {
 
     @BindView(R.id.userList)
     ListView mCheckList;
@@ -71,17 +71,18 @@ public class CheckUsersFragment extends BaseFragment<TaskListPresenter> implemen
     }
 
     @Override
-    public void submitErrorInfoSuccess() {
+    public void submitTaskResult(boolean success) {
 
     }
 
     @Override
-    public void submitErrorInfoFail() {
-
+    public void showAllProcessTaskResult(List<CheckTaskInfo> recents) {
+        mAdapter.setList(recents);
     }
 
     @Override
-    public void showAllProcessResult(List<CheckTaskInfo> list) {
-        mAdapter.setList(list);
+    public void onFaildCodeMsg(int code, String msg) {
+
     }
+
 }
