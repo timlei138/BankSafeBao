@@ -100,11 +100,19 @@ public class TaskPresenter extends IBasePresent<TaskView> {
     public void publishTaskToSecurity(List<Integer> securityIds, List<String> taskIds, long start, long end, List weeks) {
         User login = mView.getLoginUser();
         mApis.publishTask(securityIds, taskIds, login.getUid(), start, end, weeks)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        mView.showProgress();
+                    }
+                })
+                .compose(mView.bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommObserver() {
                     @Override
                     public void onRequestNext(Object o) {
                         Log.d("demo", "");
+                        mView.submitTaskResult(true);
                     }
 
                     @Override

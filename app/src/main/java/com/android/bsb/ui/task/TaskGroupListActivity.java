@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.android.bsb.R;
+import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.component.ApplicationComponent;
@@ -29,7 +30,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class TaskGroupListActivity extends BaseActivity<TaskManagerPresenter> implements TaskManagerView {
+public class TaskGroupListActivity extends BaseActivity<TaskPresenter> implements TaskView {
 
 
     @BindView(R.id.toolbar)
@@ -91,22 +92,27 @@ public class TaskGroupListActivity extends BaseActivity<TaskManagerPresenter> im
         mDataList.setAdapter(mAdapter);
         mDataList.setLayoutManager(new LinearLayoutManager(this));
         mDataList.addItemDecoration(new TaskListItemDecoration(this));
-        //mPresenter.getGroupListInfo();
+        mPresenter.getTaskGroupList();
         if(mSelectedList !=null && mSelectedList.size() > 0){
             mAdapter.setSelectList(mSelectedList);
         }
 
     }
 
-    @Override
-    public void showGroupListInfo(List<TaskGroupInfo> groupInfos) {
 
-        AppLogger.LOGD("demo","groupInfo:"+groupInfos.size());
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void showTaskGroupList(List<TaskGroupInfo> groups) {
+        AppLogger.LOGD("demo","groupInfo:"+groups.size());
         mTaskGroupList = new HashMap<>();
         mTaskGroupList.clear();
-        List<TaskAdapterItem> items = new ArrayList<>(groupInfos.size());
+        List<TaskAdapterItem> items = new ArrayList<>(groups.size());
 
-        for (TaskGroupInfo group : groupInfos){
+        for (TaskGroupInfo group : groups){
             AppLogger.LOGD("","subSize:"+group.getTaskList().size());
             for (TaskInfo info : group.getTaskList()){
                 info.setTaskGroupId(group.getGroupId());
@@ -127,23 +133,18 @@ public class TaskGroupListActivity extends BaseActivity<TaskManagerPresenter> im
     }
 
     @Override
-    public Context getContext() {
-        return this;
+    public void submitTaskResult(boolean success) {
+
     }
 
     @Override
-    public long getStartDate() {
-        return 0;
+    public void showAllProcessTaskResult(List<CheckTaskInfo> recents) {
+
     }
 
     @Override
-    public long getEndDate() {
-        return 0;
-    }
+    public void onFaildCodeMsg(int code, String msg) {
 
-    @Override
-    public List<Integer> getWeeks() {
-        return null;
     }
 
     @Override

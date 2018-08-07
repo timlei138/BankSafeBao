@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -27,7 +28,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.bsb.R;
+import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
+import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerAppComponent;
@@ -47,7 +50,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> implements TaskManagerView {
+public class PublishTaskActivity extends BaseActivity<TaskPresenter> implements TaskView {
 
     @BindView(R.id.people_select_list)
     GridView mPeopleGridView;
@@ -57,6 +60,8 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
     Toolbar mToolsBar;
     @BindView(R.id.publish_btn)
     AppCompatButton mPublishBtn;
+    @BindView(R.id.repeat)
+    TextView mRepeatDesc;
 
     private long startDate = System.currentTimeMillis();
 
@@ -79,6 +84,8 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
     private PendingUserAdapter mUserAdapter;
 
     private PopupWindow mSelectPopupWindow;
+
+    private int publishType = TaskCommon.PUBLISH_TYPE_ALWAYS;
 
 
     @Override
@@ -125,14 +132,14 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
         addItem.setUid(-1);
         addItem.setUname("点击添加");
         mUserAdapter.addPendItem(addItem);
-
+        if(publishType == TaskCommon.PUBLISH_TYPE_ALWAYS){
+            mRepeatDesc.setText("每周都执行");
+        }else{
+            mRepeatDesc.setText("按时间段执行");
+        }
 
     }
 
-    @Override
-    public void showGroupListInfo(List<TaskGroupInfo> groupInfos) {
-
-    }
 
     @Override
     public Context getContext() {
@@ -140,18 +147,28 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
     }
 
     @Override
-    public long getStartDate() {
-        return startDate;
+    public void showTaskGroupList(List<TaskGroupInfo> groups) {
+
     }
 
     @Override
-    public long getEndDate() {
-        return endDate;
+    public void submitTaskResult(boolean success) {
+        if(success){
+            Toast.makeText(getContext(),"发布成功！",Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            Toast.makeText(getContext(),"发布失败，请稍后再试",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public List<Integer> getWeeks() {
-        return weeks;
+    public void showAllProcessTaskResult(List<CheckTaskInfo> recents) {
+
+    }
+
+    @Override
+    public void onFaildCodeMsg(int code, String msg) {
+
     }
 
 
@@ -185,7 +202,28 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
             Toast.makeText(this,"请选择要执行的任务列表",Toast.LENGTH_SHORT).show();
             return;
         }
-        mPresenter.publishTask(mSelectedPeoples,mSelectedTasks);
+
+        List<Integer> ids = new ArrayList<>(mSelectedPeoples.size());
+        for (User execUser : mSelectedPeoples){
+            if(execUser.getUid() != -1){
+                ids.add(execUser.getUid());
+            }
+        }
+        List<String> taskIds = new ArrayList<>();
+        for (TaskGroupInfo info : mSelectedTasks){
+            StringBuffer buffer = new StringBuffer();
+            int i = 0;
+            for (TaskInfo task : info.getTaskList()){
+                if(i == 0){
+                    buffer.append(""+info.getGroupId()+":"+task.getTaskId());
+                }else{
+                    buffer.append("-"+task.getTaskId());
+                }
+                i++;
+            }
+            taskIds.add(buffer.toString());
+        }
+        mPresenter.publishTaskToSecurity(ids,taskIds,startDate,endDate,weeks);
     }
 
 
@@ -232,7 +270,6 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
     }
 
     private void updateTaskView(){
-        AppLogger.LOGD("demo","selectTaskSize:"+mSelectedTasks.size());
         if(mSelectedTasks != null && mSelectedTasks.size() > 0){
             List<TaskAdapterItem> items = new ArrayList<>();
             for (TaskGroupInfo info : mSelectedTasks){
@@ -253,23 +290,38 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
 
 
     private void showPublishTypleView(View parent){
+        int padding = getResources().getDimensionPixelOffset(R.dimen.date_picker_dialog_padding);
         View view = getLayoutInflater().inflate(R.layout.layout_frequence,null);
         int heightPixels = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int widthPixels = getResources().getDisplayMetrics().widthPixels;
+        int widthPixels = getResources().getDisplayMetrics().widthPixels - padding;
         mSelectPopupWindow = new PopupWindow(view,widthPixels,heightPixels,false);
         mSelectPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         RadioButton always = view.findViewById(R.id.radio_always);
         RadioButton spectal = view.findViewById(R.id.radio_spectial);
-
+        LinearLayout weekGroup = view.findViewById(R.id.week_layout);
         final LinearLayout starLayout = view.findViewById(R.id.start_time);
         final LinearLayout endLayout  =  view.findViewById(R.id.end_time);
 
+        if(publishType == TaskCommon.PUBLISH_TYPE_ALWAYS){
+            starLayout.setVisibility(View.GONE);
+            endLayout.setVisibility(View.GONE);
+            always.setChecked(true);
+            spectal.setChecked(false);
+        }else{
+            starLayout.setVisibility(View.VISIBLE);
+            endLayout.setVisibility(View.VISIBLE);
+            always.setChecked(false);
+            spectal.setChecked(true);
+        }
+        updateWeeksView(weekGroup);
         always.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     starLayout.setVisibility(View.GONE);
                     endLayout.setVisibility(View.GONE);
+                    mRepeatDesc.setText(buttonView.getText().toString());
+                    publishType = TaskCommon.PUBLISH_TYPE_ALWAYS;
                 }
             }
         });
@@ -279,13 +331,25 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
                 if(isChecked){
                     starLayout.setVisibility(View.VISIBLE);
                     endLayout.setVisibility(View.VISIBLE);
+                    mRepeatDesc.setText(buttonView.getText().toString());
+                    publishType = TaskCommon.PUBLISH_TYPE_TIME;
                 }
             }
         });
-        mSelectPopupWindow.setBackgroundDrawable(new ColorDrawable(0));
+
+        mSelectPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mSelectPopupWindow.setOutsideTouchable(true);
         mSelectPopupWindow.setContentView(view);
         mSelectPopupWindow.showAsDropDown(parent);
-        mSelectPopupWindow.setOutsideTouchable(true);
+
+
+    }
+
+
+    private void updateWeeksView(LinearLayout group){
+        for (Integer integer : weeks){
+            group.getChildAt(integer).setSelected(true);
+        }
 
     }
 

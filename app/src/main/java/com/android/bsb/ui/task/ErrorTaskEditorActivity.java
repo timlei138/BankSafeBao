@@ -93,6 +93,8 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
 
     private View addView;
 
+    private String geoStr;
+
 
     @Override
     protected int attachLayoutRes() {
@@ -110,6 +112,7 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
         if(mProcessId == 0){
             finish();
         }
+        geoStr = getIntent().getStringExtra("geo");
         mToolbar.setTitle("异常说明");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -160,7 +163,7 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
             errorRank = 2;
         }
 
-        mPresenter.feedbackErrorTaskResult(mProcessId,imageList,errorRank,errStr,"122838:288338");
+        mPresenter.feedbackErrorTaskResult(mProcessId,imageList,errorRank,errStr,geoStr);
         return super.onOptionsItemSelected(item);
     }
 
@@ -189,17 +192,6 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
     public void onFaildCodeMsg(int code, String msg) {
 
     }
-
-    @Override
-    public long[] getTaskExecuteDate() {
-        return new long[0];
-    }
-
-    @Override
-    public List<Integer> getWeeks() {
-        return null;
-    }
-
 
     private void startPicturePicker(){
         RxPermissions permissions = new RxPermissions(this);

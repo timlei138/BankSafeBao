@@ -234,14 +234,4 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskPresenter> impl
     public void onFaildCodeMsg(int code, String msg) {
 
     }
-
-    @Override
-    public long[] getTaskExecuteDate() {
-        return new long[0];
-    }
-
-    @Override
-    public List<Integer> getWeeks() {
-        return null;
-    }
 }

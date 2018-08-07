@@ -10,4 +10,8 @@ public class TaskCommon {
 
     public static final int ACTION_DELETE_TASK = 5;
 
+    public static final int PUBLISH_TYPE_ALWAYS = 1;
+
+    public static final int PUBLISH_TYPE_TIME = 2;
+
 }

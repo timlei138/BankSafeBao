@@ -15,4 +15,6 @@
 
     <dimen name="week_background_size">35dp</dimen>
 
+    <dimen name="date_picker_dialog_padding">3dp</dimen>
+
 </resources>

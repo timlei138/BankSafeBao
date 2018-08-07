@@ -67,6 +67,7 @@
         android:id="@+id/error_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="ldjflasidfjajsdiflfjailsdfjisajflasfli"
         app:layout_constraintTop_toBottomOf="@+id/options"/>
 

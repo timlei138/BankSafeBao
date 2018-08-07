@@ -144,6 +144,7 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
 
     @OnClick({R.id.btn_login,R.id.tv_forget})
     public void onLogin(View view){
+        Toast.makeText(this,"test",Toast.LENGTH_SHORT).show();
         if(view.getId() == R.id.btn_login){
             String phone = mUserEditText.getText().toString();
             String pwd = mPwdEditText.getText().toString();

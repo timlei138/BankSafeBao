@@ -23,10 +23,4 @@ public interface TaskView extends IBaseView {
 
     void onFaildCodeMsg(int code,String msg);
 
-    //获取任务执行时间
-    long[] getTaskExecuteDate();
-
-    //执行星期列表
-    List<Integer> getWeeks();
-
 }

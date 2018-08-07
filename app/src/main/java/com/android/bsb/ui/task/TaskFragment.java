@@ -242,6 +242,8 @@ public class TaskFragment extends BaseFragment<TaskListPresenter> implements Tas
             Intent intent = new Intent();
             intent.setClass(getContext(), ErrorTaskEditorActivity.class);
             intent.putExtra("processId",info.getProcessId());
+            double[] geos = mLocationService.getLocation();
+            intent.putExtra("geo",""+geos[0]+""+geos[1]);
             startActivity(intent);
         }
     };

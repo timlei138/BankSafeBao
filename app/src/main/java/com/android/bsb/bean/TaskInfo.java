@@ -28,10 +28,19 @@ public class TaskInfo implements Parcelable {
     private int taskGroupId;
 
     // 01 发布  02 成功   03 失败
-    @SerializedName("status")
+    @SerializedName(value = "status" ,alternate = {"taskstatus"})
     private String result;
 
+    public long getBeginDate() {
+        return beginDate;
+    }
 
+    public void setBeginDate(long beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    @SerializedName("starttime")
+    private long beginDate;
 
     @SerializedName("errormsg")
     private String errMsg;
@@ -111,6 +120,7 @@ public class TaskInfo implements Parcelable {
         dest.writeInt(this.processId);
         dest.writeInt(this.taskGroupId);
         dest.writeString(this.result);
+        dest.writeLong(this.beginDate);
     }
 
     public TaskInfo() {
@@ -122,6 +132,7 @@ public class TaskInfo implements Parcelable {
         this.processId = in.readInt();
         this.taskGroupId = in.readInt();
         this.result = in.readString();
+        this.beginDate = in.readLong();
     }
 
     public static final Parcelable.Creator<TaskInfo> CREATOR = new Parcelable.Creator<TaskInfo>() {
