@@ -22,7 +22,7 @@ import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.service.LocationService;
 import com.android.bsb.ui.adapter.TaskAdapterItem;
 import com.android.bsb.ui.adapter.TaskGroupAdapter;
@@ -67,7 +67,7 @@ public class TaskFragment extends BaseFragment<TaskListPresenter> implements Tas
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().
+        DaggerAppComponent.builder().
                 applicationComponent(applicationComponent).build().inject(this);
     }
 

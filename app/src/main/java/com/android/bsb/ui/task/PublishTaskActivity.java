@@ -30,7 +30,7 @@ import com.android.bsb.R;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.adapter.PendingUserAdapter;
 import com.android.bsb.ui.adapter.TaskAdapterItem;
 import com.android.bsb.ui.adapter.TaskGroupAdapter;
@@ -88,7 +88,7 @@ public class PublishTaskActivity extends BaseActivity<TaskManagerPresenter> impl
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent)
+        DaggerAppComponent.builder().applicationComponent(applicationComponent)
                 .build().inject(this);
 
     }

@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.adapter.FunctinAdapter;
 import com.android.bsb.ui.adapter.FunctionItem;
 import com.android.bsb.ui.base.BaseFragment;
@@ -44,7 +44,7 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent).build().inject(this);
+        DaggerAppComponent.builder().applicationComponent(applicationComponent).build().inject(this);
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.android.bsb.R;
 import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.adapter.CheckTaskListAdapter;
 import com.android.bsb.ui.base.BaseFragment;
 
@@ -30,7 +30,7 @@ public class CheckUsersFragment extends BaseFragment<TaskListPresenter> implemen
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent).
+        DaggerAppComponent.builder().applicationComponent(applicationComponent).
                 build().inject(this);
     }
 

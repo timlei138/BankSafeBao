@@ -24,7 +24,7 @@ import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.adapter.TaskInfoAdapter;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.util.AppLogger;
@@ -75,7 +75,7 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskPresenter> impl
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent).build()
+        DaggerAppComponent.builder().applicationComponent(applicationComponent).build()
                 .inject(this);
     }
 

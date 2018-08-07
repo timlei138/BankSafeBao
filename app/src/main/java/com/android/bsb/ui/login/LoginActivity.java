@@ -24,8 +24,7 @@ import com.android.bsb.AppComm;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
-import com.android.bsb.component.DaggerLocalDataComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.data.remote.CommObserver;
 import com.android.bsb.data.remote.NetComm;
 import com.android.bsb.data.remote.ServerException;
@@ -76,9 +75,7 @@ public class LoginActivity extends BaseActivity<LoginPersenter> implements Login
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent)
-                .build().inject(this);
-        DaggerLocalDataComponent.builder().applicationComponent(applicationComponent)
+        DaggerAppComponent.builder().applicationComponent(applicationComponent)
                 .build().inject(this);
 
     }

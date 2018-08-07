@@ -17,7 +17,7 @@ import android.widget.Button;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.adapter.DeptUserListAdapter;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.util.AppLogger;
@@ -55,7 +55,7 @@ public class UserListActivity extends BaseActivity<UserManagerPresenter>
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent).build()
+        DaggerAppComponent.builder().applicationComponent(applicationComponent).build()
                 .inject(this);
     }
 

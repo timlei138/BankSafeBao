@@ -37,8 +37,7 @@ import com.android.bsb.R;
 import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
-import com.android.bsb.service.LocationService;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.util.AppLogger;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -102,7 +101,7 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent).build().inject(this);
+        DaggerAppComponent.builder().applicationComponent(applicationComponent).build().inject(this);
     }
 
     @Override
@@ -146,6 +145,7 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){
             finish();
+            return false;
         }
         String errStr = mEditText.getText().toString();
         if(TextUtils.isEmpty(errStr)){

@@ -15,7 +15,7 @@ import com.android.bsb.R;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.adapter.TaskAdapterItem;
 import com.android.bsb.ui.adapter.TaskGroupAdapter;
 import com.android.bsb.ui.base.BaseActivity;
@@ -56,7 +56,7 @@ public class TaskGroupListActivity extends BaseActivity<TaskManagerPresenter> im
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent).build().inject(this);
+        DaggerAppComponent.builder().applicationComponent(applicationComponent).build().inject(this);
     }
 
     @Override

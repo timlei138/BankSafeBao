@@ -26,6 +26,4 @@ public interface ApplicationComponent {
     LocalDataManager getLocalDataManager();
 
 
-
-
 }

@@ -8,7 +8,7 @@ import com.android.bsb.AppApplication;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
-import com.android.bsb.component.DaggerHttpComponent;
+import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.ui.home.MainActivity;
 import com.android.bsb.util.AppLogger;
@@ -23,7 +23,7 @@ public class SplashActivity extends BaseActivity<LoginPersenter> implements Logi
 
     @Override
     protected void initInjector(ApplicationComponent applicationComponent) {
-        DaggerHttpComponent.builder().applicationComponent(applicationComponent).
+        DaggerAppComponent.builder().applicationComponent(applicationComponent).
                 build().inject(this);
     }
 

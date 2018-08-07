@@ -14,7 +14,7 @@ import com.android.bsb.ui.user.UserManagerFragment;
 import dagger.Component;
 
 @Component(dependencies = ApplicationComponent.class)
-public interface HttpComponent {
+public interface AppComponent {
 
     void inject(LoginActivity activity);
 
