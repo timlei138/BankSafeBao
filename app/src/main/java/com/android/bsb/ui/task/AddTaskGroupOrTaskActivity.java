@@ -183,11 +183,19 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskPresenter> impl
                 Toast.makeText(getBaseContext(),"请填写任务组信息",Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            if(mPeddingTaskList == null || mPeddingTaskList.size() <=0){
+                Toast.makeText(getBaseContext(),"请添加任务信息",Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             mSelectedTaskGroupInfo = new TaskGroupInfo();
             mSelectedTaskGroupInfo.setGroupName(groupTitle);
             mSelectedTaskGroupInfo.setGroupDesc(desc);
             mSelectedTaskGroupInfo.setTaskList(mPeddingTaskList);
         }
+
+
 
         if(isAddTaskToExistsGroup){
             List<String> peddingString = new ArrayList<>();

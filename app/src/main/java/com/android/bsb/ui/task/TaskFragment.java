@@ -154,11 +154,7 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
         }else if(item.getItemId() == R.id.action_edit){
             isMutiSelect = !isMutiSelect;
             mAdapter.setMultiiSelect(isMutiSelect);
-            if(isMutiSelect){
-                mAllsubmatBtn.setVisibility(View.VISIBLE);
-            }else{
-                mAllsubmatBtn.setVisibility(View.GONE);
-            }
+            updateSubmitButton();
 
         }
     }
@@ -206,8 +202,11 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
     @Override
     public void submitTaskResult(boolean success) {
         if(success){
-            //Toast.makeText(getContext(),"")
+            isMutiSelect = false;
+            mAdapter.setMultiiSelect(isMutiSelect);
+            updateView(true);
         }
+        updateSubmitButton();
     }
 
     @Override
@@ -217,7 +216,15 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
 
     @Override
     public void onFaildCodeMsg(int code, String msg) {
+        updateView(false);
+    }
 
+    private void updateSubmitButton(){
+        if(isMutiSelect){
+            mAllsubmatBtn.setVisibility(View.VISIBLE);
+        }else{
+            mAllsubmatBtn.setVisibility(View.GONE);
+        }
     }
 
 
@@ -244,7 +251,18 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
             intent.putExtra("processId",info.getProcessId());
             double[] geos = mLocationService.getLocation();
             intent.putExtra("geo",""+geos[0]+""+geos[1]);
-            startActivity(intent);
+            startActivityForResult(intent,1000);
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(isMutiSelect){
+            isMutiSelect = false;
+            mAdapter.setMultiiSelect(isMutiSelect);
+        }
+        updateView(true);
+        updateSubmitButton();
+    }
 }

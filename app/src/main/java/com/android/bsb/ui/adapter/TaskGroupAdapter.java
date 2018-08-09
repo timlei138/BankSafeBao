@@ -203,7 +203,7 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupHolder> {
                 childViewHolder.mOptions.setVisibility(View.GONE);
             }
 
-            if (isMultiSelected) {
+            if (isMultiSelected && !(data.isDoneTask() || data.isFailTask())) {
                 childViewHolder.mCheckBox.setVisibility(View.VISIBLE);
                 childViewHolder.mCheckBox.setTag(item);
                 childViewHolder.mCheckBox.setOnClickListener(checkItemClickListener);
@@ -356,7 +356,13 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupHolder> {
                 if (mSelectedList.containsKey(groupInfo.getGroupId())) {
                     mSelectedList.remove(groupInfo.getGroupId());
                 } else {
-                    mSelectedList.put(groupInfo.getGroupId(),groupInfo.getTaskList());
+                    List<TaskInfo> unOptionList = new ArrayList<>();
+                    for (TaskInfo info : groupInfo.getTaskList()){
+                        if(!(info.isDoneTask() || info.isFailTask())){
+                            unOptionList.add(info);
+                        }
+                    }
+                    mSelectedList.put(groupInfo.getGroupId(),unOptionList);
                 }
                 notifyDataSetChanged();
             } else if (item.getViewType() == VIEW_TYPE_CHILD) {

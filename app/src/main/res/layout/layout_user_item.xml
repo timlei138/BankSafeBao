@@ -3,7 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:minHeight="?android:attr/listPreferredItemHeight">
     <TextView
         android:id="@+id/tv_username"
         android:layout_width="match_parent"
@@ -16,7 +20,7 @@
         android:id="@+id/tv_deptname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
         android:textSize="16sp"
         android:text="罩衫银行才多大"/>
 

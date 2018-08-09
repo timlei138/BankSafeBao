@@ -24,16 +24,11 @@ import android.widget.TextView;
 
 import com.android.bsb.AppApplication;
 import com.android.bsb.R;
-import com.android.bsb.ui.home.MainActivity;
-import com.android.bsb.ui.login.LoginActivity;
 import com.android.bsb.ui.login.SplashActivity;
 import com.android.bsb.util.SharedProvider;
 import com.tencent.bugly.beta.Beta;
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
-
-    Preference mClearDataPref;
-    Preference mLoginOutPref;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +85,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         View view = inflater.inflate(R.layout.layout_about,null);
         TextView tvVersion = view.findViewById(R.id.version);
         tvVersion.setText(getVersion());
-        View upgrade = view.findViewById(R.id.checkUpgrade);
+        View upgrade = view.findViewById(R.id.checkupgrade);
         upgrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

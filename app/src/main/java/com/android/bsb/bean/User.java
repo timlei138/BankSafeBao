@@ -50,6 +50,17 @@ public class User implements Parcelable {
 
     public User(){}
 
+    public User(User user){
+        this.uid = user.uid;
+        this.loginName = user.loginName;
+        this.cellpahone = user.cellpahone;
+        this.uname = user.uname;
+        this.role = user.role;
+        this.roleName = user.roleName;
+        this.deptCode = user.deptCode;
+        this.deptName = user.deptName;
+    }
+
     public User(String accountStr){
         String[] args = accountStr.split(":");
 

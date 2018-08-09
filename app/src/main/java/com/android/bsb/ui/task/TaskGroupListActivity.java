@@ -111,12 +111,12 @@ public class TaskGroupListActivity extends BaseActivity<TaskPresenter> implement
         mTaskGroupList = new HashMap<>();
         mTaskGroupList.clear();
         List<TaskAdapterItem> items = new ArrayList<>(groups.size());
-
         for (TaskGroupInfo group : groups){
-            AppLogger.LOGD("","subSize:"+group.getTaskList().size());
-            for (TaskInfo info : group.getTaskList()){
-                info.setTaskGroupId(group.getGroupId());
-
+            //AppLogger.LOGD("","subSize:"+group.getTaskList().size());
+            if(group.getTaskList() != null){
+                for (TaskInfo info : group.getTaskList()){
+                    info.setTaskGroupId(group.getGroupId());
+                }
             }
             mTaskGroupList.put(group.getGroupId(),group);
 

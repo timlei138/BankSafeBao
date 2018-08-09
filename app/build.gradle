@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def  releaseTime(){
+    return new Date().format("yyyyMMdd",TimeZone.getTimeZone("UTC"))
+}
 
 android {
     compileSdkVersion 27
@@ -21,6 +24,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all {
+                variant->
+                    variant.outputs.all {
+                        outputFileName = "BankSafeBao_${variant.buildType.name}_${variant.versionName}-${releaseTime()}.apk"
+                    }
+            }
+
         }
     }
 }
