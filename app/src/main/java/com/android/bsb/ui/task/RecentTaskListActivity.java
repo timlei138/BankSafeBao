@@ -8,13 +8,16 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.android.bsb.R;
+import com.android.bsb.bean.EntryData;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.ui.adapter.RecentItem;
+import com.android.bsb.ui.adapter.RecentItemDecoration;
 import com.android.bsb.ui.adapter.RecentTaskAdapter;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.util.AppLogger;
 import com.android.bsb.util.TimeUtils;
+import com.android.bsb.widget.ChartView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +38,8 @@ public class RecentTaskListActivity extends BaseActivity {
     RecyclerView mRecentList;
     @BindView(R.id.toolbar)
     Toolbar mToolsBar;
+    @BindView(R.id.ChartView)
+    ChartView mChartView;
 
     private RecentTaskAdapter mRecentAdapter;
 
@@ -62,7 +67,7 @@ public class RecentTaskListActivity extends BaseActivity {
                 LinearLayoutManager.VERTICAL, false);
         mRecentList.setLayoutManager(linearLayoutManager);
 
-        mRecentList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mRecentList.addItemDecoration(new RecentItemDecoration());
 
         mRecentList.setAdapter(mRecentAdapter);
         mRecents = getIntent().getParcelableArrayListExtra(BaseActivity.EXTRA_DATALIST);
@@ -102,6 +107,18 @@ public class RecentTaskListActivity extends BaseActivity {
                         mRecentAdapter.setList(recentItems);
                     }
                 });
+
+
+        List<EntryData> list = new ArrayList<>();
+        list.add(new EntryData("8/24",1290f));
+        list.add(new EntryData("8/25",3200f));
+        list.add(new EntryData("8/26",12000f));
+        list.add(new EntryData("8/27",4089f));
+        list.add(new EntryData("8/28",19008f));
+        list.add(new EntryData("8/29",46f));
+        list.add(new EntryData("8/30",100f));
+
+        mChartView.setData(list);
 
 
     }

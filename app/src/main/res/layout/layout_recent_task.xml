@@ -15,21 +15,33 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:titleTextColor="#ffffff" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.android.bsb.widget.ChartView
+            android:id="@+id/ChartView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectbackground"
+            app:label_color="@color/ColorBackgroundDark"
+            app:label_size="12sp"
+            app:data_color="@color/ColorBackgroundDark"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recentList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_height="0dp"
             android:minWidth="120dp"/>
 
         <include
             layout="@layout/layout_common_empty"/>
 
-    </FrameLayout>
+    </LinearLayout>
 
 
 

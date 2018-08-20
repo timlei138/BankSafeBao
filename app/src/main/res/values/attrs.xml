@@ -3,4 +3,10 @@
     <declare-styleable name="EmptyLayout">
         <attr name="empty_background" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="ChartView">
+        <attr name="label_color" format="color"/>
+        <attr name="label_size" format="dimension"/>
+        <attr name="data_color" format="color"/>
+    </declare-styleable>
 </resources>

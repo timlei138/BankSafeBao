@@ -1,4 +1,4 @@
-package com.android.bsb.ui.task;
+package com.android.bsb.ui.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;

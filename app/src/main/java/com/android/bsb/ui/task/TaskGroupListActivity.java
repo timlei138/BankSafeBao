@@ -3,7 +3,6 @@ package com.android.bsb.ui.task;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +18,7 @@ import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.adapter.TaskAdapterItem;
 import com.android.bsb.ui.adapter.TaskGroupAdapter;
+import com.android.bsb.ui.adapter.TaskListItemDecoration;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.util.AppLogger;
 

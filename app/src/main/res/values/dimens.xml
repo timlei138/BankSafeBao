@@ -17,4 +17,9 @@
 
     <dimen name="date_picker_dialog_padding">3dp</dimen>
 
+    <dimen name="chart_minsize">120dp</dimen>
+
+    <dimen name="chart_padding_leftright">10dp</dimen>
+    <dimen name="chart_paddingtopbottom">5dp</dimen>
+
 </resources>
