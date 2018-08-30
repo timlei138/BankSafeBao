@@ -5,6 +5,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.android.bsb.R;
@@ -110,19 +111,28 @@ public class RecentTaskListActivity extends BaseActivity {
 
 
         List<EntryData> list = new ArrayList<>();
-        list.add(new EntryData("8/24",1290f));
-        list.add(new EntryData("8/25",3200f));
-        list.add(new EntryData("8/26",12000f));
-        list.add(new EntryData("8/27",4089f));
-        list.add(new EntryData("8/28",19008f));
-        list.add(new EntryData("8/29",46f));
-        list.add(new EntryData("8/30",100f));
+        list.add(new EntryData("周一",3000f));
+        list.add(new EntryData("周二",2200f));
+        list.add(new EntryData("周三",19999f));
+        list.add(new EntryData("周四",6780f));
+        list.add(new EntryData("周五",15656f));
+        list.add(new EntryData("周六",12000f));
+        list.add(new EntryData("周天",4089f));
 
-        mChartView.setData(list);
+
+        mChartView.setData("2018/8/21至2018/8/27",list);
 
 
     }
 
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+
+
+        return super.onTouchEvent(event);
+    }
 
     private List<RecentItem> getRecentList(){
         //分类
