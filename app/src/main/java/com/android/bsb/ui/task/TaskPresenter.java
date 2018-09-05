@@ -14,6 +14,7 @@ import com.android.bsb.ui.base.IBasePresent;
 import com.android.bsb.util.AppLogger;
 import com.android.bsb.util.ImageUtils;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import io.objectbox.Box;
@@ -110,7 +111,7 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                     @Override
                     public void onRequestNext(Object o) {
                         Log.d("demo", "");
-                        mView.submitTaskResult(true);
+                        mView.submitTaskResult(true,null,null);
                     }
 
                     @Override
@@ -144,7 +145,7 @@ public class TaskPresenter extends IBasePresent<TaskView> {
     }
 
 
-    public void feedbackErrorTaskResult(final int processId, List<String> files, final int errorRank,
+    public void feedbackErrorTaskResult(final int processId, final List<String> files, final int errorRank,
                                         final String errorMsg, final String geographic) {
         final User login = mView.getLoginUser();
         Observable.fromArray(files)
@@ -199,7 +200,9 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                             box.put(result);
                         }
                         mView.hideProgress();
-                        mView.submitTaskResult(true);
+                        List<Integer> ids = new ArrayList<>();
+                        ids.add(processId);
+                        mView.submitTaskResult(true,ids,files);
 
                     }
 
@@ -212,7 +215,7 @@ public class TaskPresenter extends IBasePresent<TaskView> {
     }
 
 
-    public void feedbackNormalTaskList(List<Integer> ids, List<String> geos) {
+    public void feedbackNormalTaskList(final List<Integer> ids, List<String> geos) {
         User login = mView.getLoginUser();
         mApis.taskProcessResult(login.getUid(), ids, geos)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -220,7 +223,7 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                 .subscribe(new CommObserver<String>() {
                     @Override
                     public void onRequestNext(String s) {
-                        mView.submitTaskResult(true);
+                        mView.submitTaskResult(true,ids,null);
                     }
 
                     @Override

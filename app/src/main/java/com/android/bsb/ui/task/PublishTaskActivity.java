@@ -146,7 +146,7 @@ public class PublishTaskActivity extends BaseActivity<TaskPresenter> implements 
     }
 
     @Override
-    public void submitTaskResult(boolean success) {
+    public void submitTaskResult(boolean success,List ids,List imgs) {
         if(success){
             Toast.makeText(getContext(),"发布成功！",Toast.LENGTH_SHORT).show();
             finish();

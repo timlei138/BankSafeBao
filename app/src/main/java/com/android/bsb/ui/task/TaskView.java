@@ -16,7 +16,7 @@ public interface TaskView extends IBaseView {
     void showTaskGroupList(List<TaskGroupInfo> groups);
 
     //结果反馈
-    void submitTaskResult(boolean success);
+    void submitTaskResult(boolean success,List ids,List<String> img);
 
     //显示所有历史列表
     void showAllProcessTaskResult(List<CheckTaskInfo> recents);

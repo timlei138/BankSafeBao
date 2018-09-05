@@ -179,7 +179,7 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
     }
 
     @Override
-    public void submitTaskResult(boolean success) {
+    public void submitTaskResult(boolean success,List ids,List imgs) {
         if(success){
             Toast.makeText(getBaseContext(),"任务提交成功",Toast.LENGTH_SHORT).show();
             finish();

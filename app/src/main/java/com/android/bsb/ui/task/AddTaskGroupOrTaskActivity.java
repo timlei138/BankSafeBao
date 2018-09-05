@@ -224,7 +224,7 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskPresenter> impl
     }
 
     @Override
-    public void submitTaskResult(boolean success) {
+    public void submitTaskResult(boolean success,List ids,List imgs) {
         if(success){
             Toast.makeText(getContext(),"添加任务成功",Toast.LENGTH_SHORT).show();
             finish();

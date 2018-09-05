@@ -133,7 +133,7 @@ public class TaskGroupListActivity extends BaseActivity<TaskPresenter> implement
     }
 
     @Override
-    public void submitTaskResult(boolean success) {
+    public void submitTaskResult(boolean success,List ids,List imgs) {
 
     }
 

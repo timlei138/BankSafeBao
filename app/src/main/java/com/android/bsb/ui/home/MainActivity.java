@@ -252,10 +252,6 @@ public class MainActivity extends BaseActivity<MainPersenter>
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }else if(stackEntryCount ==1){
-            if(isBindService){
-                unbindService(mStepServiceConn);
-            }
-
             exitApp();
         } else {
             String tagName = getSupportFragmentManager().getBackStackEntryAt(stackEntryCount -2).getName();
@@ -264,6 +260,8 @@ public class MainActivity extends BaseActivity<MainPersenter>
             super.onBackPressed();
         }
     }
+
+
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -316,4 +314,12 @@ public class MainActivity extends BaseActivity<MainPersenter>
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppLogger.LOGD(TAG,"onDestory");
+        if(isBindService && mStepServiceConn != null){
+            unbindService(mStepServiceConn);
+        }
+    }
 }

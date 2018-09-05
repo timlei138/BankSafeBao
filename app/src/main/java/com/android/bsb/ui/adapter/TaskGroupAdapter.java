@@ -172,6 +172,44 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupHolder> {
         notifyItemInserted(position);
     }
 
+
+    public void updateItemsResult(List<Integer> ids,List<String> imgs){
+        int position = 0;
+        if(imgs != null){
+            int processId = ids.get(0);
+            int i =0;
+            for (TaskAdapterItem item : mItemList){
+                if(item.getViewType() == VIEW_TYPE_CHILD){
+                    TaskInfo data = (TaskInfo) item.getData();
+                    if(data.getProcessId() == processId){
+                        //data.setResult();
+                        break;
+                    }
+                }
+                i++;
+            }
+            notifyItemChanged(position);
+        }
+
+        if(ids != null && imgs == null){
+            for (Integer processId : ids){
+                int j = 0;
+                for (TaskAdapterItem item : mItemList){
+                    if(item.getViewType() == VIEW_TYPE_CHILD){
+                        TaskInfo child = (TaskInfo) item.getData();
+                        if(child.getProcessId() == processId){
+                            position = j;
+                            break;
+                        }
+                    }
+                    j++;
+                }
+                notifyItemChanged(position);
+            }
+        }
+
+    }
+
     public void addItem(int position, int groupId, List<TaskAdapterItem> list) {
         mItemList.addAll(position, list);
         msubMaps.put(groupId, list);

@@ -174,12 +174,14 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
         mAdapter.setItemList(items);
     }
 
+
     @Override
-    public void submitTaskResult(boolean success) {
+    public void submitTaskResult(boolean success,List ids,List<String> imgs) {
         if(success){
             isMutiSelect = false;
             mAdapter.setMultiiSelect(isMutiSelect);
-            updateView(true);
+            //updateView(true);
+            mAdapter.updateItemsResult(ids,imgs);
         }
         updateSubmitButton();
     }

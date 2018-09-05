@@ -71,7 +71,7 @@ public class CheckUsersFragment extends BaseFragment<TaskPresenter> implements T
     }
 
     @Override
-    public void submitTaskResult(boolean success) {
+    public void submitTaskResult(boolean success,List ids,List imgs) {
 
     }
 
