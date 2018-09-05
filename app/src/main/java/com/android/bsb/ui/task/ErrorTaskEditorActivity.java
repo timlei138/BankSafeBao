@@ -121,7 +121,7 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
-        paddingSize = getResources().getDimensionPixelSize(R.dimen.image_padding);
+        paddingSize = getResources().getDimensionPixelSize(R.dimen.image_padding_left);
         imageHeight = screenHeight / 3;
         imageWidth = screenWidth / 3 - 2 * paddingSize;
 

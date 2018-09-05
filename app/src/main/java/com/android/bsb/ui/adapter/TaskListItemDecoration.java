@@ -41,7 +41,7 @@ public class TaskListItemDecoration extends RecyclerView.ItemDecoration {
         //super.onDraw(c, parent, state);
 
         //if(parent.getChildViewHolder())
-        drawVertical(c,parent);
+        //drawVertical(c,parent);
 
     }
 
@@ -92,8 +92,6 @@ public class TaskListItemDecoration extends RecyclerView.ItemDecoration {
             outRect.set(0, 0, 0, 0);
             return;
         }
-
-       // super.getItemOffsets(outRect, view, parent, state);
     }
 
 

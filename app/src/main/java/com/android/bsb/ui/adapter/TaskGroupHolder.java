@@ -120,6 +120,8 @@ public class TaskGroupHolder extends RecyclerView.ViewHolder{
         TextView mErrorDesc;
         @BindView(R.id.error_imagelayout)
         LinearLayout mErrorImageLayout;
+        @BindView(R.id.location)
+        TextView mLocationInfo;
         public ChildViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

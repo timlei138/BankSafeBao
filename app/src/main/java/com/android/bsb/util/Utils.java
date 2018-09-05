@@ -1,6 +1,7 @@
 package com.android.bsb.util;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
@@ -91,6 +92,16 @@ public class Utils {
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.widthPixels;
+    }
+
+
+
+    public static boolean hasSupportCounterStep(Context context){
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER);
+    }
+
+    public static boolean hasSupportDetectorStep(Context context){
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_DETECTOR);
     }
 
 }

@@ -11,7 +11,7 @@
     <dimen name="error_imge_width">80dp</dimen>
     <dimen name="error_image_height">80dp</dimen>
 
-    <dimen name="image_padding">8dp</dimen>
+    <dimen name="image_padding_left">4dp</dimen>
 
     <dimen name="week_background_size">35dp</dimen>
 
@@ -21,5 +21,6 @@
 
     <dimen name="chart_padding_leftright">10dp</dimen>
     <dimen name="chart_paddingtopbottom">5dp</dimen>
+
 
 </resources>

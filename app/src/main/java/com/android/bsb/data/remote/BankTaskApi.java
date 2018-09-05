@@ -125,7 +125,13 @@ public class BankTaskApi {
 
 
     public Observable<String> taskErrorPrcessResult(int uid, int processId, List<File> files,int errorRank,String errorMsg,String geo){
-        return mService.taskErrorResult(uid,processId,errorMsg,errorRank,geo,filesToMultipartBodyParts(files))
+        Map<String,RequestBody> map = new HashMap<>();
+        map.put("loginId",toRequestBody(String.valueOf(uid)));
+        map.put("processId",toRequestBody(String.valueOf(processId)));
+        map.put("errormsg",toRequestBody(errorMsg));
+        map.put("errorrank",toRequestBody(String.valueOf(errorRank)));
+        map.put("geographic",toRequestBody(geo));
+        return mService.taskErrorResult(map,filesToMultipartBodyParts(files))
                 .map(new ServerResultFunc())
                 .onErrorResumeNext(new HttpResultFunc())
                 .subscribeOn(Schedulers.io());
@@ -143,6 +149,12 @@ public class BankTaskApi {
                 .map(new ServerResultFunc<List<CheckTaskInfo>>())
                 .onErrorResumeNext(new HttpResultFunc<List<CheckTaskInfo>>())
                 .subscribeOn(Schedulers.io());
+    }
+
+
+    public static RequestBody toRequestBody(String value){
+        RequestBody body = RequestBody.create(MediaType.parse("text/plain"),value);
+        return body;
     }
 
 

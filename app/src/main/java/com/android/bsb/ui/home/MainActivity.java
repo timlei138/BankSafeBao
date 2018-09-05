@@ -1,7 +1,10 @@
 package com.android.bsb.ui.home;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 import android.support.design.widget.NavigationView;
@@ -21,6 +24,8 @@ import com.android.bsb.AppApplication;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
+import com.android.bsb.service.StepService;
+import com.android.bsb.step.UpdateUiCallBack;
 import com.android.bsb.ui.base.BaseActivity;
 import com.android.bsb.ui.base.BaseFragment;
 import com.android.bsb.ui.setting.SettingsActivity;
@@ -52,6 +57,10 @@ public class MainActivity extends BaseActivity<MainPersenter>
     TextView mDeptName;
 
     private String TAG = getClass().getSimpleName();
+
+    private boolean isBindService;
+
+    private ServiceConnection mStepServiceConn;
 
     private SparseArray<String> mSparsesTags = new SparseArray<>();
 
@@ -173,6 +182,7 @@ public class MainActivity extends BaseActivity<MainPersenter>
             mSparsesTags.remove(R.id.nav_manageruser);
             mSparsesTags.remove(R.id.nav_taskcheck);
             mSparsesTags.remove(R.id.nav_managertask);
+            setupStepService();
         }
     }
 
@@ -204,6 +214,33 @@ public class MainActivity extends BaseActivity<MainPersenter>
 
     }
 
+
+    private void setupStepService(){
+        Intent intent = new Intent(this,StepService.class);
+
+        mStepServiceConn = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                StepService stepService = ((StepService.StepBinder)service).getService();
+                stepService.getStepCount();
+                stepService.registerCallback(new UpdateUiCallBack() {
+                    @Override
+                    public void updateUi(int stepCount) {
+                        AppLogger.LOGD(TAG,"stepCount:"+stepCount);
+                    }
+                });
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+
+        isBindService = bindService(intent,mStepServiceConn,BIND_AUTO_CREATE);
+        startService(intent);
+    }
+
     protected void updateToolsBar(int res) {
         String title = getString(res);
         mToolbar.setTitle(title);
@@ -215,6 +252,10 @@ public class MainActivity extends BaseActivity<MainPersenter>
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }else if(stackEntryCount ==1){
+            if(isBindService){
+                unbindService(mStepServiceConn);
+            }
+
             exitApp();
         } else {
             String tagName = getSupportFragmentManager().getBackStackEntryAt(stackEntryCount -2).getName();

@@ -14,7 +14,7 @@ public class TaskGroupInfo implements Parcelable {
     public static final int TYPE_NONE= - 1;
     public static final int TYPE_CREATE = -2;
 
-    @SerializedName("id")
+    @SerializedName("groupid")
     private int groupId;
 
     @SerializedName("title")

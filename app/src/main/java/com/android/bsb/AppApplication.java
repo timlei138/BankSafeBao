@@ -10,6 +10,7 @@ import com.android.bsb.component.DaggerApplicationComponent;
 import com.android.bsb.module.ApplicationModule;
 import com.android.bsb.module.HttpModule;
 import com.android.bsb.module.LocalDataModule;
+import com.android.bsb.service.LocationService;
 import com.android.bsb.ui.AppActivityManager;
 import com.android.bsb.util.SharedProvider;
 import com.tencent.bugly.Bugly;
@@ -27,6 +28,8 @@ public class AppApplication extends Application {
 
     private static AppActivityManager mActivityManager;
 
+    private static LocationService mLocationService;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -38,6 +41,9 @@ public class AppApplication extends Application {
                 .build();
         mActivityManager = AppActivityManager.getInstance();
         Bugly.init(getApplicationContext(), "48eac4f88c", false);
+
+        mLocationService = new LocationService(getApplicationContext());
+
     }
 
 
@@ -54,6 +60,11 @@ public class AppApplication extends Application {
 
     public static ApplicationComponent getApplicationComponent() {
         return mApplicationComponent;
+    }
+
+
+    public static LocationService getLocationService(){
+        return mLocationService;
     }
 
     public static Context getContext(){

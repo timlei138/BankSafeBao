@@ -9,7 +9,7 @@ public class NetComm {
 
     public static final String KEY_IP = "IP_CONFIG";
 
-    private static  String IP = "47.104.77.108" ;
+    private static  String IP = "47.52.130.61" ;
 
     private static  String PORT = "8080";
 

@@ -19,6 +19,9 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+
 
 
     <application
@@ -29,6 +32,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--Baidu location sdk meta data-->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="vajR72DH3WA4qjO8pNf7F1DKAEdNbsft"/>
+
         <activity
             android:name=".ui.login.SplashActivity"
             android:label="@string/app_name"
@@ -102,8 +111,40 @@
                 android:resource="@xml/files" />
         </provider>
 
-        <service android:name=".service.LocationService"
-            android:exported="false" />
+
+        <service android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"/>
+
+        <service
+            android:name=".service.StepService"
+            android:priority="1000">
+            <intent-filter>
+                <!-- 系统启动完成后会调用-->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.ACTION_TIME_TICK" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".service.StepsDetectService"
+            android:priority="1000"
+            android:process=":StepsDetectService">
+            <intent-filter>
+                <!-- 系统启动完成后会调用-->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.ACTION_TIME_TICK" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </service>
 
     </application>
 

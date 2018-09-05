@@ -17,4 +17,5 @@ public class AppComm {
     public static final int ROLE_TYPE_POSTMAN = 2;
 
     public static final int ROLE_TYPE_SECURITY = 3;
+
 }

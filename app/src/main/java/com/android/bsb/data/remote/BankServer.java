@@ -1,25 +1,22 @@
 package com.android.bsb.data.remote;
 
 import com.android.bsb.bean.CheckTaskInfo;
+import com.android.bsb.bean.StepData;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.User;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
-import retrofit2.http.Query;
 
 public interface BankServer {
 
@@ -111,7 +108,11 @@ public interface BankServer {
     @Multipart
     Observable<BaseResultEntity<String>> taskErrorResult(@Part("loginId") int loginId, @Part("processId")int processId,
                                                  @Part("errormsg")String errormsg, @Part("errorrank") int errorRank,
-                                                 @Part("geographic")String geographic,@Part() List<MultipartBody.Part> parts);
+                                                 @Part("geographic")String geographic,@Part List<MultipartBody.Part> parts);
+
+    @POST("taskErrorResult")
+    @Multipart
+    Observable<BaseResultEntity<String>> taskErrorResult(@PartMap Map<String,RequestBody> map,@Part List<MultipartBody.Part> parts);
 
     /**
      * 安保人员提交 正常任务 检查结果
@@ -135,6 +136,15 @@ public interface BankServer {
     @POST("queryProcessResult")
     @FormUrlEncoded
     Observable<BaseResultEntity<List<CheckTaskInfo>>> queryTaskProcessResult(@Field("startTime") long start, @Field("endTime") long end , @Field("deptId") int deptId);
+
+    /**
+     * 获取步数信息
+     * @param uid
+     * @param time
+     * @param endtime
+     * @return
+     */
+    Observable<BaseResultEntity<List<StepData>>> querySetupList(@Field("uid")int uid, @Field("starttime")long time, @Field("endtime")long endtime);
 
 
 }

@@ -2,7 +2,9 @@ package com.android.bsb.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
+import com.android.bsb.util.AppLogger;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Arrays;
@@ -48,6 +50,8 @@ public class TaskInfo implements Parcelable {
     String errImages;
     @SerializedName("errorrank")
     private String errorRank;
+    @SerializedName("geographic")
+    private String geographic;
 
 
     public int getTaskId() {
@@ -122,6 +126,7 @@ public class TaskInfo implements Parcelable {
         dest.writeString(this.result);
         dest.writeLong(this.beginDate);
         dest.writeString(this.errImages);
+        dest.writeString(this.geographic);
     }
 
     public TaskInfo() {
@@ -135,6 +140,7 @@ public class TaskInfo implements Parcelable {
         this.result = in.readString();
         this.beginDate = in.readLong();
         this.errImages = in.readString();
+        this.geographic = in.readString();
     }
 
     public static final Parcelable.Creator<TaskInfo> CREATOR = new Parcelable.Creator<TaskInfo>() {
@@ -171,6 +177,31 @@ public class TaskInfo implements Parcelable {
 
     public void setErrorRank(String errorRank) {
         this.errorRank = errorRank;
+    }
+
+    public String getGeographic() {
+        return geographic;
+    }
+
+    public void setGeographic(String geographic) {
+        this.geographic = geographic;
+    }
+
+    public String getGeographicInfo(){
+        String addr = "未知位置";
+        if(TextUtils.isEmpty(this.geographic)){
+            return addr;
+        }
+        String[] splits = geographic.split("#");
+        for (String str : splits){
+            if(str.contains("addr")){
+                String[] loc = str.split(":");
+                addr = loc[1];
+                break;
+            }
+        }
+        return addr;
+
     }
 
     @Override
