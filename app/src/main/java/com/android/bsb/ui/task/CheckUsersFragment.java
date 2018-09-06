@@ -20,6 +20,7 @@ import com.android.bsb.ui.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -71,7 +72,7 @@ public class CheckUsersFragment extends BaseFragment<TaskPresenter> implements T
     }
 
     @Override
-    public void submitTaskResult(boolean success,List ids,List imgs) {
+    public void submitTaskResult(boolean success, Map ids, TaskInfo info) {
 
     }
 

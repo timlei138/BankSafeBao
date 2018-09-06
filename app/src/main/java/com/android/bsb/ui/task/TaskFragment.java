@@ -1,6 +1,7 @@
 package com.android.bsb.ui.task;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.AppCompatButton;
@@ -55,6 +56,8 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
     private LocationService mLocationService;
 
     private StringBuffer locBuff = new StringBuffer();
+
+    private TaskInfo mTmpInfo;
 
 
     @Override
@@ -176,12 +179,11 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
 
 
     @Override
-    public void submitTaskResult(boolean success,List ids,List<String> imgs) {
+    public void submitTaskResult(boolean success,Map<Integer,String> ids,TaskInfo error) {
         if(success){
             isMutiSelect = false;
             mAdapter.setMultiiSelect(isMutiSelect);
-            //updateView(true);
-            mAdapter.updateItemsResult(ids,imgs);
+            mAdapter.updateItemsResult(ids,error);
         }
         updateSubmitButton();
     }
@@ -211,12 +213,16 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
             ids.add(info.getProcessId());
             List<String> geos = new ArrayList<>();
             geos.add(locBuff.toString());
+            mTmpInfo = info;
+            mTmpInfo.setGeographic(locBuff.toString());
             mPresenter.feedbackNormalTaskList(ids,geos);
         }
 
         @Override
         public void onOptionsError(TaskInfo info) {
             Intent intent = new Intent();
+            mTmpInfo = info;
+            mTmpInfo.setGeographic(locBuff.toString());
             intent.setClass(getContext(), ErrorTaskEditorActivity.class);
             intent.putExtra("processId",info.getProcessId());
             intent.putExtra("geo",locBuff.toString());
@@ -231,7 +237,20 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
             isMutiSelect = false;
             mAdapter.setMultiiSelect(isMutiSelect);
         }
-        updateView(true);
+        if(requestCode == 1000 && resultCode == Activity.RESULT_OK){
+            List<String> imagesList = data.getStringArrayListExtra("images");
+            mTmpInfo.setErrMsg(data.getStringExtra("msg"));
+            mTmpInfo.setErrorRank(""+data.getIntExtra("rank",0));
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("local:");
+            for (String image : imagesList){
+                buffer.append(image);
+                buffer.append(",");
+            }
+            mTmpInfo.setErrImages(buffer.toString());
+            mAdapter.updateItemsResult(null,mTmpInfo);
+
+        }
         updateSubmitButton();
     }
 

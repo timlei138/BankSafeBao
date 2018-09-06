@@ -36,6 +36,7 @@ import com.android.bsb.GlideApp;
 import com.android.bsb.R;
 import com.android.bsb.bean.CheckTaskInfo;
 import com.android.bsb.bean.TaskGroupInfo;
+import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.ui.base.BaseActivity;
@@ -55,6 +56,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -78,7 +80,7 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
 
     private int mProcessId;
 
-    private List<String> imageList = new ArrayList<>();
+    private ArrayList<String> imageList = new ArrayList<>();
 
     private final int REQUEST_PICKER_IMAGES = 1;
 
@@ -94,6 +96,10 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
     private View addView;
 
     private String geoStr;
+
+    private int errorRank = 0;
+
+    private String errorDesc;
 
 
     @Override
@@ -155,14 +161,14 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
             Toast.makeText(getBaseContext(),"请填写异常说明！",Toast.LENGTH_SHORT).show();
             return false;
         }
+        errorDesc = errStr;
         int rankId = mRankGroup.getCheckedRadioButtonId();
-        int errorRank = 0;
+
         if(rankId == R.id.radio_serverity){
             errorRank = 1;
         }else if(rankId == R.id.radio_urgent){
             errorRank = 2;
         }
-
         mPresenter.feedbackErrorTaskResult(mProcessId,imageList,errorRank,errStr,geoStr);
         return super.onOptionsItemSelected(item);
     }
@@ -179,9 +185,14 @@ public class ErrorTaskEditorActivity extends BaseActivity<TaskPresenter> impleme
     }
 
     @Override
-    public void submitTaskResult(boolean success,List ids,List imgs) {
+    public void submitTaskResult(boolean success, Map<Integer,String> normal, TaskInfo error) {
         if(success){
             Toast.makeText(getBaseContext(),"任务提交成功",Toast.LENGTH_SHORT).show();
+            Intent resultIntent = new Intent();
+            resultIntent.putStringArrayListExtra("images",imageList);
+            resultIntent.putExtra("rank",errorRank);
+            resultIntent.putExtra("msg",errorDesc);
+            setResult(RESULT_OK,resultIntent);
             finish();
         }else{
             Toast.makeText(getBaseContext(),"任务提交失败，请稍后再试！",Toast.LENGTH_SHORT).show();

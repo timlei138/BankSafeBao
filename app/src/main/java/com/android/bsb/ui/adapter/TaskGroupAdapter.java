@@ -173,36 +173,42 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupHolder> {
     }
 
 
-    public void updateItemsResult(List<Integer> ids,List<String> imgs){
+    public void updateItemsResult(Map<Integer,String> idgeos,TaskInfo error){
         int position = 0;
-        if(imgs != null){
-            int processId = ids.get(0);
+        if(error != null){
+            int processId = error.getProcessId();
             int i =0;
             for (TaskAdapterItem item : mItemList){
                 if(item.getViewType() == VIEW_TYPE_CHILD){
                     TaskInfo data = (TaskInfo) item.getData();
                     if(data.getProcessId() == processId){
-                        //data.setResult();
+                        error.setResult("03");
+                        item.setData(error);
+                        position = i;
                         break;
                     }
                 }
                 i++;
             }
             notifyItemChanged(position);
-        }
-
-        if(ids != null && imgs == null){
-            for (Integer processId : ids){
-                int j = 0;
+        }else if(error == null && idgeos != null){
+            for (Map.Entry<Integer,String> entry : idgeos.entrySet()){
+                int processId = entry.getKey();
+                String geo = entry.getValue();
+                int i = 0;
                 for (TaskAdapterItem item : mItemList){
                     if(item.getViewType() == VIEW_TYPE_CHILD){
-                        TaskInfo child = (TaskInfo) item.getData();
-                        if(child.getProcessId() == processId){
-                            position = j;
+                        TaskInfo tmp  = ((TaskInfo)item.getData());
+                        if(tmp.getProcessId() == processId){
+                            tmp.setResult("02");
+                            tmp.setGeographic(geo);
+                            item.setData(tmp);
+                            position = i;
                             break;
                         }
                     }
-                    j++;
+                    i++;
+
                 }
                 notifyItemChanged(position);
             }
@@ -383,14 +389,23 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupHolder> {
     private void updateErrorImages(LinearLayout group, String errimgs) {
         group.setVisibility(View.VISIBLE);
         group.removeAllViews();
+        boolean islocalImage = false;
+        if(errimgs.startsWith("local:")){
+            islocalImage = true;
+            errimgs = errimgs.substring(errimgs.indexOf(":")+1);
+        }
+
         int indexspile = errimgs.indexOf(",");
         List<String> images = new ArrayList<>();
         if (indexspile == -1) {
-            images.add(NetComm.getImageHost() + errimgs);
+            images.add(islocalImage ? errimgs:NetComm.getImageHost() + errimgs);
         } else {
             String[] imgs = errimgs.split(",");
             for (String url : imgs) {
-                images.add(NetComm.getImageHost() + url);
+                if(TextUtils.isEmpty(url)){
+                    continue;
+                }
+                images.add(islocalImage ? url : NetComm.getImageHost() + url);
             }
         }
         int paddingLeft = mContext.getResources().getDimensionPixelOffset(R.dimen.image_padding_left);

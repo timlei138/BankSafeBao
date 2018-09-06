@@ -31,6 +31,7 @@ import com.android.bsb.util.AppLogger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -224,7 +225,7 @@ public class AddTaskGroupOrTaskActivity extends BaseActivity<TaskPresenter> impl
     }
 
     @Override
-    public void submitTaskResult(boolean success,List ids,List imgs) {
+    public void submitTaskResult(boolean success, Map ids, TaskInfo info) {
         if(success){
             Toast.makeText(getContext(),"添加任务成功",Toast.LENGTH_SHORT).show();
             finish();

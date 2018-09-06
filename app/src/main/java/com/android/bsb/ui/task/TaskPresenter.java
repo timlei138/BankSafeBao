@@ -15,7 +15,10 @@ import com.android.bsb.util.AppLogger;
 import com.android.bsb.util.ImageUtils;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 import io.objectbox.Box;
 import io.reactivex.Observable;
@@ -202,7 +205,7 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                         mView.hideProgress();
                         List<Integer> ids = new ArrayList<>();
                         ids.add(processId);
-                        mView.submitTaskResult(true,ids,files);
+                        mView.submitTaskResult(true,null,null);
 
                     }
 
@@ -215,7 +218,7 @@ public class TaskPresenter extends IBasePresent<TaskView> {
     }
 
 
-    public void feedbackNormalTaskList(final List<Integer> ids, List<String> geos) {
+    public void feedbackNormalTaskList(final List<Integer> ids, final List<String> geos) {
         User login = mView.getLoginUser();
         mApis.taskProcessResult(login.getUid(), ids, geos)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -223,7 +226,11 @@ public class TaskPresenter extends IBasePresent<TaskView> {
                 .subscribe(new CommObserver<String>() {
                     @Override
                     public void onRequestNext(String s) {
-                        mView.submitTaskResult(true,ids,null);
+                        Map<Integer,String> maps = new HashMap<>();
+                        for (int i = 0;i< ids.size() ;i++){
+                            maps.put(ids.get(i),geos.get(i));
+                        }
+                        mView.submitTaskResult(true,maps,null);
                     }
 
                     @Override
