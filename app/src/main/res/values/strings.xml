@@ -48,4 +48,6 @@
 
     <string name="empty_no_data">没有查询到数据！</string>
     <string name="empty_no_net">当前网络异常，请点击重试！</string>
+    <string name="option_0"></string>
+    <string name="option_1"></string>
 </resources>

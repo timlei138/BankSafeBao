@@ -35,4 +35,9 @@
         <item name="colorAccent">@color/ColorBackgroundDark</item>
     </style>
 
+    <style name="PreviewOptionsStyle">
+        <item name="android:windowEnterAnimation">@anim/bottom_menu_in</item>
+        <item name="android:windowExitAnimation">@anim/bottom_menu_out</item>
+    </style>
+
 </resources>

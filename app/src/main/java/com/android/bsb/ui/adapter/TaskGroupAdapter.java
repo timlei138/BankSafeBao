@@ -1,6 +1,7 @@
 package com.android.bsb.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +26,7 @@ import com.android.bsb.R;
 import com.android.bsb.bean.TaskGroupInfo;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.data.remote.NetComm;
+import com.android.bsb.ui.PreViewImageActivity;
 import com.android.bsb.util.AppLogger;
 
 import java.util.ArrayList;
@@ -417,6 +419,9 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupHolder> {
         int imgWidth = width / 3 - 2 * paddingLeft;
         for (int i = 0; i < images.size(); i++) {
             ImageView view = new ImageView(mContext);
+            view.setTag(R.string.option_0,i);
+            view.setTag(R.string.option_1,images);
+            view.setOnClickListener(mPreviewClick);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.leftMargin = i <=0 ? 0 :paddingLeft;
@@ -426,6 +431,19 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupHolder> {
         }
 
     }
+
+    private View.OnClickListener mPreviewClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int index = (int) v.getTag(R.string.option_0);
+            ArrayList list = (ArrayList) v.getTag(R.string.option_1);
+            Intent intent = new Intent();
+            intent.setClass(mContext,PreViewImageActivity.class);
+            intent.putExtra("index", index);
+            intent.putStringArrayListExtra("images",list);
+            mContext.startActivity(intent);
+        }
+    };
 
     @Override
     public int getItemCount() {
