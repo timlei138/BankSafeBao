@@ -1,8 +1,17 @@
 package com.android.bsb.ui.user;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +19,8 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.android.bsb.AppComm;
 import com.android.bsb.R;
 import com.android.bsb.bean.User;
 import com.android.bsb.component.ApplicationComponent;
@@ -25,6 +36,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static android.app.Activity.RESULT_OK;
+
 public class UserManagerFragment extends BaseFragment<UserManagerPresenter> implements UserManagerView {
 
     private final int ACTION_ADD_DEPT = 1;
@@ -33,9 +46,12 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
     private final int ACTION_LIST_USER = 4;
 
 
+    private final int PERMISSION_SNED_MSG = 2000;
 
     @BindView(R.id.grid_view)
     GridView mTableLaout;
+
+    private User pendingUser;
 
     @Override
     protected int attachLayoutRes() {
@@ -103,6 +119,7 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
     @Override
     public void addUserDeptSuccess(String reslult) {
         Toast.makeText(getContext(),""+reslult,Toast.LENGTH_SHORT).show();
+        sendDownloadMsg();
     }
 
     @Override
@@ -140,6 +157,7 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
             edDept.setVisibility(View.GONE);
         }
 
+        pendingUser = new User();
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -151,6 +169,7 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
                     return;
                 }
                 if(addDept){
+                    pendingUser.setRole(AppComm.ROLE_TYPE_MANAGER);
                     mPresenter.addNewDept(dept,phone,name);
                 }else{
                     int id = roleGroup.getCheckedRadioButtonId();
@@ -160,8 +179,11 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
                     }else{
                         roleCode = 13;
                     }
+                    pendingUser.setRole(id);
                     mPresenter.addUser(name,phone,roleCode);
                 }
+                pendingUser.setUname(name);
+                pendingUser.setCellpahone(phone);
 
                 dialog.dismiss();
 
@@ -178,4 +200,64 @@ public class UserManagerFragment extends BaseFragment<UserManagerPresenter> impl
 
     }
 
+
+
+
+    void sendDownloadMsg(){
+
+        if(getContext().checkCallingOrSelfPermission(Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.SEND_SMS},PERMISSION_SNED_MSG);
+            return;
+        }
+
+        if(pendingUser != null){
+            String message = "用户您好，您已经被授权使用本软件，软件下载：http://www.baidu.com "
+                    +"您好登陆名为："+pendingUser.getCellpahone()+",您的登陆密码为：123456 "
+                    +"。";
+
+            SmsManager smsManager = android.telephony.SmsManager.getDefault();
+
+            List<String> msgList = smsManager.divideMessage(message);
+
+
+            String SENT_SMS_ACTION = "SENT_SMS_ACTION";
+            Intent sentIntent = new Intent(SENT_SMS_ACTION);
+            PendingIntent sentPI= PendingIntent.getBroadcast(getContext(), 0, sentIntent,
+                    0);
+            // register the Broadcast Receivers
+            getContext().registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context _context, Intent _intent) {
+                    switch (getResultCode()) {
+                        case RESULT_OK:
+                            Toast.makeText(getContext(),
+                                    "短信发送成功", Toast.LENGTH_SHORT)
+                                    .show();
+                            break;
+                        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                            break;
+                        case SmsManager.RESULT_ERROR_RADIO_OFF:
+                            break;
+                        case SmsManager.RESULT_ERROR_NULL_PDU:
+                            break;
+                    }
+                }
+            }, new IntentFilter(SENT_SMS_ACTION));
+
+            for (String msg : msgList){
+                smsManager.sendTextMessage(pendingUser.getCellpahone(),null,msg,sentPI,null);
+            }
+
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            sendDownloadMsg();
+        }
+    }
 }

@@ -15,6 +15,7 @@ import com.android.bsb.util.AppLogger;
 import com.android.bsb.util.ImageUtils;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -243,9 +244,8 @@ public class TaskPresenter extends IBasePresent<TaskView> {
 
     public void getProcessResultForDept(){
         User user = mView.getLoginUser();
-        long start = System.currentTimeMillis();
-        long end = System.currentTimeMillis();
-        mApis.queryProcessResult(start,end,user.getDeptCode())
+        long[] times = getWeekDay();
+        mApis.queryProcessResult(times[0],times[1],user.getDeptCode())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommObserver<List<CheckTaskInfo>>() {
                     @Override
@@ -267,4 +267,14 @@ public class TaskPresenter extends IBasePresent<TaskView> {
     public void getData() {
 
     }
+
+
+    private long[] getWeekDay(){
+        Calendar calendar = Calendar.getInstance();
+        long now = calendar.getTime().getTime();
+        long start = now - (1000 * 60 * 60  *24 * 3 );
+        return new long[]{start,now};
+
+    }
+
 }

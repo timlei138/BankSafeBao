@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.android.bsb.R;
-import com.android.bsb.bean.EntryData;
+import com.android.bsb.bean.StepData;
 import com.android.bsb.bean.TaskInfo;
 import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.ui.adapter.RecentItem;
@@ -110,17 +110,17 @@ public class RecentTaskListActivity extends BaseActivity {
                 });
 
 
-        List<EntryData> list = new ArrayList<>();
-        list.add(new EntryData("周一",3000f));
-        list.add(new EntryData("周二",2200f));
-        list.add(new EntryData("周三",19999f));
-        list.add(new EntryData("周四",6780f));
-        list.add(new EntryData("周五",15656f));
-        list.add(new EntryData("周六",12000f));
-        list.add(new EntryData("周天",4089f));
+        List<StepData> list = new ArrayList<>();
+        list.add(new StepData("周一",3000));
+        list.add(new StepData("周二",2200));
+        list.add(new StepData("周三",19999));
+        list.add(new StepData("周四",6780));
+        list.add(new StepData("周五",15656));
+        list.add(new StepData("周六",12000));
+        list.add(new StepData("周天",4089));
 
 
-        mChartView.setData("2018/8/21至2018/8/27",list);
+        mChartView.setData(list);
 
 
     }
@@ -128,9 +128,6 @@ public class RecentTaskListActivity extends BaseActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-
-
         return super.onTouchEvent(event);
     }
 

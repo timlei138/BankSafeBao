@@ -11,11 +11,20 @@ public class StepData {
 
     private long date;
 
+    private int uid  = -1;
+
     private int step;
 
     private String today;
 
     private boolean merge;
+
+    public StepData(){}
+
+    public StepData(String today,int step){
+        this.today = today;
+        this.step = step;
+    }
 
     public long get_id() {
         return _id;
@@ -55,5 +64,13 @@ public class StepData {
 
     public void setMerge(boolean merge) {
         this.merge = merge;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

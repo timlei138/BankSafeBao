@@ -21,6 +21,7 @@ import com.android.bsb.component.ApplicationComponent;
 import com.android.bsb.component.DaggerAppComponent;
 import com.android.bsb.service.LocationService;
 import com.android.bsb.service.StepService;
+import com.android.bsb.service.UploadStepService;
 import com.android.bsb.ui.adapter.TaskAdapterItem;
 import com.android.bsb.ui.adapter.TaskGroupAdapter;
 import com.android.bsb.ui.adapter.TaskListItemDecoration;
@@ -99,6 +100,16 @@ public class TaskFragment extends BaseFragment<TaskPresenter> implements TaskVie
             mLocationService.start();
 
         }
+
+        doUpdateService();
+
+    }
+
+
+    private void doUpdateService(){
+        Intent intent = new Intent();
+        intent.setClass(getContext(), UploadStepService.class);
+        getContext().startService(intent);
     }
 
     @Override

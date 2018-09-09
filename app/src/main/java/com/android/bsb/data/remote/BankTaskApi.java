@@ -152,6 +152,14 @@ public class BankTaskApi {
     }
 
 
+    public Observable<String> uploadStep(int uid,int steps,long time){
+        return mService.uploadStep(uid,steps,time)
+                .map(new ServerResultFunc<String>())
+                .onErrorResumeNext(new HttpResultFunc<String>())
+                .subscribeOn(Schedulers.io());
+    }
+
+
     public static RequestBody toRequestBody(String value){
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"),value);
         return body;

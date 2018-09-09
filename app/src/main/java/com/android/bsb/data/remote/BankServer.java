@@ -146,5 +146,16 @@ public interface BankServer {
      */
     Observable<BaseResultEntity<List<StepData>>> querySetupList(@Field("uid")int uid, @Field("starttime")long time, @Field("endtime")long endtime);
 
+    /**
+     * 上传当天步数
+     * @param uid
+     * @param step
+     * @param time
+     * @return
+     */
+    @POST("saveSteps")
+    @FormUrlEncoded
+    Observable<BaseResultEntity<String>> uploadStep(@Field("userid") int uid,@Field("steps") int step,@Field("time") long time);
+
 
 }

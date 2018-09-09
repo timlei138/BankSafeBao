@@ -19,9 +19,11 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.android.bsb.AppApplication;
 import com.android.bsb.R;
 import com.android.bsb.bean.StepData;
 import com.android.bsb.bean.StepData_;
+import com.android.bsb.bean.User;
 import com.android.bsb.data.local.LocalDataManager;
 import com.android.bsb.step.UpdateUiCallBack;
 import com.android.bsb.step.accelerometer.StepCount;
@@ -95,6 +97,8 @@ public class StepService extends Service implements SensorEventListener {
 
     private Box<StepData> mStepDb;
 
+    private User mCurrentUser;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -108,8 +112,8 @@ public class StepService extends Service implements SensorEventListener {
                 startStepDetector();
             }
         }).start();
-
         startTimeCount();
+        mCurrentUser = AppApplication.getLoginUser();
 
     }
 
@@ -542,6 +546,7 @@ public class StepService extends Service implements SensorEventListener {
             StepData data = new StepData();
             data.setToday(CURRENT_DATE);
             data.setStep(tempStep);
+            data.setUid(mCurrentUser.getUid());
             mStepDb.put(data);
         } else if (list.size() == 1) {
             StepData data = list.get(0);

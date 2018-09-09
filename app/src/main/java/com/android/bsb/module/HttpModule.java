@@ -34,9 +34,9 @@ public class HttpModule {
                 .addInterceptor(RetrofitConfig.sHttpLoggerInterceptor)
                 .addInterceptor(RetrofitConfig.sRawWriteCacheControlInterceptor)
                 .addNetworkInterceptor(RetrofitConfig.sRawWriteCacheControlInterceptor)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30,TimeUnit.SECONDS)
-                .readTimeout(30,TimeUnit.SECONDS);
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(15,TimeUnit.SECONDS)
+                .readTimeout(15,TimeUnit.SECONDS);
     }
 
     @Provides
